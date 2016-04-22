@@ -10,4 +10,7 @@ import com.worksap.stm2016.model.Person;
 public interface PersonService {
 	public List<Person> findAll();
 	public Page<Person> findAll(Pageable pageable);
+	public Person save(Person person);
+	public Person findById(Long id);
+	public void deleteOne(Long personId);
 }

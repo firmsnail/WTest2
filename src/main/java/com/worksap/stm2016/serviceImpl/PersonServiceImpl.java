@@ -31,4 +31,22 @@ public class PersonServiceImpl implements PersonService{
 		return personRepository.findAll(pageable);
 	}
 
+	@Override
+	public Person save(Person person) {
+		// TODO Auto-generated method stub
+		return personRepository.save(person);
+	}
+
+	@Override
+	public Person findById(Long id) {
+		// TODO Auto-generated method stub
+		return personRepository.findOne(id);
+	}
+
+	@Override
+	public void deleteOne(Long personId) {
+		// TODO Auto-generated method stub
+		personRepository.delete(personId);
+	}
+
 }

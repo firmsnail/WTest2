@@ -5,11 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Notification;
 
 @Repository
-public interface PersonRepository extends PagingAndSortingRepository<Person, Long>{
+public interface NotificationRepository extends PagingAndSortingRepository<Notification, Long>{
 	
-	Page<Person> findAll(Pageable pageable);
+	Page<Notification> findAll(Pageable pageable);
 
 }
