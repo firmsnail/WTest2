@@ -37,7 +37,7 @@ public class RecruitingPlan {
 	Integer planNum;
 	
 	@ManyToMany
-	@JoinTable(name="ss1604c187_rd4.skill", joinColumns = {@JoinColumn(name = "skill_id")},
+	@JoinTable(name="ss1604c187_rd4.plan_skill", joinColumns = {@JoinColumn(name = "skill_id")},
 			inverseJoinColumns = {@JoinColumn(name = "plan_id")})
 	List<Skill> planSkillList;
 	

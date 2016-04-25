@@ -33,7 +33,7 @@ public class Skill {
 	private String description;
 	
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinTable(name="ss1604c187_rd4.person", joinColumns = {@JoinColumn(name = "person_id")},
+	@JoinTable(name="ss1604c187_rd4.skill_person", joinColumns = {@JoinColumn(name = "person_id")},
 			inverseJoinColumns = {@JoinColumn(name = "skill_id")})
 	List<Person> users;
 	

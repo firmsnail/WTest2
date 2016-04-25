@@ -46,7 +46,7 @@ public class StaffRequirement {
 	Integer requireNum;
 	
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinTable(name="ss1604c187_rd4.skill", joinColumns = {@JoinColumn(name = "skill_id")},
+	@JoinTable(name="ss1604c187_rd4.stfrq_skill", joinColumns = {@JoinColumn(name = "skill_id")},
 			inverseJoinColumns = {@JoinColumn(name = "stfrq_id")})
 	List<Skill> stfrqSkillList;
 	
