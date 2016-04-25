@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
-import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.PersonService;
 
 @Controller
@@ -24,8 +23,8 @@ public class PersonController {
 	
 	@Autowired
 	private PersonService personService;
-	@Autowired
-	private NotificationService notitficationService;
+	//@Autowired
+	//private NotificationService notitficationService;
 	
 	@RequestMapping("/showPerson")
 	@ResponseBody
