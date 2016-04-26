@@ -83,8 +83,9 @@ public class PersonController {
 		return personService.findAll(pageable).getContent();
 	}
 	
-	@RequestMapping("/")
+	@RequestMapping(value={"/", "/index"})
 	public String index() {
-		return "redirect:/showPersonList";
+		return "index";
+		//return "redirect:/showPersonList";
 	}
 }
