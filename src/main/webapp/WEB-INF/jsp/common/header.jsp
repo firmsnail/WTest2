@@ -15,12 +15,14 @@ var WEB_ROOT = function(){
 </script>
 <!-- Bootstrap Core CSS -->
 <link href="${pageContext.request.contextPath}/resources/static/css/common/bootstrap.min.css" rel="stylesheet">
+
 <!-- MetisMenu CSS -->
 <link href="${pageContext.request.contextPath}/resources/static/css/common/metisMenu.min.css" rel="stylesheet">
 <!-- Custom CSS -->
 <link href="${pageContext.request.contextPath}/resources/static/css/common/sb-admin-2.css" rel="stylesheet">
 <!-- Custom Fonts -->
 <link href="${pageContext.request.contextPath}/resources/static/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
 
 
 <!-- jQuery -->

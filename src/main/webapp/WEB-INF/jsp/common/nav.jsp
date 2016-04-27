@@ -1,3 +1,7 @@
+<%@ page pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
@@ -7,7 +11,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+        <a class="navbar-brand" href="index.html">Short-term Employee Management System</a>
     </div>
     <!-- /.navbar-header -->
 
@@ -203,7 +207,13 @@
             <!-- /.dropdown-alerts -->
         </li>
         <!-- /.dropdown -->
-        <li class="dropdown">
+        <li <c:if test="${sessionScope.user != null}">class="hidden"</c:if> >
+        	<a href="/login">Log In</a>
+        </li>
+        
+        <!-- <c:if test="${sessionScope.user != null}">hidden="hidden"</c:if> -->
+        
+        <li class="dropdown <c:if test="${sessionScope.user == null}">hidden</c:if>" >
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
             </a>
@@ -240,7 +250,7 @@
                     <a href="/index"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="/help"><i class="fa fa-question-circle fa-fw"></i> Dashboard</a>
+                    <a href="/help"><i class="fa fa-question-circle fa-fw"></i> Help</a>
                 </li>
                 
             </ul>

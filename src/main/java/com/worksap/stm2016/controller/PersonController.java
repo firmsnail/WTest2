@@ -83,9 +83,27 @@ public class PersonController {
 		return personService.findAll(pageable).getContent();
 	}
 	
+	@RequestMapping(value={"/help"})
+	public String help() {
+		return "help";
+		//return "redirect:/showPersonList";
+	}
+	
 	@RequestMapping(value={"/", "/index"})
 	public String index() {
 		return "index";
+		//return "redirect:/showPersonList";
+	}
+	
+	@RequestMapping(value={"/login"})
+	public String login() {
+		return "login";
+		//return "redirect:/showPersonList";
+	}
+	
+	@RequestMapping(value={"/register"})
+	public String register() {
+		return "register";
 		//return "redirect:/showPersonList";
 	}
 }
