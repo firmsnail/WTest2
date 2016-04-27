@@ -39,7 +39,7 @@
                               <select class="form-control" name="role">
 	                              <option value="0">HR Manager</option>
 	                              <option value="1">Recruiter</option>
-	                              <option value="2">C&B Specialist</option>
+	                              <option value="2">C&#38;B Specialist</option>
 	                              <option value="3">Staffing Team Manager</option>
 	                              <option value="4">Short-term Employee</option>
                               </select>

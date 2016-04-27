@@ -59,7 +59,7 @@ public class Person {
 	private String phone;
 	
 	@ManyToOne(optional = true)
-	@JoinColumn(nullable = false, name = "department_id", referencedColumnName = "department_id")
+	@JoinColumn(name = "department_id", referencedColumnName = "department_id")
 	@JsonIgnore
 	Department department;
 
