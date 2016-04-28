@@ -3,28 +3,34 @@ package com.worksap.stm2016.controller;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.service.RoleService;
 
 @Controller
 public class GeneralController {
 	
 	@Autowired
 	private PersonService personService;
-	//@Autowired
-	//private NotificationService notitficationService;
+	@Autowired
+	private RoleService roleService;
 	
 	@RequestMapping("/showPerson")
 	@ResponseBody
@@ -36,7 +42,8 @@ public class GeneralController {
 	
 	@RequestMapping("/newPerson")
 	@ResponseBody
-	public List<Notification> NewPerson(Model model) {
+	public List<Notification> NewPerson(HttpServletRequest request, Model model) {
+		request.getRemoteUser();
 		Person curP = new Person();
 		Random rd = new Random();
 		
@@ -96,7 +103,11 @@ public class GeneralController {
 	}
 	
 	@RequestMapping(value={"/login"})
-	public String login() {
+	public String login(@RequestParam(value = "error", required = false) String error) {
+		if (error != null) {
+			System.out.println("Invalid username and password!");
+		}
+		
 		return "login";
 		//return "redirect:/showPersonList";
 	}
@@ -104,6 +115,51 @@ public class GeneralController {
 	@RequestMapping(value={"/register"})
 	public String register() {
 		return "register";
+		//return "redirect:/showPersonList";
+	}
+	
+	@RequestMapping(value={"/add"})
+	public String add() {
+		return "addUser";
+		//return "redirect:/showPersonList";
+	}
+	
+	@RequestMapping(value={"/logerror"})
+	public String logerror() {
+		System.out.println("Login Error!");
+		return "index";
+		//return "redirect:/showPersonList";
+	}
+	
+	@RequestMapping(value={"/addAct"})
+	public String addAct(Long role, String username, String password, String firstName, String lastName, Model model) {
+		System.out.println("role: " + role);
+		System.out.println("username: " + username);
+		System.out.println("password: " + password);
+		System.out.println("firstName: " + firstName);
+		System.out.println("lastName: " + lastName);
+		Role curRole = roleService.findOne(role);
+		if (curRole == null) {
+			System.out.println("role doesn't exist!");
+			return "login";
+		}
+		if (personService.findByUserName(username) != null) {
+			System.out.println("Existed!");
+			return "login";
+			
+		}
+		System.out.println("curRole: " + curRole);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		Person person = new Person();
+		person.setRole(curRole);
+		person.setUserName(username);
+		person.setPassword(passwordEncoder.encode(password));
+		person.setFirstName(firstName);
+		person.setLastName(lastName);
+		System.out.println("pRole:" + person.getRole().getRoleId());
+		Person p = personService.save(person);
+		System.out.println("person: " + p);
+		return "index";
 		//return "redirect:/showPersonList";
 	}
 }

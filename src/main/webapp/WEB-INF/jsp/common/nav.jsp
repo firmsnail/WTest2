@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -13,9 +14,45 @@
         </button>
         <a class="navbar-brand" href="index.html">Short-term Employee Management System</a>
     </div>
-    <!-- /.navbar-header -->
+    <h1>
+			Hello <b><c:out value="${pageContext.request.remoteUser}"></c:out></b>
+		</h1>
 
+<script>
+    function formSubmit() {
+        document.getElementById("logoutForm").submit();
+    }
+</script>
+    <!-- /.navbar-header -->
+    <div>
+		<sec:authorize  access="hasRole('HR-MANAGER')">  
+			<p>
+				    This content will only be visible to users who have  
+				    the "supervisor" authority in their list of GrantedAuthoritys.  
+			</p>
+		</sec:authorize>
+	</div>
+		<c:if test="${pageContext.request.userPrincipal.name != null}">
+		    <h2>
+		        Welcome : ${pageContext.request.userPrincipal.name} | <a
+		            href="javascript:formSubmit()"> Logout</a>
+		            
+			    <form id="logoutForm" action="/logout" method="post">
+				    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				</form>
+		    </h2>
+		</c:if>
+	<c:if test="${currentUser == null }">
+		<h2>5555555555</h2>
+	</c:if>
+	<c:if test="${currentUser != null }">
+		<h2>${currentUser.user.firstName} hahahaha!</h2>
+	</c:if>
     <ul class="nav navbar-top-links navbar-right">
+    	<sec:authorize  access="hasRole('HR-MANAGER')">  
+		    This content will only be visible to users who have  
+		    the "supervisor" authority in their list of GrantedAuthoritys.  
+		</sec:authorize>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>

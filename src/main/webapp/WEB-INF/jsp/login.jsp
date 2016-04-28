@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,55 +29,58 @@
 	              </div>
 	
 	              <div class="widget-content">
-	                <div class="padd">
-	                  <!-- Login form -->
-	                  <form class="form-horizontal">
-	                  	<!-- Select box -->
-                        <div class="form-group">
-                          <label class="control-label col-lg-3">Role</label>
-                          <div class="col-lg-9">                               
-                              <select class="form-control" name="role">
-	                              <option value="0">HR Manager</option>
-	                              <option value="1">Recruiter</option>
-	                              <option value="2">C&#38;B Specialist</option>
-	                              <option value="3">Staffing Team Manager</option>
-	                              <option value="4">Short-term Employee</option>
-                              </select>
-                          </div>
-                        </div>
-	                    <!-- Email -->
-	                    <div class="form-group">
-	                      <label class="control-label col-lg-3" for="inputUsername">UserName</label>
-	                      <div class="col-lg-9">
-	                        <input type="text" class="form-control" id="inputUsername" placeholder="Username">
-	                      </div>
-	                    </div>
-	                    <!-- Password -->
-	                    <div class="form-group">
-	                      <label class="control-label col-lg-3" for="inputPassword">Password</label>
-	                      <div class="col-lg-9">
-	                        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-	                      </div>
-	                    </div>
-	                    <!-- Remember me checkbox and sign in button -->
-	                    <div class="form-group">
-						<div class="col-lg-9 col-lg-offset-3">
-	                      <div class="checkbox">
-	                        <label>
-	                          <input type="checkbox"> Remember me
-	                        </label>
+		                <div class="padd">
+		                  <!-- Login form -->
+		                  <form class="loginForm form-horizontal" action="/login" method='POST'>
+		                  	<!-- Select box -->
+	                        <div class="form-group">
+	                          <label class="control-label col-lg-3">Role</label>
+	                          <div class="col-lg-9">                               
+	                              <select class="form-control" name="role">
+		                              <option value="1">HR Manager</option>
+		                              <option value="2">Recruiter</option>
+		                              <option value="3">C&#38;B Specialist</option>
+		                              <option value="4">Staffing Team Manager</option>
+		                              <option value="5">Short-term Employee</option>
+	                              </select>
+	                          </div>
+	                        </div>
+		                    <!-- Email -->
+		                    <div class="form-group">
+		                      <label class="control-label col-lg-3" for="inputUsername">UserName</label>
+		                      <div class="col-lg-9">
+		                        <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
+		                      </div>
+		                    </div>
+		                    <!-- Password -->
+		                    <div class="form-group">
+		                      <label class="control-label col-lg-3" for="inputPassword">Password</label>
+		                      <div class="col-lg-9">
+		                        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
+		                      </div>
+		                    </div>
+		                    <!-- Remember me checkbox and sign in button -->
+		                    
+		                    <div class="form-group">
+								<div class="col-lg-9 col-lg-offset-3">
+			                      <div class="checkbox">
+			                        <label>
+			                          <input type="checkbox" name="remember-me" id="remember-me" value="true"> Remember me
+			                        </label>
+									</div>
+								</div>
 							</div>
-						</div>
-						</div>
+							
 	                        <div class="col-lg-9 col-lg-offset-2">
 								<button type="submit" class="btn btn-danger">Sign in</button>
 								<button type="reset" class="btn btn-default">Reset</button>
 							</div>
-	                    <br />
-	                  </form>
-					  
-					</div>
-	                </div>
+		                    <br />
+		                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		                  </form>
+						  
+						</div>
+		            </div>
 	              
 	                <div class="widget-foot">
 	                  Not Registred? <a href="/register">Register here</a>

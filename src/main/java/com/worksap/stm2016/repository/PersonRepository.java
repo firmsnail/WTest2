@@ -12,4 +12,6 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 	
 	Page<Person> findAll(Pageable pageable);
 
+	Person findByUserName(String username);
+
 }
