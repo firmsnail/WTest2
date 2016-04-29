@@ -16,13 +16,12 @@ import com.worksap.stm2016.service.CurrentUserDetailsService;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	
 	@Autowired
 	private CurrentUserDetailsService userDetailsService;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/resources/**", "/logerror", "/add", "/addAct", "/", "/index").permitAll().anyRequest().authenticated()
+		http.authorizeRequests().antMatchers("/resources/**", "/logerror", "/add", "/addAct", "/register", "/registerAct", "/", "/index").permitAll().anyRequest().authenticated()
 			.and()
 			.formLogin()
 			.loginPage("/login")

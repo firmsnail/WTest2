@@ -1,7 +1,7 @@
 
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-
+<%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,41 +36,60 @@
 	              <div class="widget-content">
 		                <div class="padd">
 		                  
-			                  <form class="form-horizontal">
-			                                      
-		                           <!-- Username -->
+			                  <springForm:form class="form-horizontal" action="/registerAct" modelAttribute="user">
+			                       <springForm:errors path="" element="div" />
+		                           <!-- role -->
 		                           <div class="form-group">
-			                             <label class="control-label col-lg-3" for="username">Username</label>
+			                             <label class="control-label col-lg-3" for="role">Role</label>
 			                             <div class="col-lg-9">
-			                               		<input type="text" class="form-control" id="username">
+			                               		<springForm:input path="role" type="text" class="form-control" id="role" name="role" value="6" />
+			                               		<springForm:errors path="role" cssClass="error"/>
 			                             </div>
+		                           </div>
+		                           <div class="form-group">
+			                             <label class="control-label col-lg-3" for="userName">Username</label>
+			                             <div class="col-lg-9">
+			                               		<springForm:input path="userName" type="text" class="form-control" id="userName" name="userName" />
+			                             </div>
+			                             <springForm:errors path="userName" cssClass="error"/>
 		                           </div>
 		                           <!-- Password -->
 		                           <div class="form-group">
-			                             <label class="control-label col-lg-3" for="email">Password</label>
+			                             <label class="control-label col-lg-3" for="password">Password</label>
 			                             <div class="col-lg-9">
-			                               		<input type="password" class="form-control" id="password">
+			                               		<springForm:input path="password" type="password" class="form-control" id="password" name="password" />
 			                             </div>
+			                             <springForm:errors path="password" cssClass="error"/>
+		                           </div>
+		                           <div class="form-group">
+			                             <label class="control-label col-lg-3" for="confirmPassword">Confirm Password</label>
+			                             <div class="col-lg-9">
+			                               		<springForm:input path="confirmPassword" type="password" class="form-control" id="confirmPassword" name="confirmPassword" />
+			                             </div>
+			                             <springForm:errors path="confirmPassword" cssClass="error"/>
 		                           </div>
 		                           <!-- Email -->
 		                           <div class="form-group">
 			                             <label class="control-label col-lg-3" for="email">Email</label>
 			                             <div class="col-lg-9">
-			                               		<input type="text" class="form-control" id="email">
+			                               		<springForm:input path="email" type="text" class="form-control" id="email" name="email" />
 			                             </div>
+			                             <springForm:errors path="email" cssClass="error"/>
 		                           </div>
 		                           <!-- Name -->
 		                           <div class="form-group">
 			                             <label class="control-label col-lg-3" for="firstName">First Name</label>
 			                             <div class="col-lg-9">
-			                               		<input type="text" class="form-control" id="firstName">
+			                               		<springForm:input path="firstName" type="text" class="form-control" id="firstName" name="firstName" />
 			                             </div>
+			                             <springForm:errors path="firstName" cssClass="error"/>
 		                           </div>
 		                           <div class="form-group">
 			                             <label class="control-label col-lg-3" for="lastName">Last Name</label>
 			                             <div class="col-lg-9">
-			                               		<input type="text" class="form-control" id="lastName">
+			                               		<springForm:input path="lastName" type="text" class="form-control" id="lastName" name="lastName" />
 			                             </div>
+			                             <springForm:errors path="lastName" cssClass="error"/>
 		                           </div>
 		                           <br />
 		                           <div class="form-group">
@@ -80,7 +99,7 @@
 			                           </div>
 	                               </div>
 								   <br />
-			                  </form>
+			                  </springForm:form>
 		
 		                </div>
 	              </div>

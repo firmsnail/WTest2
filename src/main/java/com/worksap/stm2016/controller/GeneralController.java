@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,8 +27,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
+import com.worksap.stm2016.model.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RoleService;
+import com.worksap.stm2016.validator.UserCreateFormValidator;
 
 @Controller
 public class GeneralController {
@@ -31,6 +39,13 @@ public class GeneralController {
 	private PersonService personService;
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private UserCreateFormValidator  userCreateFormValidator;
+	
+	@InitBinder("form")
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(userCreateFormValidator);
+    }
 	
 	@RequestMapping("/showPerson")
 	@ResponseBody
@@ -113,8 +128,27 @@ public class GeneralController {
 	}
 	
 	@RequestMapping(value={"/register"})
-	public String register() {
+	public String register(Model model) {
+		model.addAttribute("user", new UserCreateForm());
 		return "register";
+		//return "redirect:/showPersonList";
+	}
+	
+	@RequestMapping(value={"/registerAct"})
+	public String registerAct(@ModelAttribute("user") @Valid UserCreateForm user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			System.out.println("register has error!");
+			return "register";
+		}
+		try {
+            personService.create(user);
+        } catch (DataIntegrityViolationException e) {
+            // probably email already exists - very rare case when multiple admins are adding same user
+            // at the same time and form validation has passed for more than one of them.
+            bindingResult.reject("email.exists", "Email already exists");
+            return "register";
+        }
+		return "login";
 		//return "redirect:/showPersonList";
 	}
 	
