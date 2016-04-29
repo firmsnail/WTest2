@@ -2,7 +2,6 @@ package com.worksap.stm2016.serviceImpl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,7 @@ import com.worksap.stm2016.service.PersonService;
 
 @Service
 @Transactional
-public class CurrentUserDetailsServiceImpl implements UserDetailsService{
+public class CurrentUserDetailsServiceImpl implements CurrentUserDetailsService{
 
 	private final PersonService userService;
 
@@ -26,6 +25,7 @@ public class CurrentUserDetailsServiceImpl implements UserDetailsService{
     @Override
     public CurrentUser loadUserByUsername(String username) throws UsernameNotFoundException {
         Person user = userService.findByUserName(username);
+        System.out.println("user: " + user.getUserName() + " " + user.getPassword() + " " + user.getRole().getRoleName());
         return new CurrentUser(user);
     }
 
