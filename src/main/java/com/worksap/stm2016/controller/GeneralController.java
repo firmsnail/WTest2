@@ -1,6 +1,5 @@
 package com.worksap.stm2016.controller;
 
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -9,18 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksap.stm2016.ModelForm.UserCreateForm;
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
-import com.worksap.stm2016.model.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -51,8 +47,6 @@ public class GeneralController {
 	@InitBinder("user")
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userCreateFormValidator);
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        binder.registerCustomEditor(Long.class, "role", new CustomNumberEditor(Long.class, numberFormat, false));
     }
 	
 	@RequestMapping("/showPerson")
@@ -144,7 +138,6 @@ public class GeneralController {
 	
 	@RequestMapping(value={"/registerAct"})
 	public String registerAct(@ModelAttribute("user") @Valid UserCreateForm user, BindingResult bindingResult) {
-		System.out.println("locale: " + Locale.getDefault().getDisplayLanguage());
 		if (bindingResult.hasErrors()) {
 			System.out.println("register has error!");
 			return "register";

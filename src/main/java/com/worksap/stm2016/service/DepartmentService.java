@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.worksap.stm2016.ModelForm.DepartmentForm;
 import com.worksap.stm2016.model.Department;
 
 public interface DepartmentService {
@@ -12,4 +13,6 @@ public interface DepartmentService {
 	public Page<Department> findAll(Pageable pageable);
 	public Department save(Department dept);
 	public Department findOne(Long id);
+	public Department findByDepartmentName(String departmentName);
+	public Department create(DepartmentForm department);
 }

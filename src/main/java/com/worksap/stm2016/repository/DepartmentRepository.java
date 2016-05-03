@@ -12,4 +12,6 @@ public interface DepartmentRepository extends PagingAndSortingRepository<Departm
 	
 	Page<Department> findAll(Pageable pageable);
 
+	Department findByDepartmentName(String departmentName);
+
 }

@@ -8,8 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.worksap.stm2016.ModelForm.DepartmentForm;
 import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.repository.DepartmentRepository;
+import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.service.DepartmentService;
 
 @Service
@@ -18,6 +21,8 @@ public class DepartmentServiceImpl implements DepartmentService{
 
 	@Autowired
 	private DepartmentRepository departmentRepository;
+	@Autowired
+	private PersonRepository personRepository;
 
 	@Override
 	public List<Department> findAll() {
@@ -41,6 +46,27 @@ public class DepartmentServiceImpl implements DepartmentService{
 	public Department findOne(Long id) {
 		// TODO Auto-generated method stub
 		return departmentRepository.findOne(id);
+	}
+
+	@Override
+	public Department findByDepartmentName(String departmentName) {
+		return departmentRepository.findByDepartmentName(departmentName);
+	}
+
+	@Override
+	public Department create(DepartmentForm department) {
+		Department dept = new Department();
+		dept.setDepartmentName(department.getDepartmentName());
+		if (department.getDescription() != null && department.getDescription().length() > 0) {
+			dept.setDescription(department.getDescription());
+		}
+		if (department.getManagerId() != null) {
+			Person manager = personRepository.findOne(department.getManagerId());
+			if (manager != null) {
+				dept.setManager(manager);
+			}
+		}
+		return departmentRepository.save(dept);
 	}
 	
 
