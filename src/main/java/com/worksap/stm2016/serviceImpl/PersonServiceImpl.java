@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +14,7 @@ import com.worksap.stm2016.model.UserCreateForm;
 import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.repository.RoleRepository;
 import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Service
 @Transactional
@@ -74,7 +74,7 @@ public class PersonServiceImpl implements PersonService{
 		person.setUserName(form.getUserName());
 		Role role = roleRepository.findOne(form.getRole());
 		person.setRole(role);
-		person.setPassword(new BCryptPasswordEncoder().encode(form.getPassword()));
+		person.setPassword(CommonUtils.passwordEncoder().encode(form.getPassword()));
 		person.setFirstName(form.getFirstName());
 		person.setLastName(form.getLastName());
 		return personRepository.save(person);

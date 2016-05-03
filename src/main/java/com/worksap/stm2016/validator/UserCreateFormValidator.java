@@ -24,34 +24,20 @@ public class UserCreateFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         UserCreateForm form = (UserCreateForm) target;
-        validateRole(errors, form);
-        validateUserName(errors, form);
+
         validatePasswords(errors, form);
         validateEmail(errors, form);
     }
 
-    private void validateRole(Errors errors, UserCreateForm form) {
-		// TODO Auto-generated method stub
-		if (form.getRole() < 1 || form.getRole() > 5) {
-			errors.reject("role", "Role Error!");
-		}
-	}
-
-	private void validateUserName(Errors errors, UserCreateForm form) {
-    	if (userService.findByUserName(form.getUserName()) != null) {
-            errors.reject("email.exists", "User with this email already exists");
-        }
-	}
-
 	private void validatePasswords(Errors errors, UserCreateForm form) {
         if (!form.getPassword().equals(form.getConfirmPassword())) {
-            errors.reject("password.no_match", "Passwords do not match");
+        	errors.rejectValue("confirmPassword", "confirmPassword", "Passwords do not match");
         }
     }
 
     private void validateEmail(Errors errors, UserCreateForm form) {
         if (userService.findByEmail(form.getEmail()) != null) {
-            errors.reject("email.exists", "User with this email already exists");
+        	errors.rejectValue("email", "email", "User with this email already exists.");
         }
     }
     
