@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.worksap.stm2016.ModelForm.DepartmentForm;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.repository.DepartmentRepository;
 import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.service.DepartmentService;
@@ -66,7 +66,14 @@ public class DepartmentServiceImpl implements DepartmentService{
 				dept.setManager(manager);
 			}
 		}
-		return departmentRepository.save(dept);
+		dept = departmentRepository.save(dept);
+		if (department.getManagerId() != null) {
+			Person manager = personRepository.findOne(department.getManagerId());
+			if (manager != null) {
+				manager.setDepartment(dept);
+			}
+		}
+		return dept;
 	}
 	
 

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.worksap.stm2016.ModelForm.DepartmentForm;
 import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.modelForm.DepartmentForm;
 
 public interface DepartmentService {
 	public List<Department> findAll();

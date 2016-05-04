@@ -3,7 +3,6 @@ package com.worksap.stm2016.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +26,7 @@ public class DepartmentController {
 	public String showDepartments(Model model) {
 		List<Department> departmentList = departmentService.findAll();
 		model.addAttribute("departments", departmentList);
-		return "showDepartments";
+		return "department/showDepartments";
 	}
 	
 	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessDepartment(principal, #departmentId)")
@@ -35,7 +34,7 @@ public class DepartmentController {
 	public String showOneDepartment(Long departmentId, Model model) {
 		Department department = departmentService.findOne(departmentId);
 		model.addAttribute("department", department);
-		return "showOneDepartment";
+		return "department/showOneDepartment";
 	}
 	
 }

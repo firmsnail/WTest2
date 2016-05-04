@@ -1,5 +1,7 @@
 package com.worksap.stm2016.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.worksap.stm2016.ModelForm.DepartmentForm;
-import com.worksap.stm2016.ModelForm.UserCreateForm;
+import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.modelForm.DepartmentForm;
+import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.validator.DepartmentFormValidator;
@@ -36,7 +39,9 @@ public class HRManagerController {
 	@RequestMapping(value = "/addDept",  method = RequestMethod.GET)
 	public String addDepartment(Model model) {
 		model.addAttribute("department", new DepartmentForm());
-		return "addDept";
+		List<Person> managers = personService.findProperManager();
+		model.addAttribute("managers", managers);
+		return "hr-manager/addDepartment";
 	}
 	@RequestMapping(value = "/addDept",  method = RequestMethod.POST)
 	public String addDepartment(@ModelAttribute("department") @Valid DepartmentForm department, BindingResult bindingResult) {
@@ -56,12 +61,12 @@ public class HRManagerController {
 		return "redirect:/department/showDepartments";
 	}
 	
-	@RequestMapping(value={"/add"},  method = RequestMethod.GET)
+	@RequestMapping(value={"/addUser"},  method = RequestMethod.GET)
 	public String add(Model model) {
 		model.addAttribute("user", new UserCreateForm());
 		return "addUser";
 	}
-	@RequestMapping(value={"/add"},  method = RequestMethod.POST)
+	@RequestMapping(value={"/addUser"},  method = RequestMethod.POST)
 	public String addAct(@ModelAttribute("user") @Valid UserCreateForm user, BindingResult bindingResult) {
 		
 		userCreateFormValidator.validate(user, bindingResult);

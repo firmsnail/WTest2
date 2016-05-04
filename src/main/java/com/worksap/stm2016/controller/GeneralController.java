@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.worksap.stm2016.ModelForm.UserCreateForm;
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
+import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.utils.CommonUtils;

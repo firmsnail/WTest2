@@ -1,4 +1,4 @@
-package com.worksap.stm2016.ModelForm;
+package com.worksap.stm2016.modelForm;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;

@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
-import com.worksap.stm2016.ModelForm.DepartmentForm;
-import com.worksap.stm2016.ModelForm.UserCreateForm;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.PersonService;
 

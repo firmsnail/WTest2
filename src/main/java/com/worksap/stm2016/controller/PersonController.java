@@ -3,8 +3,6 @@ package com.worksap.stm2016.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,7 +15,7 @@ import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.PersonService;
 
 @Controller
-@RequestMapping(value = "/department")
+@RequestMapping(value = "/user")
 public class PersonController {
 	@Autowired
 	PersonService userService;
@@ -35,14 +33,14 @@ public class PersonController {
 			employeeList = userService.findByDepartment(dept);
 		}
 		model.addAttribute("employees", employeeList);
-		return "showEmployees";
+		return "user/showEmployees";
 	}
 	
-	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessDepartment(principal, #departmentId)")
+	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessUser(principal, #personId)")
 	@RequestMapping(value = "/showOneEmployee")
 	public String showOneEmployee(Long personId, Model model) {
 		Person employee = userService.findById(personId);
 		model.addAttribute("employee", employee);
-		return "showOneEmployee";
+		return "user/showOneEmployee";
 	}
 }

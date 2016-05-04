@@ -1,5 +1,6 @@
 package com.worksap.stm2016.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.worksap.stm2016.ModelForm.UserCreateForm;
+import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
+import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.repository.RoleRepository;
 import com.worksap.stm2016.service.PersonService;
@@ -71,6 +73,20 @@ public class PersonServiceImpl implements PersonService{
 		person.setFirstName(form.getFirstName());
 		person.setLastName(form.getLastName());
 		return personRepository.save(person);
+	}
+
+	@Override
+	public List<Person> findByDepartment(Department dept) {
+		return personRepository.findByDepartment(dept);
+	}
+
+	@Override
+	public List<Person> findProperManager() {
+		
+		List<Role> roleCol = new ArrayList<Role>();
+		roleCol.add(roleRepository.findOne(CommonUtils.ROLE_HR_MANAGER));
+		roleCol.add(roleRepository.findOne(CommonUtils.ROLE_TEAM_MANAGER));
+		return personRepository.findByDepartmentIsNullAndRoleIn(roleCol);
 	}
 
 }
