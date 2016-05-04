@@ -40,7 +40,7 @@
                         <div class="panel-body">
                         	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 1 }">hidden="hidden"</c:if>>
                         		<a href="/hr-manager/addUser">
-									<button type="button" class="btn btn-success btn-lg">Create Department</button>
+									<button type="button" class="btn btn-success btn-lg">Add Employees</button>
 								</a>
                         	</div>
                         	<br>
@@ -48,28 +48,51 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Department Name</th>
-                                            <th>Description</th>
-                                            <th>Manager</th>
-                                            <th>Total Employees</th>
+                                            <th>Employee Name</th>
+                                            <th>Role</th>
+                                            <th>Age</th>
+                                            <th>Gender</th>
+                                            <th>Department</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="employee" items="${employees}" varStatus="status">
 											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd"</c:when><c:otherwise>class="even"</c:otherwise></c:choose>>
 												<td><a href="/user/showOneEmployee?personId=${employee.personId}">${employee.firstName} ${employee.lastName}</a></td>
-												<td>${department.description }</td>
+												<td>${employee.role.roleName}</td>
 												<td>
 													<c:choose>
-														<c:when test="${department.manager != null}">
-															<a href="/user/showOneEmployee?personId=${department.manager.personId}">${department.manager.firstName} ${department.manager.lastName}</a>
+														<c:when test="${employee.age != null}">
+															${employee.age}
 														</c:when>
 														<c:otherwise>
-															none
+															Unknown
 														</c:otherwise>
 													</c:choose>
 												</td>
-												<td>${fn:length(department.employees)}</td>
+												<td>
+													<c:choose>
+														<c:when test="${employee.gender != null and employee.gender==1}">
+															Female
+														</c:when>
+														<c:when test="${employee.gender != null and employee.gender==2}">
+															Male
+														</c:when>
+														<c:otherwise>
+															Unknown
+														</c:otherwise>
+													</c:choose>
+												</td>
+												<td>
+													<c:choose>
+														<c:when test="${employee.department != null}">
+															<a href="/department/showOneDepartment?departmentId=${employee.department.departmentId}">${employee.department.departmentName}</a>
+														</c:when>
+														<c:otherwise>
+															None
+														</c:otherwise>
+													</c:choose>
+												</td>
 											</tr>
                                     	</c:forEach>
                                     </tbody>

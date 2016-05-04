@@ -42,6 +42,12 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 		// TODO Auto-generated method stub
 		return staffRequirementRepository.findOne(id);
 	}
+
+	@Override
+	public List<StaffRequirement> findByStatus(int status) {
+		// TODO Auto-generated method stub
+		return staffRequirementRepository.findByStatus(status);
+	}
 	
 
 }

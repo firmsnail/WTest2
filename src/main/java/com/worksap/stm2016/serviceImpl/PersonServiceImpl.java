@@ -13,10 +13,12 @@ import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.modelForm.UserCreateForm;
+import com.worksap.stm2016.repository.DepartmentRepository;
 import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.repository.RoleRepository;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.utils.CommonUtils;
+import com.worksap.stm2016.utils.EmailUtils;
 
 @Service
 @Transactional
@@ -27,6 +29,9 @@ public class PersonServiceImpl implements PersonService{
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private DepartmentRepository deptRepository;
 	
 	@Override
 	public List<Person> findAll( ) {
@@ -87,6 +92,30 @@ public class PersonServiceImpl implements PersonService{
 		roleCol.add(roleRepository.findOne(CommonUtils.ROLE_HR_MANAGER));
 		roleCol.add(roleRepository.findOne(CommonUtils.ROLE_TEAM_MANAGER));
 		return personRepository.findByDepartmentIsNullAndRoleIn(roleCol);
+	}
+
+	@Override
+	public Person add(UserCreateForm form) {
+		Person person = new Person();
+		person.setUserName(form.getUserName());
+		Role role = roleRepository.findOne(form.getRole());
+		person.setRole(role);
+		person.setPassword(CommonUtils.passwordEncoder().encode(form.getPassword()));
+		person.setFirstName(form.getFirstName());
+		person.setLastName(form.getLastName());
+		person.setEmail(form.getEmail());
+		Department dept = deptRepository.findOne(form.getDepartmentId());
+		if (dept != null) {
+			person.setDepartment(dept);
+			person = personRepository.save(person);
+			if (dept.getManager() == null && person.getRole().getRoleId() == CommonUtils.ROLE_TEAM_MANAGER) {
+				dept.setManager(person);
+			}
+		} else {
+			person = personRepository.save(person);
+		}
+		EmailUtils.notifyAddingEmployeeByEmail(form.getUserName(), form.getPassword(), form.getEmail());
+		return person;
 	}
 
 }

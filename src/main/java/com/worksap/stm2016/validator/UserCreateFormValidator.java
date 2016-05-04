@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
 import com.worksap.stm2016.modelForm.UserCreateForm;
+import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.PersonService;
 
 @Component
@@ -14,6 +15,9 @@ public class UserCreateFormValidator implements Validator {
 
 	@Autowired
     private PersonService userService;
+	
+	@Autowired
+    private DepartmentService deptService;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -24,11 +28,19 @@ public class UserCreateFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         UserCreateForm form = (UserCreateForm) target;
-
+        
+        validateDepartment(errors, form);
         validatePasswords(errors, form);
         validateEmail(errors, form);
     }
 
+    private void validateDepartment(Errors errors, UserCreateForm form) {
+		// TODO Auto-generated method stub
+		if (form.getDepartmentId() != null && deptService.findOne(form.getDepartmentId()) == null) {
+			errors.rejectValue("departmentId", "departmentId", "Department is not existed!");
+		}
+	}
+    
 	private void validatePasswords(Errors errors, UserCreateForm form) {
         if (!form.getPassword().equals(form.getConfirmPassword())) {
         	errors.rejectValue("confirmPassword", "confirmPassword", "Passwords do not match");
@@ -36,7 +48,7 @@ public class UserCreateFormValidator implements Validator {
     }
 
     private void validateEmail(Errors errors, UserCreateForm form) {
-        if (userService.findByEmail(form.getEmail()) != null) {
+        if (form.getEmail() != null && form.getEmail().length() > 0 && userService.findByEmail(form.getEmail()) != null) {
         	errors.rejectValue("email", "email", "User with this email already exists.");
         }
     }

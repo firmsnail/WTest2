@@ -44,5 +44,7 @@ public class UserCreateForm {
 	@NotEmpty
 	@Size(max=255)
 	private String lastName;
+	
+	private Long departmentId;
 
 }

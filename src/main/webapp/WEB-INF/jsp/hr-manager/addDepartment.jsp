@@ -49,7 +49,9 @@
 									                  <label>Department Name</label>
 									                  <div>
 									                  		<springForm:input path="departmentName" type="text" class="form-control" id="departmentName" name="departmentName" />
-															<springForm:errors path="departmentName" cssClass="error"/>
+															<div class="alert-danger">	
+																<springForm:errors path="departmentName" cssClass="error"/>
+															</div>
 									                  </div>
 								                </div>
 				
@@ -58,20 +60,25 @@
 								                	  <label>Description</label>
 									                  <div>
 									                  		<springForm:textarea path="description" type="text" class="form-control" id="description" name="description" />
-															<springForm:errors path="description" cssClass="error"/>
+															<div class="alert-danger">
+																<springForm:errors path="description" cssClass="error"/>
+															</div>
 									                  </div>
 								                </div>
 								                
 								                <div class="form-group">
 										                <label>Manager</label>
-										                <select class="form-control select2" name="managerId" style="width: 100%;">
+										                <springForm:select path="managerId" class="form-control select2" name="managerId" style="width: 100%;">
 										                	  <option selected="selected"></option>
 										                	  <c:forEach var="manager" items="${managers}" varStatus="status">
 										                	  		<option value="${manager.personId}">
 										                	  			${manager.firstName} ${manager.lastName} ID:${manager.personId}
 										                	  		</option>
 										                	  </c:forEach>
-										                </select>
+										                </springForm:select>
+										                <div class="alert-danger">
+										                	<springForm:errors path="managerId" cssClass="error"/>
+										                </div>
 									            </div>
 					                            <div class="form-group">
 				                                   <div class="col-lg-9 ">

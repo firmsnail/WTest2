@@ -26,7 +26,7 @@ public class PersonController {
 	@RequestMapping(value = "/showEmployees")
 	public String showEmployees(Long departmentId, Model model) {
 		List<Person> employeeList = null;
-		if (departmentId != null) {
+		if (departmentId == null) {
 			employeeList = userService.findAll();
 		} else {
 			Department dept = deptService.findOne(departmentId);

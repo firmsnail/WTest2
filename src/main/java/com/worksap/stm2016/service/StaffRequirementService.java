@@ -12,4 +12,5 @@ public interface StaffRequirementService {
 	public Page<StaffRequirement> findAll(Pageable pageable);
 	public StaffRequirement save(StaffRequirement staffRequirement);
 	public StaffRequirement findOne(Long id);
+	public List<StaffRequirement> findByStatus(int status);
 }

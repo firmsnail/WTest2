@@ -26,8 +26,6 @@
                     You can only registered as a short-term employee, for more details, please check <a href="/help" class="alert-link">help</a>.
                 </div>
                 
-                
-                
 	            <div class="widget wred">
 	              <div class="widget-head">
 	                <i class="fa fa-lock"></i> Register 
@@ -52,7 +50,9 @@
 			                             <label class="control-label col-lg-3" for="userName">Username</label>
 			                             <div class="col-lg-9">
 			                               		<springForm:input path="userName" type="text" class="form-control" id="userName" name="userName" />
-			                               		<springForm:errors path="userName" cssClass="error"/>
+			                               		<div class="alert-danger">	
+			                               			<springForm:errors path="userName" cssClass="error"/>
+			                               		</div>
 			                             </div>
 		                           </div>
 		                           <!-- Password -->

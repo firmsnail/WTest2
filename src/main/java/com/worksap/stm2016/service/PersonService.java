@@ -20,4 +20,5 @@ public interface PersonService {
 	public Person create(UserCreateForm form);
 	public List<Person> findByDepartment(Department dept);
 	public List<Person> findProperManager();
+	public Person add(UserCreateForm user);
 }

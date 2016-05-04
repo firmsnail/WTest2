@@ -7,8 +7,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
-// TODO    update database table designing
-
 @ComponentScan
 @EnableAutoConfiguration
 @SpringBootApplication
