@@ -48,6 +48,9 @@ public class Hire {
 	@Column(name = "salary")
 	private Double salary;
 
+	@Column(name = "period")
+	private Integer period;	//months
+	
 	@Column(name = "status")
 	Integer status;
 }

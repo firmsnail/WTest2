@@ -14,7 +14,7 @@ import lombok.Data;
 public class UserCreateForm {
 	
 	
-	@Min(value = 1)
+	@Min(value = 2)
 	@Max(value = 5)
 	//@Digits(fraction = 0, integer = 1, message = "Please enter a valid role.")
 	//@TypeMismatch(message="ff")

@@ -24,7 +24,7 @@ public class DepartmentController {
 	
 	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST')")
 	@RequestMapping(value = "/showDepartments")
-	public String showDepartments(HttpServletRequest request, Model model) {
+	public String showDepartments(Model model) {
 		List<Department> departmentList = departmentService.findAll();
 		model.addAttribute("departments", departmentList);
 		return "showDepartments";
@@ -32,7 +32,7 @@ public class DepartmentController {
 	
 	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessDepartment(principal, #departmentId)")
 	@RequestMapping(value = "/showOneDepartment")
-	public String showOneDepartment(Long departmentId, HttpServletRequest request, Model model) {
+	public String showOneDepartment(Long departmentId, Model model) {
 		Department department = departmentService.findOne(departmentId);
 		model.addAttribute("department", department);
 		return "showOneDepartment";

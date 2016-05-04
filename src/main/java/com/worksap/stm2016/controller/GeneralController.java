@@ -40,8 +40,6 @@ public class GeneralController {
 	@Autowired
 	private PersonService personService;
 	@Autowired
-	private RoleService roleService;
-	@Autowired
 	private UserCreateFormValidator  userCreateFormValidator;
 	
 	@InitBinder("user")
@@ -69,23 +67,8 @@ public class GeneralController {
 		curP.setUserName("hehe"+rd.nextInt());
 		curP.setPassword("hehe");
 		curP = personService.save(curP);
-		
-		/*Notification notify = new Notification();
-		notify.setContent("hhe");
-		notify.setType(1);
-		notify.setOwner(curP);
-		notify = notitficationService.save(notify);
-		Notification notify1 = new Notification();
-		notify1.setContent("hhehhhhh");
-		notify1.setType(2);
-		notify1.setOwner(curP);
-		notify1 = notitficationService.save(notify1);*/
-		//Sort sort = new Sort(Direction.DESC, "personId");
-		//Pageable pageable = new PageRequest(1, 10, sort);
-		//return personService.findAll(pageable);
+
 		curP = personService.findById(curP.getPersonId());
-		//System.out.println("noty.size: " + curP.getNottificationList().size());
-		//System.out.println("noty1: " + notitficationService.findOne(notify1.getNotificationId()));
 		System.out.println("curP: " + curP);
 		return curP.getNottificationList();
 	}
@@ -110,13 +93,11 @@ public class GeneralController {
 	@RequestMapping(value={"/help"})
 	public String help() {
 		return "help";
-		//return "redirect:/showPersonList";
 	}
 	
 	@RequestMapping(value={"/", "/index"}, method = RequestMethod.GET)
 	public String index() {
 		return "index";
-		//return "redirect:/showPersonList";
 	}
 	
 	@RequestMapping(value={"/login"})
@@ -126,14 +107,12 @@ public class GeneralController {
 		}
 		
 		return "login";
-		//return "redirect:/showPersonList";
 	}
 	
 	@RequestMapping(value={"/register"})
 	public String register(Model model) {
 		model.addAttribute("user", new UserCreateForm());
 		return "register";
-		//return "redirect:/showPersonList";
 	}
 	
 	@RequestMapping(value={"/registerAct"})
@@ -145,55 +124,15 @@ public class GeneralController {
 		try {
             personService.create(user);
         } catch (DataIntegrityViolationException e) {
-            // probably email already exists - very rare case when multiple admins are adding same user
-            // at the same time and form validation has passed for more than one of them.
             return "register";
         }
 		return "login";
-		//return "redirect:/showPersonList";
-	}
-	
-	@RequestMapping(value={"/add"})
-	public String add() {
-		return "addUser";
-		//return "redirect:/showPersonList";
 	}
 	
 	@RequestMapping(value={"/logerror"})
 	public String logerror() {
 		System.out.println("Login Error!");
 		return "index";
-		//return "redirect:/showPersonList";
 	}
 	
-	@RequestMapping(value={"/addAct"})
-	public String addAct(Long role, String username, String password, String firstName, String lastName, Model model) {
-		System.out.println("role: " + role);
-		System.out.println("username: " + username);
-		System.out.println("password: " + password);
-		System.out.println("firstName: " + firstName);
-		System.out.println("lastName: " + lastName);
-		Role curRole = roleService.findOne(role);
-		if (curRole == null) {
-			System.out.println("role doesn't exist!");
-			return "login";
-		}
-		if (personService.findByUserName(username) != null) {
-			System.out.println("Existed!");
-			return "login";
-			
-		}
-		System.out.println("curRole: " + curRole);
-		Person person = new Person();
-		person.setRole(curRole);
-		person.setUserName(username);
-		person.setPassword(CommonUtils.passwordEncoder().encode(password));
-		person.setFirstName(firstName);
-		person.setLastName(lastName);
-		System.out.println("pRole:" + person.getRole().getRoleId());
-		Person p = personService.save(person);
-		System.out.println("person: " + p);
-		return "index";
-		//return "redirect:/showPersonList";
-	}
 }

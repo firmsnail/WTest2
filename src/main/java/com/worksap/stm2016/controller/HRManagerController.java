@@ -1,6 +1,5 @@
 package com.worksap.stm2016.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.ModelForm.DepartmentForm;
 import com.worksap.stm2016.ModelForm.UserCreateForm;
-import com.worksap.stm2016.model.Department;
-import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.validator.DepartmentFormValidator;
@@ -43,28 +40,43 @@ public class HRManagerController {
 	}
 	@RequestMapping(value = "/addDept",  method = RequestMethod.POST)
 	public String addDepartment(@ModelAttribute("department") @Valid DepartmentForm department, BindingResult bindingResult) {
+		
+		departmentFormValidator.validate(department, bindingResult);
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding department occurs error!");
-			return "redirect:/addDept";
+			return "redirect:/hr-manager/addDept";
 		}
-		
 		try {
 			departmentService.create(department);
         } catch (DataIntegrityViolationException e) {
             // probably email already exists - very rare case when multiple admins are adding same user
             // at the same time and form validation has passed for more than one of them.
-            return "redirect:/addDept";
+            return "redirect:/hr-manager/addDept";
         }
 		return "redirect:/department/showDepartments";
 	}
 	
-	
-	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessDepartment(principal, #departmentId)")
-	@RequestMapping(value = "/showOneDepartment")
-	public String showOneDepartment(Long departmentId, HttpServletRequest request, Model model) {
-		Department department = departmentService.findOne(departmentId);
-		model.addAttribute("department", department);
-		return "showOneDepartment";
+	@RequestMapping(value={"/add"},  method = RequestMethod.GET)
+	public String add(Model model) {
+		model.addAttribute("user", new UserCreateForm());
+		return "addUser";
 	}
-	
+	@RequestMapping(value={"/add"},  method = RequestMethod.POST)
+	public String addAct(@ModelAttribute("user") @Valid UserCreateForm user, BindingResult bindingResult) {
+		
+		userCreateFormValidator.validate(user, bindingResult);
+		if (bindingResult.hasErrors()) {
+			System.out.println("Adding user occurs error!");
+			return "redirect:/hr-manager/addUser";
+		}
+		try {
+			personService.create(user);
+        } catch (DataIntegrityViolationException e) {
+            // probably email already exists - very rare case when multiple admins are adding same user
+            // at the same time and form validation has passed for more than one of them.
+            return "redirect:/hr-manager/addUser";
+        }
+		return "redirect:/user/showUsers";
+		//return "redirect:/showPersonList";
+	}
 }
