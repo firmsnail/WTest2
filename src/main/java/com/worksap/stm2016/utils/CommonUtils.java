@@ -39,6 +39,10 @@ public class CommonUtils {
 	final static public Integer DISMISSION_FINISH = 4;
 	final static public Integer DISMISSION_REJECT = 5;
 	
+	final static public Integer EMPLOYEE_CANDIDATE = 1;
+	final static public Integer EMPLOYEE_WORKING = 2;
+	final static public Integer EMPLOYEE_DISMISSION = 3;
+	
 	static public PasswordEncoder passwordEncoder() {
 		PasswordEncoder encoder = (PasswordEncoder) new BCryptPasswordEncoder();
 		return encoder;

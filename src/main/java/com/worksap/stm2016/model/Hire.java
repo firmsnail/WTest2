@@ -54,11 +54,16 @@ public class Hire {
 	private Person hireRecruiter;
 	@Column(name = "\"recruiterComments\"")
 	private String recruiterComments;
-	
+	//TODO			Add plan relation
 	@Column(name = "\"hireDate\"")
 	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)
 	private Date hireDate;
+	
+	@Column(name = "\"submitDate\"")
+	@Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = DateDeserializer.class)
+	private Date submitDate;
 	
 	@Column(name = "salary")
 	private Double salary;

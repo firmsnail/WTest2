@@ -55,6 +55,16 @@ public class Dismission {
 	@Column(name = "\"cbComments\"")
 	private String cbComments;
 	
+	@Column(name = "\"expectDate\"")
+	@Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = DateDeserializer.class)
+	private Date expectDate;
+	
+	@Column(name = "\"submitDate\"")
+	@Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = DateDeserializer.class)
+	private Date submitDate;
+	
 	@Column(name = "\"dismissionDate\"")
 	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)

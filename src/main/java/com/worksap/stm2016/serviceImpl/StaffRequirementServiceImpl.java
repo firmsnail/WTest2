@@ -21,25 +21,21 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 
 	@Override
 	public List<StaffRequirement> findAll() {
-		// TODO Auto-generated method stub
 		return (List<StaffRequirement>) staffRequirementRepository.findAll();
 	}
 
 	@Override
 	public Page<StaffRequirement> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
 		return staffRequirementRepository.findAll(pageable);
 	}
 
 	@Override
 	public StaffRequirement save(StaffRequirement staffRequirement) {
-		// TODO Auto-generated method stub
 		return staffRequirementRepository.save(staffRequirement);
 	}
 
 	@Override
 	public StaffRequirement findOne(Long id) {
-		// TODO Auto-generated method stub
 		return staffRequirementRepository.findOne(id);
 	}
 

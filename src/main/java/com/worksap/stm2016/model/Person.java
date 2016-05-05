@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -88,25 +89,33 @@ public class Person {
 	private List<Notification> notificationList;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "planHRManager", targetEntity = RecruitingPlan.class, fetch = FetchType.LAZY)
+	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<RecruitingPlan> plansForHRM;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "planMaker", targetEntity = RecruitingPlan.class, fetch = FetchType.LAZY)
+	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<RecruitingPlan> plansForRecruiter;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hireHRManager", targetEntity = Hire.class, fetch = FetchType.LAZY)
+	@OrderBy("submitDate ASC")
 	private List<Hire> hiresForHRM;
+	@OrderBy("submitDate ASC")
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hireRecruiter", targetEntity = Hire.class, fetch = FetchType.LAZY)
 	private List<Hire> hiresForRecruiter;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "dismissionHRManager", targetEntity = Dismission.class, fetch = FetchType.LAZY)
+	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<Dismission> dismissionsForHRM;
+	@OrderBy("expectDate ASC, submitDate ASC")
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "dismissionCBSpecialist", targetEntity = Dismission.class, fetch = FetchType.LAZY)
 	private List<Dismission> dismissionsForCBSpecialist;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hrManager", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
+	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<StaffRequirement> requirementsForHRM;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "recruiter", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
+	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<StaffRequirement> requirementsForRecruiter;
 	
 	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "users")

@@ -49,7 +49,7 @@ public class RecruitingPlan {
 	private String hrManagerComments;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "recruiter_id", referencedColumnName = "person_id")
+	@JoinColumn(nullable = false, name = "recruiter_id", referencedColumnName = "person_id")
 	@JsonIgnore
 	private Person planMaker;
 	
@@ -60,6 +60,16 @@ public class RecruitingPlan {
 	@JoinTable(name="ss1604c187_rd4.plan_skill", joinColumns = {@JoinColumn(name = "skill_id")},
 			inverseJoinColumns = {@JoinColumn(name = "plan_id")})
 	List<Skill> planSkillList;
+	
+	@Column(name = "\"expectDate\"")
+	@Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = DateDeserializer.class)
+	private Date expectDate;
+	
+	@Column(name = "\"submitDate\"")
+	@Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = DateDeserializer.class)
+	private Date submitDate;
 	
 	@Column(name = "\"invalidDate\"")
 	@Temporal(TemporalType.DATE)

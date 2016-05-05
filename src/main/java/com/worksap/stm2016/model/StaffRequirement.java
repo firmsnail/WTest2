@@ -74,6 +74,11 @@ public class StaffRequirement {
 	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)
 	private Date expectDate;
+	
+	@Column(name = "\"submitDate\"")
+	@Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = DateDeserializer.class)
+	private Date submitDate;
 
 	@Column(name = "status")
 	Integer status;
