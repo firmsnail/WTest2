@@ -85,7 +85,29 @@ public class Person {
 	private Integer status;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", targetEntity = Notification.class, fetch = FetchType.LAZY)
-	private List<Notification> nottificationList;
+	private List<Notification> notificationList;
+	
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "planHRManager", targetEntity = RecruitingPlan.class, fetch = FetchType.LAZY)
+	private List<RecruitingPlan> plansForHRM;
+	
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "planMaker", targetEntity = RecruitingPlan.class, fetch = FetchType.LAZY)
+	private List<RecruitingPlan> plansForRecruiter;
+	
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hireHRManager", targetEntity = Hire.class, fetch = FetchType.LAZY)
+	private List<Hire> hiresForHRM;
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hireRecruiter", targetEntity = Hire.class, fetch = FetchType.LAZY)
+	private List<Hire> hiresForRecruiter;
+	
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "dismissionHRManager", targetEntity = Dismission.class, fetch = FetchType.LAZY)
+	private List<Dismission> dismissionsForHRM;
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "dismissionCBSpecialist", targetEntity = Dismission.class, fetch = FetchType.LAZY)
+	private List<Dismission> dismissionsForCBSpecialist;
+	
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hrManager", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
+	private List<StaffRequirement> requirementsForHRM;
+	
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "recruiter", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
+	private List<StaffRequirement> requirementsForRecruiter;
 	
 	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "users")
 	private List<Skill> skillList;

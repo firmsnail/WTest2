@@ -42,6 +42,26 @@ public class StaffRequirement {
 	@JsonIgnore
 	private Department stfrqDepartment;
 	
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "plan_id", referencedColumnName = "plan_id")
+	@JsonIgnore
+	private RecruitingPlan recruitingPlan;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "hrmanager_id", referencedColumnName = "person_id")
+	@JsonIgnore
+	private Person hrManager;
+	@Column(name = "\"hrmComments\"")
+	private String hrManagerComments;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "recruiter_id", referencedColumnName = "person_id")
+	@JsonIgnore
+	private Person recruiter;
+	@Column(name = "\"recruiterComments\"")
+	private String recruiterComments;
+	
 	@Column(name = "\"requireNum\"", nullable = false)
 	Integer requireNum;
 	

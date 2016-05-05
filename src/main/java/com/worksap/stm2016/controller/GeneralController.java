@@ -1,7 +1,6 @@
 package com.worksap.stm2016.controller;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,11 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
-import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
-import com.worksap.stm2016.service.RoleService;
-import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.validator.UserCreateFormValidator;
 
 @Controller
@@ -71,7 +67,7 @@ public class GeneralController {
 
 		curP = personService.findById(curP.getPersonId());
 		System.out.println("curP: " + curP);
-		return curP.getNottificationList();
+		return curP.getNotificationList();
 	}
 	
 	@RequestMapping("/onePerson")

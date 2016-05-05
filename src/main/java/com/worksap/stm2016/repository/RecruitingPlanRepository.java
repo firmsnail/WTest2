@@ -1,5 +1,7 @@
 package com.worksap.stm2016.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -11,5 +13,7 @@ import com.worksap.stm2016.model.RecruitingPlan;
 public interface RecruitingPlanRepository extends PagingAndSortingRepository<RecruitingPlan, Long>{
 	
 	Page<RecruitingPlan> findAll(Pageable pageable);
+
+	List<RecruitingPlan> findByStatus(Integer status);
 
 }

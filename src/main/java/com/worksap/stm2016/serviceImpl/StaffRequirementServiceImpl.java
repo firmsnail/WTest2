@@ -45,7 +45,7 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 
 	@Override
 	public List<StaffRequirement> findByStatus(int status) {
-		// TODO Auto-generated method stub
+		
 		return staffRequirementRepository.findByStatus(status);
 	}
 	

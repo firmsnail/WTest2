@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
 
@@ -39,6 +40,20 @@ public class Dismission {
 	
 	@Column(name = "commment")
 	private String comment;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "hrmanager_id", referencedColumnName = "person_id")
+	@JsonIgnore
+	private Person dismissionHRManager;
+	@Column(name = "\"hrmComments\"")
+	private String hrManagerComments;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "cbspecialist_id", referencedColumnName = "person_id")
+	@JsonIgnore
+	private Person dismissionCBSpecialist;
+	@Column(name = "\"cbComments\"")
+	private String cbComments;
 	
 	@Column(name = "\"dismissionDate\"")
 	@Temporal(TemporalType.DATE)

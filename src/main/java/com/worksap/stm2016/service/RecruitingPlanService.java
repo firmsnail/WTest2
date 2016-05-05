@@ -12,4 +12,5 @@ public interface RecruitingPlanService {
 	public Page<RecruitingPlan> findAll(Pageable pageable);
 	public RecruitingPlan save(RecruitingPlan recruitingPlan);
 	public RecruitingPlan findOne(Long id);
+	public List<RecruitingPlan> findByStatus(Integer status);
 }

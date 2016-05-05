@@ -10,13 +10,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.modelForm.UserCreateForm;
@@ -68,10 +68,6 @@ public class HRManagerController {
 		departmentFormValidator.validate(department, bindingResult);
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding department occurs error!");
-			
-			for (ObjectError obj : bindingResult.getAllErrors()) {
-				System.out.println("error: " + obj);
-			}
 			return "hr-manager/addDepartment";
 		}
 		try {
@@ -82,7 +78,14 @@ public class HRManagerController {
 		return "redirect:/department/showDepartments";
 	}
 	
-	@RequestMapping(value={"/showStaffRequirements"},  method = RequestMethod.GET)
+	@RequestMapping(value={"/showRecruitingPlans"},  method = RequestMethod.GET)
+	public String showRecruitingPlans(Model model) {
+		List<RecruitingPlan> plans = recruitingPlanService.findByStatus(CommonUtils.PLAN_PENDING_VERIFY);
+		model.addAttribute("plans", plans);
+		return "hr-manager/showPlans";
+	}
+	
+	@RequestMapping(value={"/showHires"},  method = RequestMethod.GET)
 	public String showStaffRequirements(Model model) {
 		List<StaffRequirement> requirements = staffRequirementService.findByStatus(CommonUtils.REQUIREMENTS_HR_MANAGER_PROCESSING);
 		model.addAttribute("requirements", requirements);

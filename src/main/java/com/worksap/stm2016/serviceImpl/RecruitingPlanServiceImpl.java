@@ -42,6 +42,12 @@ public class RecruitingPlanServiceImpl implements RecruitingPlanService{
 		// TODO Auto-generated method stub
 		return recruitingPlanRepository.findOne(id);
 	}
+
+	@Override
+	public List<RecruitingPlan> findByStatus(Integer status) {
+		// TODO Auto-generated method stub
+		return recruitingPlanRepository.findByStatus(status);
+	}
 	
 
 }
