@@ -11,7 +11,7 @@ import lombok.Data;
 public class DepartmentForm {
 	
 	@NotEmpty
-	@Size(max=255, min=1)
+	@Size(max=255)
 	String departmentName;
 	
 	String description;

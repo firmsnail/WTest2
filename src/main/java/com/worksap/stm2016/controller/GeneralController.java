@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -119,6 +120,9 @@ public class GeneralController {
 	public String registerAct(@ModelAttribute("user") @Valid UserCreateForm user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("register has error!");
+			for (ObjectError obj : bindingResult.getAllErrors()) {
+				System.out.println("error: " + obj);
+			}
 			return "register";
 		}
 		try {

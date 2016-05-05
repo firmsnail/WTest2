@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,12 +68,16 @@ public class HRManagerController {
 		departmentFormValidator.validate(department, bindingResult);
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding department occurs error!");
-			return "redirect:/hr-manager/addDept";
+			
+			for (ObjectError obj : bindingResult.getAllErrors()) {
+				System.out.println("error: " + obj);
+			}
+			return "hr-manager/addDepartment";
 		}
 		try {
 			departmentService.create(department);
         } catch (DataIntegrityViolationException e) {
-            return "redirect:/hr-manager/addDept";
+            return "hr-manager/addDepartment";
         }
 		return "redirect:/department/showDepartments";
 	}
@@ -98,12 +103,12 @@ public class HRManagerController {
 		userAddFormValidator.validate(user, bindingResult);
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding user occurs error!");
-			return "redirect:/hr-manager/addUser";
+			return "hr-manager/addUser";
 		}
 		try {
 			personService.add(user);
         } catch (DataIntegrityViolationException e) {
-            return "redirect:/hr-manager/addUser";
+            return "hr-manager/addUser";
         }
 		return "redirect:/user/showEmployees";
 	}
