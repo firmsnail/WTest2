@@ -59,6 +59,12 @@ public class HRManagerController {
 	@Autowired
 	private DepartmentFormValidator  departmentFormValidator;
 	
+	@RequestMapping(value = "/analyzeEmployeeStructure",  method = RequestMethod.POST)
+	public String analyzeEmployeeStructure(Model model) {
+		
+		return "redirect:/hr-manager/analyzeEmployeeStructure";
+	}
+	
 	@RequestMapping(value = "/aprroveOneRequirement",  method = RequestMethod.POST)
 	public String aprroveOneRequirement(Long requirementId, Model model) {
 		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
