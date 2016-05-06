@@ -18,6 +18,7 @@ import com.worksap.stm2016.repository.DepartmentRepository;
 import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.repository.RoleRepository;
 import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.specification.PersonSpecification;
 import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.utils.EmailUtils;
 
@@ -120,27 +121,52 @@ public class PersonServiceImpl implements PersonService{
 	}
 
 	@Override
-	public List<Person> findByPeriod(Integer integer) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Person> findByPeriod(Integer months) {
+		return personRepository.findByPeriodMonth(months);
 	}
 
 	@Override
 	public List<Person> findBySkill(Skill skill) {
-		// TODO Auto-generated method stub
-		return null;
+		return personRepository.findAll(PersonSpecification.hasSkill(skill));
 	}
 
 	@Override
-	public List<Person> findByGender(Integer integer) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Person> findByGender(Integer gender) {
+		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		if (gender.equals(CommonUtils.GENDER_UNKNOWN)) {
+			return personRepository.findByRole(role);
+		}
+		else {
+			return personRepository.findByRoleAndGender(role, gender);
+		}
 	}
 
 	@Override
-	public List<Person> findByAgeRange(Integer integer) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Person> findByAgeRange(Integer ageRange) {
+		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		if (ageRange.equals(CommonUtils.AGE_UNKNOWN_RANGE)) return personRepository.findByRole(role);
+		Integer startAge = CommonUtils.AGE_MIN, endAge = CommonUtils.AGE_MAX;
+		if (ageRange.equals(CommonUtils.AGE_1stRANGE)) {
+			startAge = CommonUtils.AGE_1stRANGE_MIN;
+			endAge = CommonUtils.AGE_1stRANGE_MAX;
+		} else if (ageRange.equals(CommonUtils.AGE_2ndRANGE)) {
+			startAge = CommonUtils.AGE_2ndRANGE_MIN;
+			endAge = CommonUtils.AGE_2ndRANGE_MAX;
+		} else if (ageRange.equals(CommonUtils.AGE_3rdRANGE)) {
+			startAge = CommonUtils.AGE_3rdRANGE_MIN;
+			endAge = CommonUtils.AGE_3rdRANGE_MAX;
+		} else if (ageRange.equals(CommonUtils.AGE_4thRANGE)) {
+			startAge = CommonUtils.AGE_4thRANGE_MIN;
+			endAge = CommonUtils.AGE_4thRANGE_MAX;
+		} else if (ageRange.equals(CommonUtils.AGE_5thRANGE)) {
+			startAge = CommonUtils.AGE_5thRANGE_MIN;
+			endAge = CommonUtils.AGE_5thRANGE_MAX;
+		} else {
+			startAge = CommonUtils.AGE_6thRANGE_MIN;
+			endAge = CommonUtils.AGE_6thRANGE_MAX;
+		}
+		return personRepository.findByAgeIsBetween(startAge, endAge);
 	}
 
 }
+

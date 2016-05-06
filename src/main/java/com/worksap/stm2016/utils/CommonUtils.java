@@ -48,15 +48,52 @@ public class CommonUtils {
 	final static public Integer DISMISSION_FINISH = 4;
 	final static public Integer DISMISSION_REJECT = 5;
 	
+	final static public Integer EMPLOYEE_REGISTERED = 0;
 	final static public Integer EMPLOYEE_CANDIDATE = 1;
 	final static public Integer EMPLOYEE_WORKING = 2;
 	final static public Integer EMPLOYEE_DISMISSION = 3;
 	
 	final static public Integer MAX_PERIOD = 6;
 	
+	final static public Integer PERIOD_1MONTH = 1;
+	final static public Integer PERIOD_2MONTH = 2;
+	final static public Integer PERIOD_3MONTH = 3;
+	final static public Integer PERIOD_4MONTH = 4;
+	final static public Integer PERIOD_5MONTH = 5;
+	final static public Integer PERIOD_6MONTH = 6;
+	
 	final static public Integer GENDERS = 3;
 	
+	final static public Integer GENDER_UNKNOWN = 0;
+	final static public Integer GENDER_MALE = 1;
+	final static public Integer GENDER_FEMALE = 2;
+	
 	final static public Integer AGE_RANGES = 6;
+	
+	final static public Integer AGE_MIN = 0;
+	final static public Integer AGE_MAX = 10000000;
+	
+	final static public Integer AGE_UNKNOWN_RANGE = 0;
+	final static public Integer AGE_1stRANGE = 1;		//18 ~ 25
+	final static public Integer AGE_2ndRANGE = 2;		//26 ~ 30
+	final static public Integer AGE_3rdRANGE = 3;		//31 ~ 35
+	final static public Integer AGE_4thRANGE = 4;		//36 ~ 40
+	final static public Integer AGE_5thRANGE = 5;		//41 ~ 50
+	final static public Integer AGE_6thRANGE = 6;		//51 ~ 60
+	
+	final static public Integer AGE_1stRANGE_MIN = 18;
+	final static public Integer AGE_1stRANGE_MAX = 25;
+	final static public Integer AGE_2ndRANGE_MIN = 26;
+	final static public Integer AGE_2ndRANGE_MAX = 30;
+	final static public Integer AGE_3rdRANGE_MIN = 31;
+	final static public Integer AGE_3rdRANGE_MAX = 35;
+	final static public Integer AGE_4thRANGE_MIN = 36;
+	final static public Integer AGE_4thRANGE_MAX = 40;
+	final static public Integer AGE_5thRANGE_MIN = 41;
+	final static public Integer AGE_5thRANGE_MAX = 50;
+	final static public Integer AGE_6thRANGE_MIN = 51;
+	final static public Integer AGE_6thRANGE_MAX = 60;
+	
 	
 	@Autowired
 	static private SkillService skillService;
