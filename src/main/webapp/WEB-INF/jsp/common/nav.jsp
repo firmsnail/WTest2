@@ -277,6 +277,26 @@
                     <a href="/user/showEmployees"><i class="fa fa-users fa-fw"></i> Employees</a>
                 </li>
                 
+                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4)}">class="hidden"</c:if> >
+                    <a href="/requirement/showStaffRequirements"><i class="fa fa-users fa-fw"></i> Staffing Requirements</a>
+                </li>
+                
+                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 5)}">class="hidden"</c:if> >
+                    <a href="/plan/showRecruitingPlans"><i class="fa fa-users fa-fw"></i> Recruiting Plans</a>
+                </li>
+                
+                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4)}">class="hidden"</c:if> >
+                    <a href="/hire/showHires"><i class="fa fa-users fa-fw"></i> Hires</a>
+                </li>
+                
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId == 2}">class="hidden"</c:if> >
+                    <a href="/dismission/showDismissions"><i class="fa fa-users fa-fw"></i> Dismissions</a>
+                </li>
+                
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 1}">class="hidden"</c:if> >
+                    <a href="/hr-manager/analyzeEmployeeStructure"><i class="fa fa-users fa-fw"></i> Analyze Employee Structure</a>
+                </li>
+                
                 <li>
                     <a href="/help"><i class="fa fa-question-circle fa-fw"></i> Help</a>
                 </li>

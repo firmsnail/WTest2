@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Dismission;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.service.DismissionService;
+import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.utils.CommonUtils;
 
 @Controller
@@ -24,17 +26,20 @@ public class DismissionController {
 	
 	@Autowired
 	DismissionService dismissionService;
+	@Autowired
+	PersonService personService;
 	
 	@RequestMapping(value={"/showDismissions"},  method = RequestMethod.GET)
 	public String showDismissions(Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Person cUser = personService.findById(curUser.getId());
 		List<Dismission> dismissions = null;
 		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
-			dismissions = curUser.getUser().getDismissionsForHRM();
+			dismissions = cUser.getDismissionsForHRM();//curUser.getUser().getDismissionsForHRM();
 		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_CB_SPECIALIST) {
-			dismissions = curUser.getUser().getDismissionsForCBSpecialist();
+			dismissions = cUser.getDismissionsForCBSpecialist();//curUser.getUser().getDismissionsForCBSpecialist();
 		} else if (curUser.getUser().getDepartment() != null){
-			dismissions = curUser.getUser().getDepartment().getDismissionList();
+			dismissions = cUser.getDepartment().getDismissionList();//curUser.getUser().getDepartment().getDismissionList();
 		}
 		model.addAttribute("dismissions", dismissions);
 		return "dismission/showDismissions";

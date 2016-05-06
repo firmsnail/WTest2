@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.CurrentUser;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
+import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.utils.CommonUtils;
 
@@ -24,20 +26,24 @@ public class RecruitingPlanController {
 	
 	@Autowired
 	RecruitingPlanService recruitingPlanService;
+	@Autowired
+	PersonService personService;
 	
 	@RequestMapping(value={"/showRecruitingPlans"},  method = RequestMethod.GET)
 	public String showRecruitingPlans(Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Person cUser = personService.findById(curUser.getId());
 		List<RecruitingPlan> plans = null;
 		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
-			plans = curUser.getUser().getPlansForHRM();
+			plans = cUser.getPlansForHRM();//curUser.getUser().getPlansForHRM();
 		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_RECRUITER) {
-			plans = curUser.getUser().getPlansForRecruiter();
+			plans = cUser.getPlansForRecruiter();//curUser.getUser().getPlansForRecruiter();
 		} else {
 			plans = recruitingPlanService.findByStatus(CommonUtils.PLAN_RECRUITING);
 		}
+		
 		model.addAttribute("plans", plans);
-		return "plan/showRecruitingPlans";
+		return "plan/showPlans";
 	}
 	
 	@PreAuthorize("@currentUserServiceImpl.canAccessRecruitingPlan(principal, #planId)")

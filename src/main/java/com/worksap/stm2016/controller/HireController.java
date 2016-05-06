@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Hire;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.service.HireService;
+import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.utils.CommonUtils;
 
 @Controller
@@ -24,17 +26,20 @@ public class HireController {
 	
 	@Autowired
 	HireService hireService;
+	@Autowired
+	PersonService personService;
 	
 	@RequestMapping(value={"/showHires"},  method = RequestMethod.GET)
 	public String showHires(Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Person cUser = personService.findById(curUser.getId());
 		List<Hire> hires = null;
 		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
-			hires = curUser.getUser().getHiresForHRM();
+			hires = cUser.getHiresForHRM();//curUser.getUser().getHiresForHRM();
 		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_RECRUITER) {
-			hires = curUser.getUser().getHiresForRecruiter();
+			hires = cUser.getHiresForRecruiter();//curUser.getUser().getHiresForRecruiter();
 		} else if (curUser.getUser().getDepartment() != null){
-			hires = curUser.getUser().getDepartment().getHireList();
+			hires = cUser.getDepartment().getHireList();//curUser.getUser().getDepartment().getHireList();
 		}
 		model.addAttribute("hires", hires);
 		return "hire/showHires";

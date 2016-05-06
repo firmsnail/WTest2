@@ -31,6 +31,7 @@ import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
+import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.validator.DepartmentFormValidator;
@@ -41,18 +42,21 @@ import com.worksap.stm2016.validator.UserCreateFormValidator;
 @RequestMapping(value = "/hr-manager")
 public class HRManagerController {
 	
+	
 	@Autowired
-	DepartmentService departmentService;
+	private SkillService skillService;
 	@Autowired
-	PersonService personService;
+	private DepartmentService departmentService;
 	@Autowired
-	StaffRequirementService staffRequirementService;
+	private PersonService personService;
 	@Autowired
-	RecruitingPlanService recruitingPlanService;
+	private StaffRequirementService staffRequirementService;
 	@Autowired
-	HireService hireService;
+	private RecruitingPlanService recruitingPlanService;
 	@Autowired
-	DismissionService dismissionService;
+	private HireService hireService;
+	@Autowired
+	private DismissionService dismissionService;
 
 	@Autowired
 	private UserCreateFormValidator  userCreateFormValidator;
@@ -61,14 +65,14 @@ public class HRManagerController {
 	@Autowired
 	private DepartmentFormValidator  departmentFormValidator;
 	
-	@RequestMapping(value = "/analyzeEmployeeStructure",  method = RequestMethod.POST)
+	@RequestMapping(value = "/analyzeEmployeeStructure",  method = RequestMethod.GET)
 	public String analyzeEmployeeStructure(Model model) {
 		analyzeEmployeeByDepartment(model);
 		analyzeEmployeeByAge(model);
 		analyzeEmployeeByGender(model);
 		analyzeEmployeeBySkill(model);
 		analyzeEmployeeByPeriod(model);
-		return "redirect:/hr-manager/analyzeEmployeeStructure";
+		return "hr-manager/analyzeEmployeeStructure";
 	}
 	
 	private void analyzeEmployeeByPeriod(Model model) {
@@ -82,13 +86,16 @@ public class HRManagerController {
 	}
 
 	private void analyzeEmployeeBySkill(Model model) {
-		List<Skill> keyList = CommonUtils.getKeysBySkill();
-		model.addAttribute("skillKeys", keyList);
-		List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
-		for (int i = 0; i < keyList.size(); ++i) {
-			employeesBySkill.add(personService.findBySkill(keyList.get(i)));
+		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
+		if (keyList != null) {
+			model.addAttribute("skillKeys", keyList);
+			List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
+			for (int i = 0; i < keyList.size(); ++i) {
+				employeesBySkill.add(personService.findBySkill(keyList.get(i)));
+			}
+			model.addAttribute("employeesBySkill", employeesBySkill);
 		}
-		model.addAttribute("employeesBySkill", employeesBySkill);
+		
 	}
 
 	private void analyzeEmployeeByGender(Model model) {
@@ -112,13 +119,15 @@ public class HRManagerController {
 	}
 
 	private void analyzeEmployeeByDepartment(Model model) {
-		List<Department> keyList = CommonUtils.getKeysByDepartment();
-		model.addAttribute("ageKeys", keyList);
+		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService);
 		List<List<Person> > employeesByDepartment = new ArrayList<List<Person> >();
-		for (int i = 0; i < keyList.size(); ++i) {
-			employeesByDepartment.add(personService.findByDepartment(keyList.get(i)));
+		if (keyList != null) {
+			model.addAttribute("ageKeys", keyList);
+			for (int i = 0; i < keyList.size(); ++i) {
+				employeesByDepartment.add(personService.findByDepartment(keyList.get(i)));
+			}
+			model.addAttribute("employeesByDepartment", employeesByDepartment);
 		}
-		model.addAttribute("employeesByDepartment", employeesByDepartment);
 	}
 
 	@RequestMapping(value = "/aprroveOneRequirement",  method = RequestMethod.POST)

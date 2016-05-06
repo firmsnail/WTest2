@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.SkillService;
 
+@Component
 public class CommonUtils {
 	
 	final static public Long ROLE_HR_MANAGER = (long) 1;
@@ -94,18 +97,12 @@ public class CommonUtils {
 	final static public Integer AGE_6thRANGE_MIN = 51;
 	final static public Integer AGE_6thRANGE_MAX = 60;
 	
-	
-	@Autowired
-	static private SkillService skillService;
-	@Autowired
-	static private DepartmentService departmentService;
-	
 	static public PasswordEncoder passwordEncoder() {
 		PasswordEncoder encoder = (PasswordEncoder) new BCryptPasswordEncoder();
 		return encoder;
 	}
 
-	public static List<Integer> getKeysByPeriod() {
+	static public List<Integer> getKeysByPeriod() {
 		List<Integer> keys = new ArrayList<Integer>();
 		for (int i = 1; i <= MAX_PERIOD; ++i) {
 			keys.add(i);
@@ -113,11 +110,11 @@ public class CommonUtils {
 		return keys;
 	}
 
-	public static List<Skill> getKeysBySkill() {
+	static public List<Skill> getKeysBySkill(SkillService skillService) {
 		return skillService.findAll();
 	}
 
-	public static List<Integer> getKeysByGender() {
+	static public List<Integer> getKeysByGender() {
 		List<Integer> genders = new ArrayList<Integer>();
 		for (int i = 1; i <= GENDERS; ++i) {
 			genders.add(i);
@@ -125,7 +122,7 @@ public class CommonUtils {
 		return genders;
 	}
 
-	public static List<Integer> getKeysByAge() {
+	static public List<Integer> getKeysByAge() {
 		List<Integer> ranges = new ArrayList<Integer>();
 		for (int i = 1; i <= AGE_RANGES; ++i) {
 			ranges.add(i);
@@ -133,7 +130,12 @@ public class CommonUtils {
 		return ranges;
 	}
 
-	public static List<Department> getKeysByDepartment() {
+	static public List<Department> getKeysByDepartment(DepartmentService departmentService) {
+		if (departmentService == null) {
+			System.out.println("NULLLLLLLLLLLLLLL");
+		} else {
+			System.out.println("Not NuLL!");
+		}
 		return departmentService.findAll();
 	}
 }

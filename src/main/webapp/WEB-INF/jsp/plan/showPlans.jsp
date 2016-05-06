@@ -110,7 +110,7 @@
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
-															<c:when test="${requirement.status == 1}">		<!-- PLAN_PENDING_VERIFY -->
+															<c:when test="${plan.status == 1}">		<!-- PLAN_PENDING_VERIFY -->
 																<a href="/hr-manager/aprroveOnePlan?planId=${plan.planId }"><button type="button" class="btn btn-success">Approve</button></a>
 																<a href="/hr-manager/rejectOnePlan?planId=${plan.planId }"><button type="button" class="btn btn-danger">Reject</button></a>
 															</c:when>
@@ -120,7 +120,7 @@
 															</c:otherwise>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 2}">
-															<c:when test="${requirement.status == 1}">		<!-- PLAN_PENDING_VERIFY -->
+															<c:when test="${plan.status == 1}">		<!-- PLAN_PENDING_VERIFY -->
 																<button type="button" class="btn btn-danger">Delete</button>
 															</c:when>
 															<c:otherwise>

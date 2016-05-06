@@ -99,15 +99,15 @@ public class Person {
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hireHRManager", targetEntity = Hire.class, fetch = FetchType.LAZY)
 	@OrderBy("submitDate ASC")
 	private List<Hire> hiresForHRM;
-	@OrderBy("submitDate ASC")
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hireRecruiter", targetEntity = Hire.class, fetch = FetchType.LAZY)
+	@OrderBy("submitDate ASC")
 	private List<Hire> hiresForRecruiter;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "dismissionHRManager", targetEntity = Dismission.class, fetch = FetchType.LAZY)
 	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<Dismission> dismissionsForHRM;
-	@OrderBy("expectDate ASC, submitDate ASC")
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "dismissionCBSpecialist", targetEntity = Dismission.class, fetch = FetchType.LAZY)
+	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<Dismission> dismissionsForCBSpecialist;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hrManager", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
