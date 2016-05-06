@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
+import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.repository.DepartmentRepository;
 import com.worksap.stm2016.repository.PersonRepository;
@@ -116,6 +117,30 @@ public class PersonServiceImpl implements PersonService{
 		}
 		EmailUtils.notifyAddingEmployeeByEmail(form.getUserName(), form.getPassword(), form.getEmail());
 		return person;
+	}
+
+	@Override
+	public List<Person> findByPeriod(Integer integer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Person> findBySkill(Skill skill) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Person> findByGender(Integer integer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Person> findByAgeRange(Integer integer) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

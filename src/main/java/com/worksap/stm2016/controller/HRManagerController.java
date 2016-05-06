@@ -1,5 +1,6 @@
 package com.worksap.stm2016.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,15 +16,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.worksap.stm2016.modelForm.DepartmentForm;
+import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Hire;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
+import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
-import com.worksap.stm2016.modelForm.DepartmentForm;
-import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
@@ -61,10 +63,64 @@ public class HRManagerController {
 	
 	@RequestMapping(value = "/analyzeEmployeeStructure",  method = RequestMethod.POST)
 	public String analyzeEmployeeStructure(Model model) {
-		
+		analyzeEmployeeByDepartment(model);
+		analyzeEmployeeByAge(model);
+		analyzeEmployeeByGender(model);
+		analyzeEmployeeBySkill(model);
+		analyzeEmployeeByPeriod(model);
 		return "redirect:/hr-manager/analyzeEmployeeStructure";
 	}
 	
+	private void analyzeEmployeeByPeriod(Model model) {
+		List<Integer> keyList = CommonUtils.getKeysByPeriod();
+		model.addAttribute("periodKeys", keyList);
+		List<List<Person> > employeesByPeriod = new ArrayList<List<Person> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			employeesByPeriod.add(personService.findByPeriod(keyList.get(i)));
+		}
+		model.addAttribute("employeesByPeriod", employeesByPeriod);
+	}
+
+	private void analyzeEmployeeBySkill(Model model) {
+		List<Skill> keyList = CommonUtils.getKeysBySkill();
+		model.addAttribute("skillKeys", keyList);
+		List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			employeesBySkill.add(personService.findBySkill(keyList.get(i)));
+		}
+		model.addAttribute("employeesBySkill", employeesBySkill);
+	}
+
+	private void analyzeEmployeeByGender(Model model) {
+		List<Integer> keyList = CommonUtils.getKeysByGender();
+		model.addAttribute("genderKeys", keyList);
+		List<List<Person> > employeesByGender = new ArrayList<List<Person> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			employeesByGender.add(personService.findByGender(keyList.get(i)));
+		}
+		model.addAttribute("employeesByGender", employeesByGender);
+	}
+
+	private void analyzeEmployeeByAge(Model model) {
+		List<Integer> keyList = CommonUtils.getKeysByAge();
+		model.addAttribute("ageKeys", keyList);
+		List<List<Person> > employeesByAge = new ArrayList<List<Person> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			employeesByAge.add(personService.findByAgeRange(keyList.get(i)));
+		}
+		model.addAttribute("employeesByAge", employeesByAge);
+	}
+
+	private void analyzeEmployeeByDepartment(Model model) {
+		List<Department> keyList = CommonUtils.getKeysByDepartment();
+		model.addAttribute("ageKeys", keyList);
+		List<List<Person> > employeesByDepartment = new ArrayList<List<Person> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			employeesByDepartment.add(personService.findByDepartment(keyList.get(i)));
+		}
+		model.addAttribute("employeesByDepartment", employeesByDepartment);
+	}
+
 	@RequestMapping(value = "/aprroveOneRequirement",  method = RequestMethod.POST)
 	public String aprroveOneRequirement(Long requirementId, Model model) {
 		StaffRequirement requirement = staffRequirementService.findOne(requirementId);

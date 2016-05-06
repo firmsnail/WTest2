@@ -1,7 +1,16 @@
 package com.worksap.stm2016.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Skill;
+import com.worksap.stm2016.service.DepartmentService;
+import com.worksap.stm2016.service.SkillService;
 
 public class CommonUtils {
 	
@@ -43,8 +52,51 @@ public class CommonUtils {
 	final static public Integer EMPLOYEE_WORKING = 2;
 	final static public Integer EMPLOYEE_DISMISSION = 3;
 	
+	final static public Integer MAX_PERIOD = 6;
+	
+	final static public Integer GENDERS = 3;
+	
+	final static public Integer AGE_RANGES = 6;
+	
+	@Autowired
+	static private SkillService skillService;
+	@Autowired
+	static private DepartmentService departmentService;
+	
 	static public PasswordEncoder passwordEncoder() {
 		PasswordEncoder encoder = (PasswordEncoder) new BCryptPasswordEncoder();
 		return encoder;
+	}
+
+	public static List<Integer> getKeysByPeriod() {
+		List<Integer> keys = new ArrayList<Integer>();
+		for (int i = 1; i <= MAX_PERIOD; ++i) {
+			keys.add(i);
+		}
+		return keys;
+	}
+
+	public static List<Skill> getKeysBySkill() {
+		return skillService.findAll();
+	}
+
+	public static List<Integer> getKeysByGender() {
+		List<Integer> genders = new ArrayList<Integer>();
+		for (int i = 1; i <= GENDERS; ++i) {
+			genders.add(i);
+		}
+		return genders;
+	}
+
+	public static List<Integer> getKeysByAge() {
+		List<Integer> ranges = new ArrayList<Integer>();
+		for (int i = 1; i <= AGE_RANGES; ++i) {
+			ranges.add(i);
+		}
+		return ranges;
+	}
+
+	public static List<Department> getKeysByDepartment() {
+		return departmentService.findAll();
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 
 public interface PersonService {
@@ -21,4 +22,8 @@ public interface PersonService {
 	public List<Person> findByDepartment(Department dept);
 	public List<Person> findProperManager();
 	public Person add(UserCreateForm user);
+	public List<Person> findByPeriod(Integer integer);
+	public List<Person> findBySkill(Skill skill);
+	public List<Person> findByGender(Integer integer);
+	public List<Person> findByAgeRange(Integer integer);
 }
