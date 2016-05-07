@@ -85,6 +85,9 @@ public class Person {
 	@Column(name="status")
 	private Integer status;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "applicant", targetEntity = Applicant.class, fetch = FetchType.LAZY)
+	private List<Applicant> applicants;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", targetEntity = Notification.class, fetch = FetchType.LAZY)
 	private List<Notification> notificationList;
 	

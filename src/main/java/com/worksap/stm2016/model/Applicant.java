@@ -19,41 +19,29 @@ import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializ
 import lombok.Data;
 
 @Data
-@Table(name="ss1604c187_rd4.interview")
+@Table(name="ss1604c187_rd4.applicant")
 @Entity
-public class Interview {
+public class Applicant {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "interview_id")
-	private Long interviewId;
+	@Column(name = "applicant_id")
+	private Long applicantId;
 	
-	@ManyToOne(optional = false)
-	@JoinColumn(nullable = false, name = "interviewer_id", referencedColumnName = "person_id")
-	private Person interviewer;
-	
-	@ManyToOne(optional = false)
-	@JoinColumn(nullable = false, name = "interviewee_id", referencedColumnName = "person_id")
-	private Person interviewee;
+	@ManyToOne(optional = true)
+	@JoinColumn(nullable = false, name = "person_id", referencedColumnName = "person_id")
+	private Person applicant;
 	
 	@ManyToOne(optional = true)
 	@JoinColumn(nullable = false, name = "plan_id", referencedColumnName = "plan_id")
-	private RecruitingPlan planForInterview;
+	private RecruitingPlan planForApplicant;
 	
 	@Column(name = "status")
 	Integer status;
 	
-	@Column(name = "turns")
-	Integer turns;
-	
-	@Column(name = "\"interviewTime\"")
+	@Column(name = "\"applyTime\"")
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonDeserialize(using = DateDeserializer.class)
-	Date interviewTime;
-	
-	@Column(name = "\"updateTime\"")
-	@Temporal(TemporalType.TIMESTAMP)
-	@JsonDeserialize(using = DateDeserializer.class)
-	Date updateTime;
+	Date applyTime;
 	
 }

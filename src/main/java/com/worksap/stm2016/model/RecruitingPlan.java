@@ -56,6 +56,12 @@ public class RecruitingPlan {
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "recruitingPlan", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
 	private List<StaffRequirement> requirements;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planForInterview", targetEntity = Interview.class, fetch = FetchType.LAZY)
+	private List<Interview> interviews;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planForApplicant", targetEntity = Applicant.class, fetch = FetchType.LAZY)
+	private List<Applicant> applicants;
+	
 	@ManyToMany
 	@JoinTable(name="ss1604c187_rd4.plan_skill", joinColumns = {@JoinColumn(name = "skill_id")},
 			inverseJoinColumns = {@JoinColumn(name = "plan_id")})
