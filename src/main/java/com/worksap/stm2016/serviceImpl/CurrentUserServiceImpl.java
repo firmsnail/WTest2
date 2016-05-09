@@ -9,12 +9,14 @@ import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Hire;
+import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.CurrentUserService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
+import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -31,6 +33,8 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 	HireService hireService;
 	@Autowired
 	DismissionService dismissionService;
+	@Autowired
+	LeaveService leaveService;
 	
 	@Override
 	public boolean canAccessUser(CurrentUser currentUser, Long userId) {
@@ -106,6 +110,22 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 			return dismission.getDismissionCBSpecialist().getPersonId().equals(currentUser.getId());
 		} else {
 			return dismission.getDismissionDepartment().getDepartmentId().equals(currentUser.getUser().getDepartment().getDepartmentId());
+		}
+	}
+	
+	@Override
+	public boolean canAccessLeave(CurrentUser currentUser, Long leaveId) {
+		if (currentUser == null) return false;
+		Leave leave = leaveService.findOne(leaveId);
+		if (leave == null) return false;
+		if (currentUser.getRole().getRoleId() == CommonUtils.ROLE_CB_SPECIALIST) {
+			return true;
+		} else if (currentUser.getRole().getRoleId() == CommonUtils.ROLE_TEAM_MANAGER) {
+			if (leave.getLeaveDepartment() == null || currentUser.getUser().getDepartment() == null) return false;
+			return leave.getLeaveDepartment().getDepartmentId().equals(currentUser.getUser().getDepartment().getDepartmentId());
+		} else {
+			if (leave.getLeavePerson() == null) return false;
+			return leave.getLeavePerson().getPersonId().equals(currentUser.getId());
 		}
 	}
 

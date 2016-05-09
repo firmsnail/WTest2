@@ -21,35 +21,31 @@ import lombok.Data;
 @Data
 @Table(name="ss1604c187_rd4.leave")
 @Entity
-public class Leave {
+public class Payroll {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "leave_id")
-	private Long leaveId;
+	@Column(name = "payroll_id")
+	private Long payrollId;
 
 	@ManyToOne(optional = true)
 	@JoinColumn(nullable = false, name = "department_id", referencedColumnName = "department_id")
-	private Department leaveDepartment;
+	private Department payrollDepartment;
 	
 	@ManyToOne(optional = true)
-	@JoinColumn(nullable = false, name = "person_id", referencedColumnName = "person_id")
-	private Person leavePerson;
+	@JoinColumn(nullable = false, name = "employee_id", referencedColumnName = "person_id")
+	private Person payrollEmployee;
 	
-	@Column(name = "reason")
-	private String reason;
+	@Column(name = "amount")
+	private Double amount;
 	
-	@Column(name = "\"startDate\"")
+	@Column(name = "comment")
+	private String comment;
+	
+	@Column(name = "\"issueDate\"")
 	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)
-	private Date startDate;
+	private Date issueDate;
 	
-	@Column(name = "\"endDate\"")
-	@Temporal(TemporalType.DATE)
-	@JsonDeserialize(using = DateDeserializer.class)
-	private Date endDate;
-	
-	@Column(name = "status")
-	private String status;
 
 }

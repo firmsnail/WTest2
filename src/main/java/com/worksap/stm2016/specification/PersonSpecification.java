@@ -18,7 +18,7 @@ public class PersonSpecification {
 
 			@Override
 			public Predicate toPredicate(Root<Person> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-				return builder.isMember(skill, root.get(Person_.skillList));
+				return builder.isMember(skill, root.get(Person_.skillList));		// root.<Date>get("")
 			}
 			
 		};

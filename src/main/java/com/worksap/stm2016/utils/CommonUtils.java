@@ -54,6 +54,17 @@ public class CommonUtils {
 	final static public Integer EMPLOYEE_WORKING = 2;
 	final static public Integer EMPLOYEE_DISMISSION = 3;
 	
+	final static public Integer ATTENDANCE_NORMAL = 1;
+	final static public Integer ATTENDANCE_ATTEND_LATE = 2;
+	final static public Integer ATTENDANCE_LEAVE_EARLY = 3;
+	final static public Integer ATTENDANCE_ATTEND_NOT_RECORD = 4;
+	final static public Integer ATTENDANCE_LEAVE_NOT_RECORD = 5;
+	
+	final static public Integer LEAVE_TEAM_MANAGER_PROCESSING = 1;
+	final static public Integer LEAVE_CB_SPECIALIST_PROCESSING = 2;
+	final static public Integer LEAVE_FINISH = 3;
+	final static public Integer LEAVE_REJECT = 4;
+	
 	final static public Integer MAX_PERIOD = 6;
 	
 	final static public Integer PERIOD_1MONTH = 1;
