@@ -7,14 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.worksap.stm2016.model.Interview;
+import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.Person;
 
 @Repository
-public interface InterviewRepository extends PagingAndSortingRepository<Interview, Long>{
+public interface ApplicantRepository extends PagingAndSortingRepository<Applicant, Long>{
 	
-	Page<Interview> findAll(Pageable pageable);
+	Page<Applicant> findAll(Pageable pageable);
 
-	List<Interview> findByPlanForInterviewPlanMaker(Person user);
+	List<Person> findByPlanForApplicantPlanMaker(Person user);
 
 }

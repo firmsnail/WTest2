@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.worksap.stm2016.model.Interview;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.repository.InterviewRepository;
 import com.worksap.stm2016.service.InterviewService;
 
@@ -41,6 +42,12 @@ public class InterviewServiceImpl implements InterviewService{
 	public Interview findOne(Long id) {
 		// TODO Auto-generated method stub
 		return interviewRepository.findOne(id);
+	}
+
+	@Override
+	public List<Interview> findByRecruiter(Person user) {
+		// TODO Auto-generated method stub
+		return interviewRepository.findByPlanForInterviewPlanMaker(user);
 	}
 	
 
