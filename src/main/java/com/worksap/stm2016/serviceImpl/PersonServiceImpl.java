@@ -106,7 +106,10 @@ public class PersonServiceImpl implements PersonService{
 		person.setFirstName(form.getFirstName());
 		person.setLastName(form.getLastName());
 		person.setEmail(form.getEmail());
-		Department dept = deptRepository.findOne(form.getDepartmentId());
+		Department dept = null;
+		if (form.getDepartmentId() != null) {
+			dept = deptRepository.findOne(form.getDepartmentId());
+		}
 		if (dept != null) {
 			person.setDepartment(dept);
 			person = personRepository.save(person);

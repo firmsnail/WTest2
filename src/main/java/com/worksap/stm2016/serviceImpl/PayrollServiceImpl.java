@@ -14,6 +14,7 @@ import com.worksap.stm2016.model.Payroll;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.repository.PayrollRepository;
 import com.worksap.stm2016.service.PayrollService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Service
 @Transactional
@@ -49,19 +50,21 @@ public class PayrollServiceImpl implements PayrollService{
 
 	@Override
 	public List<Payroll> findByPersonAndStartDate(Person cUser, Date startDate) {
-		return payrollRepository.findByPayrollEmployeeAndIssueDateNotBefore(cUser, startDate);
+		Date beforeDay = CommonUtils.OneDayBefore(startDate);
+		return payrollRepository.findByPayrollEmployeeAndIssueDateAfter(cUser, beforeDay);
 	}
 
 	@Override
 	public List<Payroll> findByPersonAndEndDate(Person cUser, Date endDate) {
-		return payrollRepository.findByPayrollEmployeeAndIssueDateNotAfter(cUser, endDate);
+		Date afterDay = CommonUtils.OneDayAfter(endDate);
+		return payrollRepository.findByPayrollEmployeeAndIssueDateBefore(cUser, afterDay);
 	}
 
 	@Override
 	public List<Payroll> findByPerson(Person cUser) {
 		return payrollRepository.findByPayrollEmployee(cUser);
 	}
-
+	
 	@Override
 	public List<Payroll> findByDepartmentAndStartDateAndEndDate(Department department, Date startDate, Date endDate) {
 		return payrollRepository.findByPayrollDepartmentAndIssueDateBetween(department, startDate, endDate);
@@ -69,12 +72,14 @@ public class PayrollServiceImpl implements PayrollService{
 
 	@Override
 	public List<Payroll> findByDepartmentAndStartDate(Department department, Date startDate) {
-		return payrollRepository.findByPayrollDepartmentAndIssueDateNotBefore(department, startDate);
+		Date beforeDay = CommonUtils.OneDayBefore(startDate);
+		return payrollRepository.findByPayrollDepartmentAndIssueDateAfter(department, beforeDay);
 	}
 
 	@Override
 	public List<Payroll> findByDepartmentAndEndDate(Department department, Date endDate) {
-		return payrollRepository.findByPayrollDepartmentAndIssueDateNotAfter(department, endDate);
+		Date afterDay = CommonUtils.OneDayAfter(endDate);
+		return payrollRepository.findByPayrollDepartmentAndIssueDateBefore(department, afterDay);
 	}
 
 	@Override
@@ -89,12 +94,14 @@ public class PayrollServiceImpl implements PayrollService{
 
 	@Override
 	public List<Payroll> findByStartDate(Date startDate) {
-		return payrollRepository.findByIssueDateNotBefore(startDate);
+		Date beforeDay = CommonUtils.OneDayBefore(startDate);
+		return payrollRepository.findByIssueDateAfter(beforeDay);
 	}
 
 	@Override
 	public List<Payroll> findByEndDate(Date endDate) {
-		return payrollRepository.findByIssueDateNotAfter(endDate);
+		Date afterDay = CommonUtils.OneDayAfter(endDate);
+		return payrollRepository.findByIssueDateBefore(afterDay);
 	}
 	
 

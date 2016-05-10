@@ -14,6 +14,7 @@ import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.repository.AttendanceRepository;
 import com.worksap.stm2016.service.AttendanceService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Service
 @Transactional
@@ -49,12 +50,14 @@ public class AttendanceServiceImpl implements AttendanceService{
 
 	@Override
 	public List<Attendance> findByPersonAndStartDate(Person cUser, Date startDate) {
-		return attendanceRepository.findByAttendancePersonAndAttendanceDateNotBefore(cUser, startDate);
+		Date beforeDay = CommonUtils.OneDayBefore(startDate);
+		return attendanceRepository.findByAttendancePersonAndAttendanceDateAfter(cUser, beforeDay);
 	}
 
 	@Override
 	public List<Attendance> findByPersonAndEndDate(Person cUser, Date endDate) {
-		return attendanceRepository.findByAttendancePersonAndAttendanceDateNotAfter(cUser, endDate);
+		Date afterDay = CommonUtils.OneDayAfter(endDate);
+		return attendanceRepository.findByAttendancePersonAndAttendanceDateBefore(cUser, afterDay);
 	}
 
 	@Override
@@ -70,12 +73,14 @@ public class AttendanceServiceImpl implements AttendanceService{
 
 	@Override
 	public List<Attendance> findByDepartmentAndStartDate(Department department, Date startDate) {
-		return attendanceRepository.findByAttendanceDepartmentAndAttendanceDateNotBefore(department, startDate);
+		Date beforeDay = CommonUtils.OneDayBefore(startDate);
+		return attendanceRepository.findByAttendanceDepartmentAndAttendanceDateAfter(department, beforeDay);
 	}
 
 	@Override
 	public List<Attendance> findByDepartmentAndEndDate(Department department, Date endDate) {
-		return attendanceRepository.findByAttendanceDepartmentAndAttendanceDateNotAfter(department, endDate);
+		Date afterDay = CommonUtils.OneDayAfter(endDate);
+		return attendanceRepository.findByAttendanceDepartmentAndAttendanceDateBefore(department, afterDay);
 	}
 
 	@Override
@@ -90,12 +95,14 @@ public class AttendanceServiceImpl implements AttendanceService{
 
 	@Override
 	public List<Attendance> findByStartDate(Date startDate) {
-		return attendanceRepository.findByAttendanceDateNotBefore(startDate);
+		Date beforeDay = CommonUtils.OneDayBefore(startDate);
+		return attendanceRepository.findByAttendanceDateAfter(beforeDay);
 	}
 
 	@Override
 	public List<Attendance> findByEndDate(Date endDate) {
-		return attendanceRepository.findByAttendanceDateNotAfter(endDate);
+		Date afterDay = CommonUtils.OneDayAfter(endDate);
+		return attendanceRepository.findByAttendanceDateBefore(afterDay);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.worksap.stm2016.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class StaffRequirement {
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name="ss1604c187_rd4.stfrq_skill", joinColumns = {@JoinColumn(name = "skill_id")},
 			inverseJoinColumns = {@JoinColumn(name = "stfrq_id")})
-	List<Skill> stfrqSkillList;
+	List<Skill> stfrqSkillList = new ArrayList<Skill>();
 	
 	@Column(name = "\"expectDate\"")
 	@Temporal(TemporalType.DATE)

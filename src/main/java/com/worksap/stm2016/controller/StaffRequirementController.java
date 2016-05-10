@@ -43,7 +43,7 @@ public class StaffRequirementController {
 	public String showOneStaffRequirement(Long requirementId, Model model) {
 		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
 		model.addAttribute("requirement", requirement);
-		return "requirement/showStaffRequirements";
+		return "requirement/showOneStaffRequirement";
 	}
 	
 }

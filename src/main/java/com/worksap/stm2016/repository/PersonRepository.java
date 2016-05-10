@@ -26,7 +26,7 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 
 	List<Person> findByDepartmentIsNullAndRoleIn(List<Role> roleCol);
 
-	@Query("select u from Person u where EXTRACT(month from age(u.endTime, u.startTime)) <= ?1")
+	@Query("select u from Person u where EXTRACT(month from age(u.endDate, u.startDate)) <= ?1")
 	List<Person> findByPeriodMonth(Integer months);
 
 	List<Person> findByRole(Role role);

@@ -35,6 +35,7 @@ import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.validator.DepartmentFormValidator;
+import com.worksap.stm2016.validator.UserAddFormValidator;
 import com.worksap.stm2016.validator.UserCreateFormValidator;
 
 @Controller
@@ -61,7 +62,7 @@ public class HRManagerController {
 	@Autowired
 	private UserCreateFormValidator  userCreateFormValidator;
 	@Autowired
-	private UserCreateFormValidator  userAddFormValidator;
+	private UserAddFormValidator  userAddFormValidator;
 	@Autowired
 	private DepartmentFormValidator  departmentFormValidator;
 	

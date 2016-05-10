@@ -69,15 +69,15 @@ public class Person {
 	@JsonIgnore
 	Role role;
 	
-	@Column(name = "\"startTime\"")
+	@Column(name = "\"startDate\"")
 	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)
-	private Date startTime;
+	private Date startDate;
 	
-	@Column(name = "\"endTime\"")
+	@Column(name = "\"endDate\"")
 	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)
-	private Date endTime;
+	private Date endDate;
 	
 	@Column(name="salary")
 	private Double salary;

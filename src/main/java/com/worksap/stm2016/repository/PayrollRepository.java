@@ -19,24 +19,24 @@ public interface PayrollRepository extends PagingAndSortingRepository<Payroll, L
 
 	List<Payroll> findByPayrollEmployeeAndIssueDateBetween(Person cUser, Date startDate, Date endDate);
 
-	List<Payroll> findByPayrollEmployeeAndIssueDateNotBefore(Person cUser, Date startDate);
+	List<Payroll> findByPayrollEmployeeAndIssueDateAfter(Person cUser, Date startDate);
 
-	List<Payroll> findByPayrollEmployeeAndIssueDateNotAfter(Person cUser, Date endDate);
+	List<Payroll> findByPayrollEmployeeAndIssueDateBefore(Person cUser, Date endDate);
 
 	List<Payroll> findByPayrollEmployee(Person cUser);
 
 	List<Payroll> findByPayrollDepartmentAndIssueDateBetween(Department department, Date startDate, Date endDate);
 
-	List<Payroll> findByPayrollDepartmentAndIssueDateNotBefore(Department department, Date startDate);
+	List<Payroll> findByPayrollDepartmentAndIssueDateAfter(Department department, Date startDate);
 
-	List<Payroll> findByPayrollDepartmentAndIssueDateNotAfter(Department department, Date endDate);
+	List<Payroll> findByPayrollDepartmentAndIssueDateBefore(Department department, Date endDate);
 
 	List<Payroll> findByPayrollDepartment(Department department);
 
 	List<Payroll> findByIssueDateBetween(Date startDate, Date endDate);
 
-	List<Payroll> findByIssueDateNotBefore(Date startDate);
+	List<Payroll> findByIssueDateAfter(Date startDate);
 
-	List<Payroll> findByIssueDateNotAfter(Date endDate);
+	List<Payroll> findByIssueDateBefore(Date endDate);
 
 }

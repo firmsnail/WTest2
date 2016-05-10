@@ -40,7 +40,6 @@ public class Skill {
 	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "stfrqSkillList")
 	private List<StaffRequirement> stfrqList;
 	
-	
 	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "planSkillList")
 	private List<RecruitingPlan> planList;
 	

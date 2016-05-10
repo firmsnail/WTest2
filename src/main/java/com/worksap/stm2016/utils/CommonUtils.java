@@ -1,6 +1,8 @@
 package com.worksap.stm2016.utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -152,5 +154,21 @@ public class CommonUtils {
 			}
 		}
 		return true;
+	}
+
+	public static Date OneDayBefore(Date startDate) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(startDate);
+		Integer day = c.get(Calendar.DATE);
+		c.set(Calendar.DATE, day-1);
+		return c.getTime();
+	}
+	
+	public static Date OneDayAfter(Date afterDate) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(afterDate);
+		Integer day = c.get(Calendar.DATE);
+		c.set(Calendar.DATE, day+1);
+		return c.getTime();
 	}
 }

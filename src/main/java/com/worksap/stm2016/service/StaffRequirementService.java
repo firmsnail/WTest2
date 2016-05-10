@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.StaffRequirement;
+import com.worksap.stm2016.modelForm.RequirementForm;
 
 public interface StaffRequirementService {
 	public List<StaffRequirement> findAll();
@@ -30,4 +31,5 @@ public interface StaffRequirementService {
 			Date startDate);
 	public List<StaffRequirement> findByRecruiterAndStatusAndExpectDateNotAfter(Person recruiter, Integer status, Date endDate);
 	public List<StaffRequirement> findByRecruiterAndStatus(Person recruiter, Integer status);
+	public StaffRequirement add(RequirementForm requirement);
 }

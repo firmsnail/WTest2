@@ -19,25 +19,24 @@ public interface AttendanceRepository extends PagingAndSortingRepository<Attenda
 
 	List<Attendance> findByAttendancePersonAndAttendanceDateBetween(Person cUser, Date startDate, Date endDate);
 
-	List<Attendance> findByAttendancePersonAndAttendanceDateNotBefore(Person cUser, Date startDate);
+	List<Attendance> findByAttendancePersonAndAttendanceDateAfter(Person cUser, Date startDate);
 
-	List<Attendance> findByAttendancePersonAndAttendanceDateNotAfter(Person cUser, Date endDate);
+	List<Attendance> findByAttendancePersonAndAttendanceDateBefore(Person cUser, Date endDate);
 
 	List<Attendance> findByAttendancePerson(Person cUser);
 
-	List<Attendance> findByAttendanceDepartmentAndAttendanceDateBetween(Department department, Date startDate,
-			Date endDate);
+	List<Attendance> findByAttendanceDepartmentAndAttendanceDateBetween(Department department, Date startDate, Date endDate);
 
-	List<Attendance> findByAttendanceDepartmentAndAttendanceDateNotBefore(Department department, Date startDate);
+	List<Attendance> findByAttendanceDepartmentAndAttendanceDateAfter(Department department, Date startDate);
 
-	List<Attendance> findByAttendanceDepartmentAndAttendanceDateNotAfter(Department department, Date endDate);
+	List<Attendance> findByAttendanceDepartmentAndAttendanceDateBefore(Department department, Date endDate);
 
 	List<Attendance> findByAttendanceDepartment(Department department);
 
 	List<Attendance> findByAttendanceDateBetween(Date startDate, Date endDate);
 
-	List<Attendance> findByAttendanceDateNotBefore(Date startDate);
+	List<Attendance> findByAttendanceDateAfter(Date startDate);
 
-	List<Attendance> findByAttendanceDateNotAfter(Date endDate);
+	List<Attendance> findByAttendanceDateBefore(Date endDate);
 
 }

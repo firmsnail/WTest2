@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -40,6 +41,7 @@ public class Department {
 	List<Person> employees;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="stfrqDepartment", fetch = FetchType.LAZY)
+	@OrderBy("expectDate ASC, submitDate ASC")
 	List<StaffRequirement> staffRequirementList;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="hireDepartment", fetch = FetchType.LAZY)

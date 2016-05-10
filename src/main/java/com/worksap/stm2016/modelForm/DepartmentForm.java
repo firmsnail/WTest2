@@ -16,7 +16,7 @@ public class DepartmentForm {
 	
 	String description;
 	
-	@Min(1)
+	@Min(0)
 	Long managerId;
 
 }

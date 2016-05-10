@@ -40,7 +40,7 @@ public class Attendance {
 	private Integer type;	//1: Normal, 2: AttendanceLate, 3: LeaveEarly, 4: AttendanceNotRecord, 5: LeaveNotRecord
 	
 	@Column(name = "\"attendanceDate\"")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)
 	private Date attendanceDate;
 	

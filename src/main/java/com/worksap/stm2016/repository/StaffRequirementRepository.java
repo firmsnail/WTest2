@@ -22,19 +22,19 @@ public interface StaffRequirementRepository extends PagingAndSortingRepository<S
 	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateBetween(Person recruiter, Department department, Integer status,
 			Date startDate, Date endDate);
 
-	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateNotBefore(Person recruiter, Department department, Integer status,
+	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateAfter(Person recruiter, Department department, Integer status,
 			Date startDate);
 
-	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateNotAfter(Person recruiter, Department department, Integer status,
+	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateBefore(Person recruiter, Department department, Integer status,
 			Date endDate);
 
 	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatus(Person recruiter, Department department, Integer status);
 
 	List<StaffRequirement> findByRecruiterAndStatusAndExpectDateBetween(Person recruiter, Integer status, Date startDate, Date endDate);
 
-	List<StaffRequirement> findByRecruiterAndStatusAndExpectDateNotBefore(Person recruiter, Integer status, Date startDate);
+	List<StaffRequirement> findByRecruiterAndStatusAndExpectDateAfter(Person recruiter, Integer status, Date startDate);
 
-	List<StaffRequirement> findByRecruiterAndStatusAndExpectDateNotAfter(Person recruiter, Integer status, Date endDate);
+	List<StaffRequirement> findByRecruiterAndStatusAndExpectDateBefore(Person recruiter, Integer status, Date endDate);
 
 	List<StaffRequirement> findByRecruiterAndStatus(Person recruiter, Integer status);
 

@@ -40,7 +40,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                         	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 4 }">hidden="hidden"</c:if>>
-                        		<a href="/hr-manager/addUser">
+                        		<a href="/team-manager/addRequirement">
 									<button type="button" class="btn btn-success btn-lg">Create Staffing Requirements</button>
 								</a>
                         	</div>
@@ -97,9 +97,6 @@
 															</c:otherwise>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 4}">
-															<c:when test="${requirement.status == 4}">		<!-- REQUIREMENTS_RECRUITING -->
-																<span class="label label-primary">Recruiting</span>
-															</c:when>
 															<c:when test="${requirement.status == 6}">		<!-- REQUIREMENTS_REJECT -->
 																<span class="label label-danger">Denied</span>
 															</c:when>
@@ -107,7 +104,7 @@
 																<span class="label label-success">Finished</span>
 															</c:when>
 															<c:otherwise>				<!-- Pending -->
-																<span class="label label-warning">Processing</span>
+																<span class="label label-primary">Processing</span>
 															</c:otherwise>
 														</c:when>
 														<c:otherwise>
@@ -129,12 +126,10 @@
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 2}">
 															<c:when test="${requirement.status == 2}">		<!-- REQUIREMENTS_RECRUITER_PROCESSING -->
-																<button type="button" class="btn btn-success">Approve</button>
-																<button type="button" class="btn btn-danger">Reject</button>
+																<button type="button" class="btn btn-success">Process</button>
 															</c:when>
 															<c:otherwise>
-																<button type="button" class="btn btn-success disabled">Approve</button>
-																<button type="button" class="btn btn-danger disabled">Reject</button>
+																<button type="button" class="btn btn-success disabled">Process</button>
 															</c:otherwise>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 4}">
