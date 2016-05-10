@@ -1,5 +1,6 @@
 package com.worksap.stm2016.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -7,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.StaffRequirement;
 
 @Repository
@@ -15,5 +18,24 @@ public interface StaffRequirementRepository extends PagingAndSortingRepository<S
 	Page<StaffRequirement> findAll(Pageable pageable);
 
 	List<StaffRequirement> findByStatus(int status);
+
+	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateBetween(Person recruiter, Department department, Integer status,
+			Date startDate, Date endDate);
+
+	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateNotBefore(Person recruiter, Department department, Integer status,
+			Date startDate);
+
+	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateNotAfter(Person recruiter, Department department, Integer status,
+			Date endDate);
+
+	List<StaffRequirement> findByRecruiterAndStfrqDepartmentAndStatus(Person recruiter, Department department, Integer status);
+
+	List<StaffRequirement> findByRecruiterAndStatusAndExpectDateBetween(Person recruiter, Integer status, Date startDate, Date endDate);
+
+	List<StaffRequirement> findByRecruiterAndStatusAndExpectDateNotBefore(Person recruiter, Integer status, Date startDate);
+
+	List<StaffRequirement> findByRecruiterAndStatusAndExpectDateNotAfter(Person recruiter, Integer status, Date endDate);
+
+	List<StaffRequirement> findByRecruiterAndStatus(Person recruiter, Integer status);
 
 }

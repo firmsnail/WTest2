@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Skill;
+import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.SkillService;
 
@@ -140,11 +141,16 @@ public class CommonUtils {
 	}
 
 	static public List<Department> getKeysByDepartment(DepartmentService departmentService) {
-		if (departmentService == null) {
-			System.out.println("NULLLLLLLLLLLLLLL");
-		} else {
-			System.out.println("Not NuLL!");
-		}
 		return departmentService.findAll();
+	}
+
+	public static boolean RequirementContainSkills(StaffRequirement requirement, List<Skill> skills) {
+		List<Skill> reqSkills = requirement.getStfrqSkillList();
+		for (Skill skill : skills) {
+			if (!reqSkills.contains(skill)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

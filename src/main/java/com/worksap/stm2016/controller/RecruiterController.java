@@ -17,9 +17,11 @@ import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Skill;
+import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.InterviewService;
-import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.service.StaffRequirementService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Controller
 @PreAuthorize("hasAuthority('RECRUITER')")
@@ -30,15 +32,48 @@ public class RecruiterController {
 	private ApplicantService applicantService;
 	@Autowired
 	private InterviewService interviewService;
+	@Autowired
+	private StaffRequirementService staffRequirementService;
 
 	@RequestMapping(value = "/showAnalyzeRequirments",  method = RequestMethod.GET)
 	public String showAnalyzeRequirments(Date startDate, Date endDate, Department department, List<Skill> skills, Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		/*
-		 * Total req, by dept, by skill
-		 * 
-		 * 
-		 */
+		List<StaffRequirement> staffingRequirements = null;
+		List<StaffRequirement> tempRequirements = null;
+		if (department != null) {
+			if (startDate != null && endDate != null) {
+				tempRequirements = staffRequirementService.findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateBetween(curUser.getUser(), department, CommonUtils.REQUIREMENTS_PENDING_RECRUITE, startDate, endDate);
+			} else if (startDate != null) {
+				tempRequirements = staffRequirementService.findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateNotBefore(curUser.getUser(), department, CommonUtils.REQUIREMENTS_PENDING_RECRUITE, startDate);
+			} else if (endDate != null) {
+				tempRequirements = staffRequirementService.findByRecruiterAndStfrqDepartmentAndStatusAndExpectDateNotAfter(curUser.getUser(), department, CommonUtils.REQUIREMENTS_PENDING_RECRUITE, endDate);
+			} else {
+				tempRequirements = staffRequirementService.findByRecruiterAndStfrqDepartmentAndStatus(curUser.getUser(), department, CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
+			}
+		} else {
+			if (startDate != null && endDate != null) {
+				tempRequirements = staffRequirementService.findByRecruiterAndStatusAndExpectDateBetween(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE, startDate, endDate);
+			} else if (startDate != null) {
+				tempRequirements = staffRequirementService.findByRecruiterAndStatusAndExpectDateNotBefore(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE, startDate);
+			} else if (endDate != null) {
+				tempRequirements = staffRequirementService.findByRecruiterAndStatusAndExpectDateNotAfter(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE, endDate);
+			} else {
+				tempRequirements = staffRequirementService.findByRecruiterAndStatus(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
+			}
+		}
+		
+		if (skills != null && skills.size() > 0) {
+			staffingRequirements = new ArrayList<StaffRequirement>();
+			for (StaffRequirement requirement : tempRequirements) {
+				if (CommonUtils.RequirementContainSkills(requirement, skills)) {
+					staffingRequirements.add(requirement);
+				}
+			}
+		} else {
+			staffingRequirements = tempRequirements;
+		}
+		
+		model.addAttribute("requirements", staffingRequirements);
 		return "recruiter/showAnalyzeRequirments";
 	}
 	
