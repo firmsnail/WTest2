@@ -59,12 +59,14 @@ public class Person {
 	@Column(name = "phone")
 	private String phone;
 	
-	@ManyToOne(optional = true)
+	//@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "department_id", referencedColumnName = "department_id")
 	@JsonIgnore
 	Department department;
 
-	@ManyToOne(optional=true)
+	//@ManyToOne(optional=true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "role_id", referencedColumnName = "role_id")
 	@JsonIgnore
 	Role role;

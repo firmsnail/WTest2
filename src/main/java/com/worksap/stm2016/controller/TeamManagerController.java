@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
@@ -61,6 +62,7 @@ public class TeamManagerController {
 	}
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.POST)
 	public String addDepartment(@ModelAttribute("requirement") @Valid RequirementForm requirement, BindingResult bindingResult) {
+		System.out.println("@addDepartment start!");
 		requirementFormValidator.validate(requirement, bindingResult);
 		
 		if (bindingResult.hasErrors()) {
@@ -68,10 +70,19 @@ public class TeamManagerController {
 			return "team-manager/addRequirement";
 		}
 		try {
+			System.out.println("requirement: " + requirement);
 			staffRequirementService.add(requirement);
         } catch (DataIntegrityViolationException e) {
             return "team-manager/addRequirement";
         }
 		return "redirect:/requirement/showStaffRequirements";
+	}
+	
+	@PreAuthorize("@currentUserServiceImpl.canDeleteStaffRequirement(principal, #requirementId)")
+	@ResponseBody
+	@RequestMapping(value = "/delRequirement",  method = RequestMethod.POST)
+	public String delDepartment(Long requirementId) {
+		staffRequirementService.delete(requirementId);
+		return "success";
 	}
 }

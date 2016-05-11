@@ -129,4 +129,16 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 		}
 	}
 
+	@Override
+	public boolean canDeleteStaffRequirement(CurrentUser currentUser, Long requirementId) {
+		if (currentUser == null) return false;
+		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
+		if (requirement == null) return false;
+		if (currentUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
+			return requirement.getStfrqDepartment().getDepartmentId().equals(currentUser.getUser().getDepartment().getDepartmentId());
+		} else {
+			return false;
+		}
+	}
+
 }

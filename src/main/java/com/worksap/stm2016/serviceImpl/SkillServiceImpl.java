@@ -42,6 +42,11 @@ public class SkillServiceImpl implements SkillService{
 		// TODO Auto-generated method stub
 		return skillRepository.findOne(id);
 	}
+
+	@Override
+	public Skill findBySkillName(String skillName) {
+		return skillRepository.findBySkillName(skillName);
+	}
 	
 
 }

@@ -40,7 +40,7 @@ public class Department {
 	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="department", fetch = FetchType.LAZY)
 	List<Person> employees;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="stfrqDepartment", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="stfrqDepartment", fetch = FetchType.LAZY)
 	@OrderBy("expectDate ASC, submitDate ASC")
 	List<StaffRequirement> staffRequirementList;
 	

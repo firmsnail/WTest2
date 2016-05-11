@@ -8,18 +8,24 @@
 <head>
 	<jsp:include page="../common/header.jsp" />
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/select2.min.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/datepicker3.css" rel="stylesheet">
+
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/select2.full.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/static/js/common/bootstrap-datepicker.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/static/js/skill/skill.js"></script>
+
 	<script>
 	  $(function () {
 	    //Initialize Select2 Elements
 	    $(".select2").select2();
 	    
 	    $( "#expectDate" ).datepicker({
-	    	minDate: new Date(),
-	        defaultDate: "+1w",
-	        changeMonth: true,
-	        numberOfMonths: 1,
-	        dateFormat: "yy-mm-dd"
+	    	startDate: new Date(),
+	        //defaultDate: "+1w",
+	        //changeMonth: true,
+	        //numberOfMonths: 1,
+	        autoclose: true,
+	        format: "yyyy-mm-dd"
 	    });
 	  });
 	</script>
@@ -27,6 +33,30 @@
 </head>
 
 <body>
+	<div class="modal fade" id="skillModal" tabindex="-1" role="dialog" aria-labelledby="skillModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="skillModalLabel">New Skill</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="skill-name" class="control-label">Skill Name:</label>
+						<input type="text" class="form-control" id="skill-name">
+					</div>
+					<div class="form-group">
+						<label for="skill-description" class="control-label">Description:</label>
+						<textarea class="form-control" id="skill-description"></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<a type="button" class="btn btn-primary" onclick="addSkill('${_csrf.parameterName}', '${_csrf.token}')">Add</a>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="wrapper">
 		<jsp:include page="../common/nav.jsp" />
 		<div id="page-wrapper">
@@ -89,12 +119,12 @@
 								                
 								                <div class="form-group">
 								                	  <label>Skills</label>
-								                	  <button type="button" class="btn btn-success" onclick="newSkill()">New Skill</button>
+								                	  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#skillModal">New Skill</button>
 									                  <div>
 									                  		<springForm:select path="skills" class="form-control select2" multiple="multiple" data-placeholder="Select skills" name="skills" style="width: 100%;">
 											                	  <c:forEach var="skill" items="${chooseSkills}" varStatus="status">
 											                	  		<option value="${skill.skillId}">
-											                	  			${skill.skillId}
+											                	  			${skill.skillName}
 											                	  		</option>
 											                	  </c:forEach>
 											                </springForm:select>

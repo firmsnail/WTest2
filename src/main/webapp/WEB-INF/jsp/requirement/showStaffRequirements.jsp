@@ -16,6 +16,17 @@
 	                responsive: false
 	        });
 	    });
+	    function delRequirement(tokName, tokValue, requirementId) {
+	        var url = "/team-manager/delRequirement?"+tokName+"="+tokValue;
+	        var params = {requirementId:requirementId};
+	        $.post(url, params, function (data) {
+	        	switch(data){
+	    			case 'success':
+	    				window.location.reload(true); 
+	    			break;
+	    		}
+	        });
+	    }
     </script>
 </head>
 
@@ -59,7 +70,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach var="requirement" items="${showStaffRequirements}" varStatus="status">
+                                    	<c:forEach var="requirement" items="${requirements}" varStatus="status">
 											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd"</c:when><c:otherwise>class="even"</c:otherwise></c:choose>>
 												<td><fmt:formatDate value="${requirement.expectDate}" pattern="yyyy-MM-dd"/></td>
 												<td><fmt:formatDate value="${requirement.submitDate}" pattern="yyyy-MM-dd"/></td>
@@ -69,43 +80,49 @@
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
-															<c:when test="${requirement.status == 1}">		<!-- REQUIREMENTS_HR_MANAGER_PROCESSING -->
-																<span class="label label-warning">Pending</span>
-															</c:when>
-															<c:when test="${requirement.status == 6}">		<!-- REQUIREMENTS_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Approved -->
-																<span class="label label-success">Approved</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${requirement.status == 1}">		<!-- REQUIREMENTS_HR_MANAGER_PROCESSING -->
+																	<span class="label label-warning">Pending</span>
+																</c:when>
+																<c:when test="${requirement.status == 6}">		<!-- REQUIREMENTS_REJECT -->
+																	<span class="label label-danger">Denied</span>
+																</c:when>
+																<c:otherwise>				<!-- Approved -->
+																	<span class="label label-success">Approved</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 2}">
-															<c:when test="${requirement.status == 2}">		<!-- REQUIREMENTS_RECRUITER_PROCESSING -->
-																<span class="label label-warning">Pending</span>
-															</c:when>
-															<c:when test="${requirement.status == 3}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
-																<span class="label label-warning">Pending Recruit</span>
-															</c:when>
-															<c:when test="${requirement.status == 4}">		<!-- REQUIREMENTS_RECRUITING -->
-																<span class="label label-primary">Recruiting</span>
-															</c:when>
-															<c:when test="${requirement.status == 6}">		<!-- REQUIREMENTS_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Finished -->
-																<span class="label label-success">Finished</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${requirement.status == 2}">		<!-- REQUIREMENTS_RECRUITER_PROCESSING -->
+																	<span class="label label-warning">Pending</span>
+																</c:when>
+																<c:when test="${requirement.status == 3}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
+																	<span class="label label-warning">Pending Recruit</span>
+																</c:when>
+																<c:when test="${requirement.status == 4}">		<!-- REQUIREMENTS_RECRUITING -->
+																	<span class="label label-primary">Recruiting</span>
+																</c:when>
+																<c:when test="${requirement.status == 6}">		<!-- REQUIREMENTS_REJECT -->
+																	<span class="label label-danger">Denied</span>
+																</c:when>
+																<c:otherwise>				<!-- Finished -->
+																	<span class="label label-success">Finished</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 4}">
-															<c:when test="${requirement.status == 6}">		<!-- REQUIREMENTS_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:when test="${requirement.status == 5}">		<!-- REQUIREMENTS_FINISH -->
-																<span class="label label-success">Finished</span>
-															</c:when>
-															<c:otherwise>				<!-- Pending -->
-																<span class="label label-primary">Processing</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${requirement.status == 6}">		<!-- REQUIREMENTS_REJECT -->
+																	<span class="label label-danger">Denied</span>
+																</c:when>
+																<c:when test="${requirement.status == 5}">		<!-- REQUIREMENTS_FINISH -->
+																	<span class="label label-success">Finished</span>
+																</c:when>
+																<c:otherwise>				<!-- Pending -->
+																	<span class="label label-primary">Processing</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:otherwise>
 															Unknown
@@ -115,30 +132,36 @@
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
-															<c:when test="${requirement.status == 1}">		<!-- REQUIREMENTS_HR_MANAGER_PROCESSING -->
-																<a href="/hr-manager/aprroveOneRequirement?requirementId=${requirement.staffRequirementId }"><button type="button" class="btn btn-success">Approve</button></a>
-																<a href="/hr-manager/rejectOneRequirement?requirementId=${requirement.staffRequirementId }"><button type="button" class="btn btn-danger">Reject</button></a>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-success disabled">Approve</button>
-																<button type="button" class="btn btn-danger disabled">Reject</button>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${requirement.status == 1}">		<!-- REQUIREMENTS_HR_MANAGER_PROCESSING -->
+																	<a href="/hr-manager/aprroveOneRequirement?requirementId=${requirement.staffRequirementId }"><button type="button" class="btn btn-success">Approve</button></a>
+																	<a href="/hr-manager/rejectOneRequirement?requirementId=${requirement.staffRequirementId }"><button type="button" class="btn btn-danger">Reject</button></a>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-success disabled">Approve</button>
+																	<button type="button" class="btn btn-danger disabled">Reject</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 2}">
-															<c:when test="${requirement.status == 2}">		<!-- REQUIREMENTS_RECRUITER_PROCESSING -->
-																<button type="button" class="btn btn-success">Process</button>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-success disabled">Process</button>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${requirement.status == 2}">		<!-- REQUIREMENTS_RECRUITER_PROCESSING -->
+																	<button type="button" class="btn btn-success">Process</button>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-success disabled">Process</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 4}">
-															<c:when test="${requirement.status == 1}">		<!-- REQUIREMENTS_RECRUITING -->
-																<button type="button" class="btn btn-danger">Delete</button>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-danger disabled">Delete</button>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${requirement.status == 1}">		<!-- REQUIREMENTS_RECRUITING -->
+																	<button type="button" class="btn btn-danger" onclick="delRequirement('${_csrf.parameterName}', '${_csrf.token}', '${requirement.staffRequirementId}')">Delete</button>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-danger disabled">Delete</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:otherwise>
 															Unknown

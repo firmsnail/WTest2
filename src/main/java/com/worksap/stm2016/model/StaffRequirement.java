@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+//import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
@@ -66,9 +68,10 @@ public class StaffRequirement {
 	@Column(name = "\"requireNum\"", nullable = false)
 	Integer requireNum;
 	
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name="ss1604c187_rd4.stfrq_skill", joinColumns = {@JoinColumn(name = "skill_id")},
 			inverseJoinColumns = {@JoinColumn(name = "stfrq_id")})
+	@JsonIgnore
 	List<Skill> stfrqSkillList = new ArrayList<Skill>();
 	
 	@Column(name = "\"expectDate\"")
@@ -83,4 +86,5 @@ public class StaffRequirement {
 
 	@Column(name = "status")
 	Integer status;
+	
 }

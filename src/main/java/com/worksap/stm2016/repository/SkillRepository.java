@@ -12,4 +12,6 @@ public interface SkillRepository extends PagingAndSortingRepository<Skill, Long>
 	
 	Page<Skill> findAll(Pageable pageable);
 
+	Skill findBySkillName(String skillName);
+
 }

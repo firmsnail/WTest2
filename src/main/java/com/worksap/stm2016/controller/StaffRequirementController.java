@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.CurrentUser;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.StaffRequirement;
+import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
 
@@ -22,17 +24,27 @@ public class StaffRequirementController {
 	
 	@Autowired
 	StaffRequirementService staffRequirementService;
+	@Autowired
+	PersonService personService;
 	
 	@RequestMapping(value={"/showStaffRequirements"},  method = RequestMethod.GET)
 	public String showStaffRequirements(Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<StaffRequirement> requirements = null;
-		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
-			requirements = curUser.getUser().getRequirementsForHRM();
-		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_RECRUITER) {
-			requirements = curUser.getUser().getRequirementsForRecruiter();
-		} else if (curUser.getUser().getDepartment() != null){
-			requirements = curUser.getUser().getDepartment().getStaffRequirementList();
+		Person cUser = personService.findById(curUser.getId());
+		List<StaffRequirement> requirements = staffRequirementService.findAll();
+		//System.out.println("test req: " + requirements);
+		StaffRequirement cReq = staffRequirementService.findOne(2L);
+		if (cReq != null) System.out.println("cReq: " + cReq.getStaffRequirementId());
+		if (cUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
+			//requirements = cUser.getRequirementsForHRM();
+			requirements = staffRequirementService.findByHRManager(cUser);
+		} else if (cUser.getRole().getRoleId() == CommonUtils.ROLE_RECRUITER) {
+			requirements = cUser.getRequirementsForRecruiter();
+		} else if (cUser.getDepartment() != null){
+			System.out.println("team manger!");
+			//requirements = cUser.getDepartment().getStaffRequirementList();
+			requirements = staffRequirementService.findByDepartment(cUser.getDepartment());
+			System.out.println("requirements: " + requirements.size());
 		}
 		model.addAttribute("requirements", requirements);
 		return "requirement/showStaffRequirements";

@@ -12,4 +12,5 @@ public interface SkillService {
 	public Page<Skill> findAll(Pageable pageable);
 	public Skill save(Skill skill);
 	public Skill findOne(Long id);
+	public Skill findBySkillName(String skillName);
 }

@@ -129,7 +129,29 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 		curRequirement.setHrManager(hrManager);
 		
 		curRequirement.setStatus(CommonUtils.REQUIREMENTS_HR_MANAGER_PROCESSING);
+		staffRequirementRepository.save(curRequirement);
 		return curRequirement;
+	}
+
+	@Override
+	public List<StaffRequirement> findByDepartment(Department department) {
+		return staffRequirementRepository.findByStfrqDepartment(department);
+	}
+
+	@Override
+	public List<StaffRequirement> findByHRManager(Person cUser) {
+		return staffRequirementRepository.findByHrManager(cUser);
+	}
+
+	@Override
+	public void delete(Long requirementId) {
+		//List<StaffRequirement> reqList = (List<StaffRequirement>) staffRequirementRepository.findAll();
+		//System.out.println("reqList: " + reqList);
+		System.out.println("requirementId: " + requirementId);
+		StaffRequirement requirement = staffRequirementRepository.findOne(requirementId);
+		System.out.println("requirement: " + requirement);
+		staffRequirementRepository.delete(requirement);
+		//staffRequirementRepository.delete(requirementId);
 	}
 
 }

@@ -32,4 +32,7 @@ public interface StaffRequirementService {
 	public List<StaffRequirement> findByRecruiterAndStatusAndExpectDateNotAfter(Person recruiter, Integer status, Date endDate);
 	public List<StaffRequirement> findByRecruiterAndStatus(Person recruiter, Integer status);
 	public StaffRequirement add(RequirementForm requirement);
+	public List<StaffRequirement> findByDepartment(Department department);
+	public List<StaffRequirement> findByHRManager(Person cUser);
+	public void delete(Long requirementId);
 }
