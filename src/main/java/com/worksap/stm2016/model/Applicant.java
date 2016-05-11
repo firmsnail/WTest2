@@ -28,11 +28,11 @@ public class Applicant {
 	@Column(name = "applicant_id")
 	private Long applicantId;
 	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "person_id", referencedColumnName = "person_id")
 	private Person applicant;
 	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "plan_id", referencedColumnName = "plan_id")
 	private RecruitingPlan planForApplicant;
 	

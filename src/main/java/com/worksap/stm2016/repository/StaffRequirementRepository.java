@@ -43,4 +43,5 @@ public interface StaffRequirementRepository extends PagingAndSortingRepository<S
 	List<StaffRequirement> findByHrManager(Person hrManager);
 
 
+
 }

@@ -40,25 +40,25 @@ public class StaffRequirement {
 	@Column(name = "reason")
 	private String reason;
 	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "department_id", referencedColumnName = "department_id")
 	@JsonIgnore
 	private Department stfrqDepartment;
 	
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "plan_id", referencedColumnName = "plan_id")
 	@JsonIgnore
 	private RecruitingPlan recruitingPlan;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "hrmanager_id", referencedColumnName = "person_id")
 	@JsonIgnore
 	private Person hrManager;
 	@Column(name = "\"hrmComments\"")
 	private String hrManagerComments;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "recruiter_id", referencedColumnName = "person_id")
 	@JsonIgnore
 	private Person recruiter;
@@ -68,7 +68,7 @@ public class StaffRequirement {
 	@Column(name = "\"requireNum\"", nullable = false)
 	Integer requireNum;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name="ss1604c187_rd4.stfrq_skill", joinColumns = {@JoinColumn(name = "skill_id")},
 			inverseJoinColumns = {@JoinColumn(name = "stfrq_id")})
 	@JsonIgnore
@@ -86,5 +86,6 @@ public class StaffRequirement {
 
 	@Column(name = "status")
 	Integer status;
+
 	
 }

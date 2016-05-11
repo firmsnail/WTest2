@@ -41,7 +41,7 @@ public class RecruitingPlan {
 	@Column(name = "\"planNum\"", nullable = false)
 	Integer planNum;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "hrmanager_id", referencedColumnName = "person_id")
 	@JsonIgnore
 	private Person planHRManager;

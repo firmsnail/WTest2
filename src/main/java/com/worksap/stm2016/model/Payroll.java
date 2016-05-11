@@ -28,11 +28,11 @@ public class Payroll {
 	@Column(name = "payroll_id")
 	private Long payrollId;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "department_id", referencedColumnName = "department_id")
 	private Department payrollDepartment;
 	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "employee_id", referencedColumnName = "person_id")
 	private Person payrollEmployee;
 	

@@ -36,7 +36,7 @@ public class Interview {
 	@JoinColumn(nullable = false, name = "interviewee_id", referencedColumnName = "person_id")
 	private Person interviewee;
 	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "plan_id", referencedColumnName = "plan_id")
 	private RecruitingPlan planForInterview;
 	

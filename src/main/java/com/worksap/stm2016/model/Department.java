@@ -33,7 +33,7 @@ public class Department {
 	@Column(name = "description")
 	private String description;
 	
-	@OneToOne(optional = true, cascade = CascadeType.REFRESH)
+	@OneToOne(optional = false, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "manager_id", referencedColumnName = "person_id")
 	Person manager;
 	
@@ -44,15 +44,18 @@ public class Department {
 	@OrderBy("expectDate ASC, submitDate ASC")
 	List<StaffRequirement> staffRequirementList;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="hireDepartment", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="hireDepartment", fetch = FetchType.LAZY)
 	List<Hire> hireList;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="dismissionDepartment", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="dismissionDepartment", fetch = FetchType.LAZY)
 	List<Dismission> dismissionList;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="attendanceDepartment", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="attendanceDepartment", fetch = FetchType.LAZY)
 	List<Attendance> attendanceList;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="leaveDepartment", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="leaveDepartment", fetch = FetchType.LAZY)
 	List<Leave> leaveList;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "payrollDepartment", targetEntity = Payroll.class, fetch = FetchType.LAZY)
+	private List<Payroll> payrollList;
 }

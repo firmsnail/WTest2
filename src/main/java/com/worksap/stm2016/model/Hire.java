@@ -30,25 +30,25 @@ public class Hire {
 	@Column(name = "hire_id")
 	private Long hireId;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "department_id", referencedColumnName = "department_id")
 	private Department hireDepartment;
 	
-	@OneToOne(optional = true)
+	@OneToOne(optional = false)
 	@JoinColumn(nullable = false, name = "person_id", referencedColumnName = "person_id")
 	private Person hirePerson;
 	
 	@Column(name = "commment")
 	private String comment;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "hrmanager_id", referencedColumnName = "person_id")
 	@JsonIgnore
 	private Person hireHRManager;
 	@Column(name = "\"hrmComments\"")
 	private String hrManagerComments;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "recruiter_id", referencedColumnName = "person_id")
 	@JsonIgnore
 	private Person hireRecruiter;

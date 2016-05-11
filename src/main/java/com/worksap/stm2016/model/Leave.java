@@ -28,11 +28,11 @@ public class Leave {
 	@Column(name = "leave_id")
 	private Long leaveId;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "department_id", referencedColumnName = "department_id")
 	private Department leaveDepartment;
 	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "person_id", referencedColumnName = "person_id")
 	private Person leavePerson;
 	

@@ -60,7 +60,7 @@ public class Person {
 	private String phone;
 	
 	//@ManyToOne(optional = true)
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "department_id", referencedColumnName = "department_id")
 	@JsonIgnore
 	Department department;
@@ -97,7 +97,7 @@ public class Person {
 	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<RecruitingPlan> plansForHRM;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "planMaker", targetEntity = RecruitingPlan.class, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planMaker", targetEntity = RecruitingPlan.class, fetch = FetchType.LAZY)
 	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<RecruitingPlan> plansForRecruiter;
 	
@@ -132,15 +132,18 @@ public class Person {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "interviewee", targetEntity = Interview.class, fetch = FetchType.LAZY)
 	private List<Interview> interviewedList;		// for interviewee
 	
-	@OneToOne(cascade = CascadeType.REFRESH, mappedBy = "hirePerson", targetEntity = Hire.class, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "hirePerson", targetEntity = Hire.class, fetch = FetchType.LAZY)
 	private Hire hire;
 	
-	@OneToOne(cascade = CascadeType.REFRESH, mappedBy = "dismissionPerson", targetEntity = Dismission.class, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "dismissionPerson", targetEntity = Dismission.class, fetch = FetchType.LAZY)
 	private Dismission dismission;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "attendancePerson", targetEntity = Attendance.class, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "attendancePerson", targetEntity = Attendance.class, fetch = FetchType.LAZY)
 	private List<Attendance> attendanceList;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "leavePerson", targetEntity = Leave.class, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "leavePerson", targetEntity = Leave.class, fetch = FetchType.LAZY)
 	private List<Leave> leaveList;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "payrollEmployee", targetEntity = Payroll.class, fetch = FetchType.LAZY)
+	private List<Payroll> payrollList;
 }

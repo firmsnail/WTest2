@@ -3,6 +3,7 @@ package com.worksap.stm2016.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.ApplicantService;
@@ -95,5 +97,15 @@ public class RecruiterController {
 			model.addAttribute("interviews", interviews);
 		}
 		return "recruiter/showInterviews";
+	}
+	
+	@RequestMapping(value = "/processOneRequirement")
+	public String processOneRequirement(Long requirementId, Model model) {
+		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
+		if (requirement != null) {
+			requirement.setStatus(CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
+			requirement = staffRequirementService.findOne(requirementId);
+		}
+		return "redirect:/requirement/showStaffRequirements";
 	}
 }

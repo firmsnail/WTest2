@@ -146,7 +146,7 @@
 														<c:when test="${currentUser.user.role.roleId == 2}">
 															<c:choose>
 																<c:when test="${requirement.status == 2}">		<!-- REQUIREMENTS_RECRUITER_PROCESSING -->
-																	<button type="button" class="btn btn-success">Process</button>
+																	<a href="/recruiter/processOneRequirement?requirementId=${requirement.staffRequirementId }"><button type="button" class="btn btn-success">Process</button></a>
 																</c:when>
 																<c:otherwise>
 																	<button type="button" class="btn btn-success disabled">Process</button>

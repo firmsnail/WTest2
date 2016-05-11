@@ -171,5 +171,10 @@ public class PersonServiceImpl implements PersonService{
 		return personRepository.findByAgeIsBetween(startAge, endAge);
 	}
 
+	@Override
+	public List<Person> findByRole(Role role) {
+		return personRepository.findByRole(role);
+	}
+
 }
 

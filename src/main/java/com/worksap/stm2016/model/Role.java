@@ -30,6 +30,6 @@ public class Role {
 	@Column(name = "description")
 	private String description;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy="role", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="role", fetch = FetchType.LAZY)
 	List<Person> employees;
 }

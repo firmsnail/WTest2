@@ -2,6 +2,7 @@ package com.worksap.stm2016.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.validation.Valid;
 
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.modelForm.UserCreateForm;
@@ -24,6 +26,7 @@ import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Hire;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.DepartmentService;
@@ -31,6 +34,7 @@ import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
+import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -50,6 +54,8 @@ public class HRManagerController {
 	private DepartmentService departmentService;
 	@Autowired
 	private PersonService personService;
+	@Autowired
+	private RoleService roleService;
 	@Autowired
 	private StaffRequirementService staffRequirementService;
 	@Autowired
@@ -131,24 +137,29 @@ public class HRManagerController {
 		}
 	}
 
-	@RequestMapping(value = "/aprroveOneRequirement",  method = RequestMethod.POST)
+	@RequestMapping(value = "/aprroveOneRequirement")
 	public String aprroveOneRequirement(Long requirementId, Model model) {
 		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
-		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (requirement != null) {
-			requirement.setHrManager(curUser.getUser());
+		Role recruiterRole = roleService.findOne(CommonUtils.ROLE_RECRUITER);
+		List<Person> recruiters = personService.findByRole(recruiterRole);
+		System.out.println("recruiter.size: " + recruiters.size());
+		if (requirement != null && recruiters != null && recruiters.size() > 0) {
+			Random rand = new Random();
+			Integer indx = rand.nextInt(recruiters.size());
+			Person recruiter = recruiters.get(indx);
 			requirement.setStatus(CommonUtils.REQUIREMENTS_RECRUITER_PROCESSING);
+			requirement.setRecruiter(recruiter);
+			requirement = staffRequirementService.findOne(requirementId);
 		}
 		return "redirect:/requirement/showStaffRequirements";
 	}
 	
-	@RequestMapping(value = "/rejectOneRequirement",  method = RequestMethod.POST)
+	@RequestMapping(value = "/rejectOneRequirement")
 	public String rejectOneRequirement(Long requirementId, Model model) {
 		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
-		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (requirement != null) {
-			requirement.setHrManager(curUser.getUser());
 			requirement.setStatus(CommonUtils.REQUIREMENTS_REJECT);
+			requirement = staffRequirementService.findOne(requirementId);
 		}
 		return "redirect:/requirement/showStaffRequirements";
 	}
@@ -267,4 +278,21 @@ public class HRManagerController {
         }
 		return "redirect:/user/showEmployees";
 	}
+	/*
+	@ResponseBody
+	@RequestMapping(value = "/approveRequirement",  method = RequestMethod.POST)
+	public String delDepartment(Long requirementId) {
+		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
+		Role recruiterRole = roleService.findOne(CommonUtils.ROLE_RECRUITER);
+		List<Person> recruiters = personService.findByRole(recruiterRole);
+		if (requirement != null && recruiters != null && recruiters.size() > 0) {
+			requirement.setStatus(CommonUtils.REQUIREMENTS_RECRUITER_PROCESSING);
+			Random rand = new Random();
+			Integer indx = rand.nextInt(recruiters.size());
+			Person recruiter = recruiters.get(indx);
+			requirement.setRecruiter(recruiter);
+		}
+		//staffRequirementService.delete(requirementId);
+		return "success";
+	}*/
 }

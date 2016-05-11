@@ -30,25 +30,25 @@ public class Dismission {
 	@Column(name = "dismission_id")
 	private Long dismissionId;
 
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "department_id", referencedColumnName = "department_id")
 	private Department dismissionDepartment;
 	
-	@OneToOne(optional = true)
+	@OneToOne(optional = false)
 	@JoinColumn(nullable = false, name = "person_id", referencedColumnName = "person_id")
 	private Person dismissionPerson;
 	
 	@Column(name = "commment")
 	private String comment;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "hrmanager_id", referencedColumnName = "person_id")
 	@JsonIgnore
 	private Person dismissionHRManager;
 	@Column(name = "\"hrmComments\"")
 	private String hrManagerComments;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "cbspecialist_id", referencedColumnName = "person_id")
 	@JsonIgnore
 	private Person dismissionCBSpecialist;

@@ -37,10 +37,10 @@ public class Skill {
 			inverseJoinColumns = {@JoinColumn(name = "skill_id")})
 	List<Person> users;
 	
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "stfrqSkillList")
+	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "stfrqSkillList")
 	private List<StaffRequirement> stfrqList;
 	
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "planSkillList")
+	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "planSkillList")
 	private List<RecruitingPlan> planList;
 	
 	
