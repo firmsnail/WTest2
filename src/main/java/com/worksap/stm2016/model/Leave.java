@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
 
@@ -39,6 +40,13 @@ public class Leave {
 	@Column(name = "reason")
 	private String reason;
 	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "cbspecialist_id", referencedColumnName = "person_id")
+	@JsonIgnore
+	private Person leaveCBSpecialist;
+	@Column(name = "\"cbComments\"")
+	private String cbComments;
+	
 	@Column(name = "\"startDate\"")
 	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)
@@ -50,6 +58,6 @@ public class Leave {
 	private Date endDate;
 	
 	@Column(name = "status")
-	private String status;
+	private Integer status;
 
 }

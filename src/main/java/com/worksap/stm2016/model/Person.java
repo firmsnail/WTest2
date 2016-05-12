@@ -144,6 +144,9 @@ public class Person {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "leavePerson", targetEntity = Leave.class, fetch = FetchType.LAZY)
 	private List<Leave> leaveList;
 	
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "leaveCBSpecialist", targetEntity = Leave.class, fetch = FetchType.LAZY)
+	private List<Leave> leavesForCBSpecialist;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "payrollEmployee", targetEntity = Payroll.class, fetch = FetchType.LAZY)
 	private List<Payroll> payrollList;
 }

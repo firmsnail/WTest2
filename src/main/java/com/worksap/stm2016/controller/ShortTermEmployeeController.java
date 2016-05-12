@@ -20,6 +20,7 @@ import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.modelForm.DismissionForm;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.InterviewService;
+import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.validator.DismissionFormValidator;
 
 @Controller
@@ -31,6 +32,8 @@ public class ShortTermEmployeeController {
 	private InterviewService interviewService;
 	@Autowired
 	private DismissionService dismissionService;
+	@Autowired
+	private LeaveService leaveService;
 	
 	@Autowired
 	private DismissionFormValidator  dismissionFormValidator;
@@ -80,4 +83,11 @@ public class ShortTermEmployeeController {
 		return "redirect:/dismission/showDismissions";
 	}
 	
+	@PreAuthorize("@currentUserServiceImpl.canDeleteLeave(principal, #dismissionId)")
+	//@ResponseBody
+	@RequestMapping(value = "/deleteOneLeave")
+	public String deleteOneLeave(Long leaveId) {
+		leaveService.delete(leaveId);
+		return "redirect:/leave/showLeaves";
+	}
 }

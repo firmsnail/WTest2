@@ -16,12 +16,14 @@ import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Interview;
+import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.InterviewService;
+import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -34,6 +36,8 @@ public class CBSpecialistController {
 	@Autowired
 	private DismissionService dismissionService;
 	@Autowired
+	private LeaveService leaveService;
+	@Autowired
 	private PersonService personService;
 
 	
@@ -44,8 +48,18 @@ public class CBSpecialistController {
 			dismission.setStatus(CommonUtils.DISMISSION_FINISH);
 			dismission.getDismissionPerson().setStatus(CommonUtils.EMPLOYEE_DISMISSION);
 			dismission = dismissionService.findOne(dismissionId);
-			Person cb = personService.findById(dismission.getDismissionPerson().getPersonId());
+			personService.findById(dismission.getDismissionPerson().getPersonId());
 		}
 		return "redirect:/dismission/showDismissions";
+	}
+	
+	@RequestMapping(value = "/processOneLeave")
+	public String processOneLeave(Long leaveId, Model model) {
+		Leave leave = leaveService.findOne(leaveId);
+		if (leave != null) {
+			leave.setStatus(CommonUtils.LEAVE_FINISH);
+			leave = leaveService.findOne(leaveId);
+		}
+		return "redirect:/leave/showLeaves";
 	}
 }

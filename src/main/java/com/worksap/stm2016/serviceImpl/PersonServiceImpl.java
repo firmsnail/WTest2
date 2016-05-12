@@ -79,6 +79,7 @@ public class PersonServiceImpl implements PersonService{
 		person.setPassword(CommonUtils.passwordEncoder().encode(form.getPassword()));
 		person.setFirstName(form.getFirstName());
 		person.setLastName(form.getLastName());
+		person.setStatus(CommonUtils.EMPLOYEE_REGISTERED);
 		return personRepository.save(person);
 	}
 
@@ -120,6 +121,7 @@ public class PersonServiceImpl implements PersonService{
 			person = personRepository.save(person);
 		}
 		EmailUtils.notifyAddingEmployeeByEmail(form.getUserName(), form.getPassword(), form.getEmail());
+		person.setStatus(CommonUtils.EMPLOYEE_WORKING);
 		return person;
 	}
 

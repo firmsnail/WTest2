@@ -32,14 +32,14 @@ public class LeaveController {
 	@RequestMapping(value={"/showLeaves"},  method = RequestMethod.GET)
 	public String showLeaves(Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Person cUser = personService.findById(curUser.getId());
+		//Person cUser = personService.findById(curUser.getId());
 		List<Leave> leaves = null;
 		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_CB_SPECIALIST) {
 			leaves = leaveService.findAll();
 		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_SHORT_TERM_EMPLOYEE) {
-			leaves = cUser.getLeaveList();
+			leaves = leaveService.findByLeavePerson(curUser.getUser());
 		} else if (curUser.getUser().getDepartment() != null){
-			leaves = cUser.getDepartment().getLeaveList();
+			leaves = leaveService.findByLeaveDepartment(curUser.getUser().getDepartment());
 		}
 		model.addAttribute("leaves", leaves);
 		return "leave/showLeaves";

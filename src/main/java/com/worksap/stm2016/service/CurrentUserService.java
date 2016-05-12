@@ -14,5 +14,6 @@ public interface CurrentUserService {
 	boolean canAccessDismission(CurrentUser currentUser, Long dismissionId);
 	boolean canDeleteDismission(CurrentUser currentUser, Long dismissionId);
 	boolean canAccessLeave(CurrentUser currentUser, Long leaveId);
+	boolean canDeleteLeave(CurrentUser currentUser, Long leaveId);
 
 }

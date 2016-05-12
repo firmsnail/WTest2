@@ -293,6 +293,10 @@
                     <a href="/dismission/showDismissions"><i class="fa fa-users fa-fw"></i> Dismissions</a>
                 </li>
                 
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 1}">class="hidden"</c:if> >
+                    <a href="/leave/showLeaves"><i class="fa fa-users fa-fw"></i> Leaves</a>
+                </li>
+                
                 <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 1}">class="hidden"</c:if> >
                     <a href="/hr-manager/analyzeEmployeeStructure"><i class="fa fa-users fa-fw"></i> Analyze Employee Structure</a>
                 </li>

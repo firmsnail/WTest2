@@ -1,6 +1,7 @@
 package com.worksap.stm2016.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.validation.Valid;
 
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Dismission;
+import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.modelForm.RequirementForm;
 import com.worksap.stm2016.service.DismissionService;
+import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.service.SkillService;
@@ -42,12 +45,14 @@ public class TeamManagerController {
 	@Autowired
 	private DismissionService dismissionService;
 	@Autowired
+	private LeaveService leaveService;
+	@Autowired
 	private RoleService roleService;
 	@Autowired
 	private PersonService personService;
 	
 	@Autowired
-	private RequirementFormValidator  requirementFormValidator;
+	private RequirementFormValidator requirementFormValidator;
 	
 	//need add pre-authorize for check whether can add requirement
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.GET)
@@ -108,5 +113,31 @@ public class TeamManagerController {
 			dismission = dismissionService.findOne(dismissionId);
 		}
 		return "redirect:/dismission/showDismissions";
+	}
+	
+	@RequestMapping(value = "/aprroveOneLeave")
+	public String aprroveOneLeave(Long leaveId, Model model) {
+		Leave leave = leaveService.findOne(leaveId);
+		Role cbRole = roleService.findOne(CommonUtils.ROLE_CB_SPECIALIST);
+		List<Person> cbSpecialists = personService.findByRole(cbRole);
+		if (leave != null && cbSpecialists != null && cbSpecialists.size() > 0) {
+			Random rand = new Random();
+			Integer indx = rand.nextInt(cbSpecialists.size());
+			Person cbSpecialist = cbSpecialists.get(indx);
+			leave.setStatus(CommonUtils.LEAVE_CB_SPECIALIST_PROCESSING);
+			leave.setLeaveCBSpecialist(cbSpecialist);
+			leave = leaveService.findOne(leaveId);
+		}
+		return "redirect:/leave/showLeaves";
+	}
+	
+	@RequestMapping(value = "/rejectOneLeave")
+	public String rejectOneLeave(Long leaveId, Model model) {
+		Leave leave = leaveService.findOne(leaveId);
+		if (leave != null) {
+			leave.setStatus(CommonUtils.LEAVE_REJECT);
+			leave = leaveService.findOne(leaveId);
+		}
+		return "redirect:/leave/showLeaves";
 	}
 }
