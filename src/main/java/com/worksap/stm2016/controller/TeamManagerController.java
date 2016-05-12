@@ -1,7 +1,5 @@
 package com.worksap.stm2016.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,19 +17,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.CurrentUser;
-import com.worksap.stm2016.model.Department;
-import com.worksap.stm2016.model.Interview;
+import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
-import com.worksap.stm2016.model.StaffRequirement;
-import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.modelForm.RequirementForm;
-import com.worksap.stm2016.service.ApplicantService;
-import com.worksap.stm2016.service.InterviewService;
+import com.worksap.stm2016.service.DismissionService;
+import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
-import com.worksap.stm2016.validator.DepartmentFormValidator;
 import com.worksap.stm2016.validator.RequirementFormValidator;
 
 @Controller
@@ -40,13 +36,15 @@ import com.worksap.stm2016.validator.RequirementFormValidator;
 public class TeamManagerController {
 	
 	@Autowired
-	private ApplicantService applicantService;
-	@Autowired
-	private InterviewService interviewService;
-	@Autowired
 	private StaffRequirementService staffRequirementService;
 	@Autowired
 	private SkillService skillService;
+	@Autowired
+	private DismissionService dismissionService;
+	@Autowired
+	private RoleService roleService;
+	@Autowired
+	private PersonService personService;
 	
 	@Autowired
 	private RequirementFormValidator  requirementFormValidator;
@@ -63,6 +61,7 @@ public class TeamManagerController {
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.POST)
 	public String addDepartment(@ModelAttribute("requirement") @Valid RequirementForm requirement, BindingResult bindingResult) {
 		System.out.println("@addDepartment start!");
+		//TODO Check Manager existed!
 		requirementFormValidator.validate(requirement, bindingResult);
 		
 		if (bindingResult.hasErrors()) {
@@ -84,5 +83,30 @@ public class TeamManagerController {
 	public String delDepartment(Long requirementId) {
 		staffRequirementService.delete(requirementId);
 		return "success";
+	}
+	
+	@RequestMapping(value = "/aprroveOneDismission")
+	public String aprroveOneDismission(Long dismissionId, Model model) {
+		Dismission dismission = dismissionService.findOne(dismissionId);
+		if (dismission != null) {
+			//dismission.setDismissionHRManager(curUser.getUser());
+			System.out.println("here!");
+			dismission.setStatus(CommonUtils.DISMISSION_HR_MANAGER_PROCESSING);
+			Role hrRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+			Person hrManager = personService.findByRole(hrRole).get(0);
+			dismission.setDismissionHRManager(hrManager);
+			dismission = dismissionService.findOne(dismissionId);
+		}
+		return "redirect:/dismission/showDismissions";
+	}
+	
+	@RequestMapping(value = "/rejectOneDismission")
+	public String rejectOneDismission(Long dismissionId, Model model) {
+		Dismission dismission = dismissionService.findOne(dismissionId);
+		if (dismission != null) {
+			dismission.setStatus(CommonUtils.DISMISSION_TEAM_MANAGER_REJECT);
+			dismission = dismissionService.findOne(dismissionId);
+		}
+		return "redirect:/dismission/showDismissions";
 	}
 }

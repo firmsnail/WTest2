@@ -39,6 +39,16 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+                        	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 5 }">hidden="hidden"</c:if>>
+                        		<a href="/short-term-employee/addDismission">
+									<button type="button" class="btn btn-success btn-lg">Apply Dismission</button>
+								</a>
+                        	</div>
+                        	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 4 }">hidden="hidden"</c:if>>
+                        		<a href="/team-manager/addDismission">
+									<button type="button" class="btn btn-success btn-lg">Add Dismission</button>
+								</a>
+                        	</div>
                         	<br>
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -64,48 +74,53 @@
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
-															<c:when test="${dismission.status == 3}">		<!-- DISMISSION_HR_MANAGER_PROCESSING -->
-																<span class="label label-warning">Pending</span>
-															</c:when>
-															<c:when test="${dismission.status == 5}">		<!-- DISMISSION_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Approved -->
-																<span class="label label-success">Approved</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${dismission.status == 2}">		<!-- DISMISSION_HR_MANAGER_PROCESSING -->
+																	<span class="label label-warning">Pending</span>
+																</c:when>
+																<c:when test="${dismission.status == 6}">		<!-- DISMISSION_REJECT -->
+																	<span class="label label-danger">Denied</span>
+																</c:when>
+																<c:otherwise>				<!-- Approved -->
+																	<span class="label label-success">Approved</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 3}">
-															<c:when test="${dismission.status == 2}">		<!-- DISMISSION_CB_SPECIALIST_PROCESSING -->
-																<span class="label label-warning">Pending</span>
-															</c:when>
-															<c:when test="${dismission.status == 5}">		<!-- DISMISSION_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Finished -->
-																<span class="label label-success">Approved</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${dismission.status == 3}">		<!-- DISMISSION_CB_SPECIALIST_PROCESSING -->
+																	<span class="label label-warning">Pending</span>
+																</c:when>
+																<c:otherwise>				<!-- Finished -->
+																	<span class="label label-success">Finished</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 4}">
-															<c:when test="${dismission.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																<span class="label label-warning">Pending</span>
-															</c:when>
-															<c:when test="${dismission.status == 5}">		<!-- HIRE_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Finished -->
-																<span class="label label-success">Approved</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${dismission.status == 1}">		<!-- DISMISSION_TEAM_MANAGER_PROCESSING -->
+																	<span class="label label-warning">Pending</span>
+																</c:when>
+																<c:when test="${dismission.status == 5}">		<!-- DISMISSION_TEAM_MANAGER_REJECT -->
+																	<span class="label label-danger">Denied</span>
+																</c:when>
+																<c:otherwise>				<!-- Finished -->
+																	<span class="label label-success">Approved</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 5}">
-															<c:when test="${dismission.status == 4}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																<span class="label label-success">Approved</span>
-															</c:when>
-															<c:when test="${dismission.status == 5}">		<!-- HIRE_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Finished -->
-																<span class="label label-warning">Pending</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${dismission.status == 4}">		<!-- DISMISSION_FINISH -->
+																	<span class="label label-success">Approved</span>
+																</c:when>
+																<c:when test="${dismission.status == 5 or dismission.status == 6}">		<!-- DISMISSION_REJECT -->
+																	<span class="label label-danger">Denied</span>
+																</c:when>
+																<c:otherwise>
+																	<span class="label label-warning">Pending</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:otherwise>
 															Unknown
@@ -113,34 +128,51 @@
 													</c:choose>
 												</td>
 												<td>
+												
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
-															<c:when test="${dismission.status == 3}">		<!-- HIRE_HR_MANAGER_PROCESSING -->
-																<a href="/hr-manager/aprroveOneDismission?dismissionId=${dismission.dismissionId }"><button type="button" class="btn btn-success">Approve</button></a>
-																<a href="/hr-manager/rejectOneDismission?dismissionId=${dismission.dismissionId }"><button type="button" class="btn btn-danger">Reject</button></a>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-success disabled">Approve</button>
-																<button type="button" class="btn btn-danger disabled">Reject</button>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${dismission.status == 2}">		<!-- DISMISSION_HR_MANAGER_PROCESSING -->
+																	<a href="/hr-manager/aprroveOneDismission?dismissionId=${dismission.dismissionId }"><button type="button" class="btn btn-success">Approve</button></a>
+																	<a href="/hr-manager/rejectOneDismission?dismissionId=${dismission.dismissionId }"><button type="button" class="btn btn-danger">Reject</button></a>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-success disabled">Approve</button>
+																	<button type="button" class="btn btn-danger disabled">Reject</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 3}">
-															<c:when test="${dismission.status == 2}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																<button type="button" class="btn btn-success">Approve</button>
-																<button type="button" class="btn btn-danger">Reject</button>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-success disabled">Approve</button>
-																<button type="button" class="btn btn-danger disabled">Reject</button>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${dismission.status == 3}">		<!-- DISMISSION_CB_SPECIALIST_PROCESSING -->
+																	<a href="/cb-specialist/processOneDismission?dismissionId=${dismission.dismissionId }"><button type="button" class="btn btn-success">Process</button></a>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-success disabled">Process</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 4}">
-															<c:when test="${dismission.status == 1}">		<!-- REQUIREMENTS_RECRUITING -->
-																<button type="button" class="btn btn-danger">Delete</button>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-danger disabled">Delete</button>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${dismission.status == 1}">		<!-- DISMISSION_TEAM_MANAGER_PROCESSING -->
+																	<a href="/team-manager/aprroveOneDismission?dismissionId=${dismission.dismissionId }"><button type="button" class="btn btn-success">Approve</button></a>
+																	<a href="/team-manager/rejectOneDismission?dismissionId=${dismission.dismissionId }"><button type="button" class="btn btn-danger">Reject</button></a>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-success disabled">Approve</button>
+																	<button type="button" class="btn btn-danger disabled">Reject</button>
+																</c:otherwise>
+															</c:choose>
+														</c:when>
+														<c:when test="${currentUser.user.role.roleId == 5}">
+															<c:choose>
+																<c:when test="${dismission.status == 1}">		<!-- DISMISSION_TEAM_MANAGER_PROCESSING -->
+																	<a href="/short-term-employee/deleteOneDismission?dismissionId=${dismission.dismissionId }"><button type="button" class="btn btn-danger">Delete</button></a>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-danger disabled">Delete</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:otherwise>
 															Unknown

@@ -12,6 +12,7 @@ public interface CurrentUserService {
 	boolean canAccessRecruitingPlan(CurrentUser currentUser, Long planId);
 	boolean canAccessHire(CurrentUser currentUser, Long hireId);
 	boolean canAccessDismission(CurrentUser currentUser, Long dismissionId);
+	boolean canDeleteDismission(CurrentUser currentUser, Long dismissionId);
 	boolean canAccessLeave(CurrentUser currentUser, Long leaveId);
 
 }

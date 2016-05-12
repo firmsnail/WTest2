@@ -35,11 +35,18 @@ public class DismissionController {
 		Person cUser = personService.findById(curUser.getId());
 		List<Dismission> dismissions = null;
 		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
-			dismissions = cUser.getDismissionsForHRM();//curUser.getUser().getDismissionsForHRM();
+			dismissions = dismissionService.findByDismissionHRManager(curUser.getUser());
+			//dismissions = cUser.getDismissionsForHRM();//curUser.getUser().getDismissionsForHRM();
 		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_CB_SPECIALIST) {
-			dismissions = cUser.getDismissionsForCBSpecialist();//curUser.getUser().getDismissionsForCBSpecialist();
-		} else if (curUser.getUser().getDepartment() != null){
-			dismissions = cUser.getDepartment().getDismissionList();//curUser.getUser().getDepartment().getDismissionList();
+			dismissions = dismissionService.findByDismissionCBSpecialist(curUser.getUser());
+			//dismissions = cUser.getDismissionsForCBSpecialist();//curUser.getUser().getDismissionsForCBSpecialist();
+		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_TEAM_MANAGER){
+			if (curUser.getUser().getDepartment() != null) {
+				dismissions = dismissionService.findByDismissionDepartment(curUser.getUser().getDepartment());
+			}
+			//dismissions = cUser.getDepartment().getDismissionList();//curUser.getUser().getDepartment().getDismissionList();
+		} else {
+			dismissions = dismissionService.findByDismissionPerson(curUser.getUser());
 		}
 		model.addAttribute("dismissions", dismissions);
 		return "dismission/showDismissions";

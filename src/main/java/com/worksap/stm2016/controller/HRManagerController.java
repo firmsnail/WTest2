@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.modelForm.UserCreateForm;
@@ -208,26 +207,28 @@ public class HRManagerController {
 		return "redirect:/hire/showHires";
 	}
 	
-	@RequestMapping(value = "/aprroveOneDismission",  method = RequestMethod.POST)
+	@RequestMapping(value = "/aprroveOneDismission")
 	public String aprroveOneDismission(Long dismissionId, Model model) {
 		Dismission dismission = dismissionService.findOne(dismissionId);
-		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (dismission != null) {
-			dismission.setDismissionHRManager(curUser.getUser());
-			dismission.setStatus(CommonUtils.DISMISSION_FINISH);
-			Person disPerson = dismission.getDismissionPerson();
-			personService.deleteOne(disPerson.getPersonId());
+		Role cbRole = roleService.findOne(CommonUtils.ROLE_CB_SPECIALIST);
+		List<Person> cbSpecialists = personService.findByRole(cbRole);
+		if (dismission != null && cbSpecialists != null && cbSpecialists.size() > 0) {
+			Random rand = new Random();
+			Integer indx = rand.nextInt(cbSpecialists.size());
+			Person cbSpecialist = cbSpecialists.get(indx);
+			dismission.setStatus(CommonUtils.DISMISSION_CB_SPECIALIST_PROCESSING);
+			dismission.setDismissionCBSpecialist(cbSpecialist);
+			dismission = dismissionService.findOne(dismissionId);
 		}
 		return "redirect:/dismission/showDismissions";
 	}
 	
-	@RequestMapping(value = "/rejectOneDismission",  method = RequestMethod.POST)
+	@RequestMapping(value = "/rejectOneDismission")
 	public String rejectOneDismission(Long dismissionId, Model model) {
 		Dismission dismission = dismissionService.findOne(dismissionId);
-		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (dismission != null) {
-			dismission.setDismissionHRManager(curUser.getUser());
-			dismission.setStatus(CommonUtils.DISMISSION_REJECT);
+			dismission.setStatus(CommonUtils.DISMISSION_HR_MANAGER_REJECT);
+			dismission = dismissionService.findOne(dismissionId);
 		}
 		return "redirect:/dismission/showDismissions";
 	}

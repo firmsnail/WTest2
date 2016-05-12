@@ -135,7 +135,7 @@ public class Person {
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "hirePerson", targetEntity = Hire.class, fetch = FetchType.LAZY)
 	private Hire hire;
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "dismissionPerson", targetEntity = Dismission.class, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "dismissionPerson", targetEntity = Dismission.class, fetch = FetchType.LAZY)			//OneToOne被控方delete的时候需要把主控方相应的字段清空
 	private Dismission dismission;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "attendancePerson", targetEntity = Attendance.class, fetch = FetchType.LAZY)

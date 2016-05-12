@@ -47,10 +47,11 @@ public class CommonUtils {
 
 	final static public Integer DISMISSION_ALL = 0;
 	final static public Integer DISMISSION_TEAM_MANAGER_PROCESSING = 1;
-	final static public Integer DISMISSION_CB_SPECIALIST_PROCESSING = 2;
-	final static public Integer DISMISSION_HR_MANAGER_PROCESSING = 3;
+	final static public Integer DISMISSION_HR_MANAGER_PROCESSING = 2;
+	final static public Integer DISMISSION_CB_SPECIALIST_PROCESSING = 3;
 	final static public Integer DISMISSION_FINISH = 4;
-	final static public Integer DISMISSION_REJECT = 5;
+	final static public Integer DISMISSION_TEAM_MANAGER_REJECT = 5;
+	final static public Integer DISMISSION_HR_MANAGER_REJECT = 6;
 	
 	final static public Integer EMPLOYEE_REGISTERED = 0;
 	final static public Integer EMPLOYEE_CANDIDATE = 1;

@@ -141,4 +141,11 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 		}
 	}
 
+	@Override
+	public boolean canDeleteDismission(CurrentUser currentUser, Long dismissionId) {
+		if (currentUser == null) return false;
+		Dismission dismission = dismissionService.findOne(dismissionId);
+		return dismission.getDismissionPerson() != null && dismission.getDismissionPerson().getPersonId().equals(currentUser.getId());
+	}
+
 }
