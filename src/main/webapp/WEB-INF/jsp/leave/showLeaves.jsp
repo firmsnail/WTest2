@@ -93,10 +93,10 @@
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 5}">
 															<c:choose>
-																<c:when test="${leave.status == 3}">		<!-- DISMISSION_FINISH -->
+																<c:when test="${leave.status == 3}">		<!-- LEAVE_FINISH -->
 																	<span class="label label-success">Approved</span>
 																</c:when>
-																<c:when test="${leave.status == 4}">		<!-- DISMISSION_REJECT -->
+																<c:when test="${leave.status == 4}">		<!-- LEAVE_REJECT -->
 																	<span class="label label-danger">Denied</span>
 																</c:when>
 																<c:otherwise>
@@ -113,7 +113,7 @@
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 3}">
 															<c:choose>
-																<c:when test="${dismission.status == 2}">		<!-- LEAVE_CB_SPECIALIST_PROCESSING -->
+																<c:when test="${leave.status == 2}">		<!-- LEAVE_CB_SPECIALIST_PROCESSING -->
 																	<a href="/cb-specialist/processOneLeave?leaveId=${leave.leaveId }"><button type="button" class="btn btn-success">Process</button></a>
 																</c:when>
 																<c:otherwise>
@@ -123,7 +123,7 @@
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 4}">
 															<c:choose>
-																<c:when test="${dismission.status == 1}">		<!-- LEAVE_TEAM_MANAGER_PROCESSING -->
+																<c:when test="${leave.status == 1}">		<!-- LEAVE_TEAM_MANAGER_PROCESSING -->
 																	<a href="/team-manager/aprroveOneLeave?leaveId=${leave.leaveId }"><button type="button" class="btn btn-success">Approve</button></a>
 																	<a href="/team-manager/rejectOneLeave?leaveId=${leave.leaveId }"><button type="button" class="btn btn-danger">Reject</button></a>
 																</c:when>
@@ -135,7 +135,7 @@
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 5}">
 															<c:choose>
-																<c:when test="${dismission.status == 1}">		<!-- DISMISSION_TEAM_MANAGER_PROCESSING -->
+																<c:when test="${leave.status == 1}">		<!-- LEAVE_TEAM_MANAGER_PROCESSING -->
 																	<a href="/short-term-employee/deleteOneLeave?leaveId=${leave.leaveId }"><button type="button" class="btn btn-danger">Delete</button></a>
 																</c:when>
 																<c:otherwise>

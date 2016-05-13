@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializ
 import lombok.Data;
 
 @Data
-@Table(name="ss1604c187_rd4.leave")
+@Table(name="ss1604c187_rd4.payroll")
 @Entity
 public class Payroll {
 
