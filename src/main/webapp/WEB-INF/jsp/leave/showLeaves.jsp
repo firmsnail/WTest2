@@ -40,7 +40,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                         	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 5 }">hidden="hidden"</c:if>>
-                        		<a href="/short-term-employee/addDismission">
+                        		<a href="/short-term-employee/addLeave">
 									<button type="button" class="btn btn-success btn-lg">Ask a leaving</button>
 								</a>
                         	</div>

@@ -3,7 +3,6 @@ package com.worksap.stm2016.modelForm;
 
 import java.util.Date;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -17,6 +16,9 @@ public class LeaveForm {
 	@NotEmpty
 	private String reason;
 
+	@NotEmpty
+	private String dateRange;
+	
 	@NotNull
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date startDate;

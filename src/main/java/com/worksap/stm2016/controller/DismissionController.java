@@ -32,7 +32,7 @@ public class DismissionController {
 	@RequestMapping(value={"/showDismissions"},  method = RequestMethod.GET)
 	public String showDismissions(Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Person cUser = personService.findById(curUser.getId());
+		//Person cUser = personService.findById(curUser.getId());
 		List<Dismission> dismissions = null;
 		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
 			dismissions = dismissionService.findByDismissionHRManager(curUser.getUser());

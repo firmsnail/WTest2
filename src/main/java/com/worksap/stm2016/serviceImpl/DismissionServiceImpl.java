@@ -15,7 +15,6 @@ import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
-import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.DismissionForm;
 import com.worksap.stm2016.repository.DismissionRepository;
 import com.worksap.stm2016.repository.PersonRepository;

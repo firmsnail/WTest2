@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.modelForm.LeaveForm;
 
 public interface LeaveService {
 	public List<Leave> findAll();
@@ -17,4 +18,5 @@ public interface LeaveService {
 	public List<Leave> findByLeavePerson(Person user);
 	public List<Leave> findByLeaveDepartment(Department department);
 	public void delete(Long leaveId);
+	public Leave add(LeaveForm leave);
 }

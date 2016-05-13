@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.modelForm.DismissionForm;
+import com.worksap.stm2016.modelForm.LeaveForm;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.validator.DismissionFormValidator;
+import com.worksap.stm2016.validator.LeaveFormValidator;
 
 @Controller
 @PreAuthorize("hasAuthority('SHORT-TERM-EMPLOYEE')")
@@ -37,10 +39,12 @@ public class ShortTermEmployeeController {
 	
 	@Autowired
 	private DismissionFormValidator  dismissionFormValidator;
+	@Autowired
+	private LeaveFormValidator  leaveFormValidator;
 	
 	//need add pre-authorize for check whether can add requirement
 	@RequestMapping(value = "/addDismission",  method = RequestMethod.GET)
-	public String addRequirement(Model model) {
+	public String addDismission(Model model) {
 		DismissionForm dismission = new DismissionForm();
 		model.addAttribute("dismission", dismission);
 		return "short-term-employee/addDismission";
@@ -63,6 +67,33 @@ public class ShortTermEmployeeController {
             return "short-term-employee/addDismission";
         }
 		return "redirect:/dismission/showDismissions";
+	}
+	
+	//need add pre-authorize for check whether can add leave
+	@RequestMapping(value = "/addLeave",  method = RequestMethod.GET)
+	public String addLeave(Model model) {
+		LeaveForm leave = new LeaveForm();
+		System.out.println("addLeave here0");
+		model.addAttribute("leave", leave);
+		System.out.println("addLeave here");
+		return "short-term-employee/addLeave";
+	}
+	
+	@RequestMapping(value = "/addLeave",  method = RequestMethod.POST)
+	public String addLeave(@ModelAttribute("leave") @Valid LeaveForm leave, BindingResult bindingResult) {
+
+		leaveFormValidator.validate(leave, bindingResult);
+		
+		if (bindingResult.hasErrors()) {
+			System.out.println("Adding requirement occurs error!");
+			return "short-term-employee/addLeave";
+		}
+		try {
+			leaveService.add(leave);
+        } catch (DataIntegrityViolationException e) {
+            return "short-term-employee/addDismission";
+        }
+		return "redirect:/leave/showLeaves";
 	}
 	
 	@RequestMapping(value = "/showInterviews",  method = RequestMethod.GET)

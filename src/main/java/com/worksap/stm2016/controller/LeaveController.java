@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Leave;
-import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.utils.CommonUtils;
