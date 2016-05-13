@@ -12,7 +12,6 @@
 
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/select2.full.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/bootstrap-datepicker.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/static/js/skill/skill.js"></script>
 
 	<script>
 	  $(function () {
@@ -27,42 +26,27 @@
 	        autoclose: true,
 	        format: "yyyy-mm-dd"
 	    });
+	    
+	    $( "#invalidDate" ).datepicker({
+	    	startDate: new Date(),
+	        //defaultDate: "+1w",
+	        //changeMonth: true,
+	        //numberOfMonths: 1,
+	        autoclose: true,
+	        format: "yyyy-mm-dd"
+	    });
 	  });
 	</script>
 	
 </head>
 
 <body>
-	<div class="modal fade" id="skillModal" tabindex="-1" role="dialog" aria-labelledby="skillModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="skillModalLabel">New Skill</h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-group">
-						<label for="skill-name" class="control-label">Skill Name:</label>
-						<input type="text" class="form-control" id="skill-name">
-					</div>
-					<div class="form-group">
-						<label for="skill-description" class="control-label">Description:</label>
-						<textarea class="form-control" id="skill-description"></textarea>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<a type="button" class="btn btn-primary" onclick="addSkill('${_csrf.parameterName}', '${_csrf.token}')">Add</a>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div id="wrapper">
 		<jsp:include page="../common/nav.jsp" />
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Create Requirement</h1>
+                    <h1 class="page-header">Create Plan</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -81,28 +65,16 @@
 				            <div class="box-body">
 				            	<div class="row">
 				            		<div class="col-md-12">
-							              <springForm:form class="form-horizontal col-md-12" action="/team-manager/addRequirement" modelAttribute="requirement" method="POST">
+							              <springForm:form class="form-horizontal col-md-12" action="/recruiter/addPlan" modelAttribute="plan" method="POST">
 								              	<springForm:errors path="" element="div" />
-								              	
-								              	<!-- department -->
-												<div class="form-group" hidden="hidden">
-													<label class="control-label col-lg-3" for="departmentId">Department</label>
-													<div class="col-lg-9">
-														<springForm:input path="departmentId" type="text" class="form-control" id="departmentId" name="departmentId" value="${currentUser.user.department.departmentId}" />
-														<div class="alert-danger">
-															<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
-															<springForm:errors path="departmentId" cssClass="error"/>
-														</div>
-													</div>
-												</div>
 								              	
 								                <!-- text input -->
 								                <div class="form-group">
 									                  <label>Total Requirement</label>
 									                  <div>
-									                  		<springForm:input path="requireNum" type="text" class="form-control" id="requireNum" name="requireNum" />
+									                  		<springForm:input path="planNum" type="text" class="form-control" id="planNum" name="planNum" />
 															<div class="alert-danger">	
-																<springForm:errors path="requireNum" cssClass="error"/>
+																<springForm:errors path="planNum" cssClass="error"/>
 															</div>
 									                  </div>
 								                </div>
@@ -118,8 +90,17 @@
 								                </div>
 								                
 								                <div class="form-group">
+									                  <label>Invalid Date</label>
+									                  <div>
+									                  		<springForm:input path="invalidDate" type="text" class="form-control" id="invalidDate" name="invalidDate" />
+															<div class="alert-danger">	
+																<springForm:errors path="invalidDate" cssClass="error"/>
+															</div>
+									                  </div>
+								                </div>
+								                
+								                <div class="form-group">
 								                	  <label>Skills</label>
-								                	  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#skillModal">New Skill</button>
 									                  <div>
 									                  		<springForm:select path="skills" class="form-control select2" multiple="multiple" data-placeholder="Select skills" name="skills" style="width: 100%;">
 											                	  <c:forEach var="skill" items="${chooseSkills}" varStatus="status">
@@ -131,6 +112,23 @@
 						                               		<div class="alert-danger">
 						                               			<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
 						                               			<springForm:errors path="skills" cssClass="error"/>
+						                               		</div>
+									                  </div>
+								                </div>
+								                
+								                <div class="form-group">
+								                	  <label>Staffing Requirements</label>
+									                  <div>
+									                  		<springForm:select path="requirements" class="form-control select2" multiple="multiple" data-placeholder="Select requirements" name="requirements" style="width: 100%;">
+											                	  <c:forEach var="requirement" items="${chooseRequirements}" varStatus="status">
+											                	  		<option value="${requirement.staffRequirementId}">
+											                	  			ID:${requirement.staffRequirementId}
+											                	  		</option>
+											                	  </c:forEach>
+											                </springForm:select>
+						                               		<div class="alert-danger">
+						                               			<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
+						                               			<springForm:errors path="requirements" cssClass="error"/>
 						                               		</div>
 									                  </div>
 								                </div>

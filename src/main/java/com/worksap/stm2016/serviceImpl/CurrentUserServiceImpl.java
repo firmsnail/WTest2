@@ -155,4 +155,11 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 		return leave.getLeavePerson() != null && leave.getLeavePerson().getPersonId().equals(currentUser.getId());
 	}
 
+	@Override
+	public boolean canDeletePlan(CurrentUser currentUser, Long planId) {
+		if (currentUser == null) return false;
+		RecruitingPlan plan = recruitingPlanService.findOne(planId);
+		return plan != null && plan.getPlanMaker() != null && plan.getPlanMaker().getPersonId().equals(currentUser.getId());
+	}
+
 }

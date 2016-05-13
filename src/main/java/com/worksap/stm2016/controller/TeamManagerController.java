@@ -52,7 +52,7 @@ public class TeamManagerController {
 	@Autowired
 	private RequirementFormValidator requirementFormValidator;
 	
-	//need add pre-authorize for check whether can add requirement
+	//TODO need add pre-authorize for check whether can add requirement
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.GET)
 	public String addRequirement(Model model) {
 		List<Skill> skills = skillService.findAll();
@@ -62,7 +62,7 @@ public class TeamManagerController {
 		return "team-manager/addRequirement";
 	}
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.POST)
-	public String addDepartment(@ModelAttribute("requirement") @Valid RequirementForm requirement, BindingResult bindingResult) {
+	public String addRequirement(@ModelAttribute("requirement") @Valid RequirementForm requirement, BindingResult bindingResult) {
 		System.out.println("@addDepartment start!");
 		//TODO Check Manager existed!
 		requirementFormValidator.validate(requirement, bindingResult);

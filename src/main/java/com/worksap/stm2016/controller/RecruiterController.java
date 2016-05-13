@@ -11,12 +11,16 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -24,14 +28,20 @@ import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
+import com.worksap.stm2016.modelForm.PlanForm;
+import com.worksap.stm2016.modelForm.RequirementForm;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.InterviewService;
+import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
+import com.worksap.stm2016.validator.PlanFormValidator;
+import com.worksap.stm2016.validator.RequirementFormValidator;
 
 @Controller
 @PreAuthorize("hasAuthority('RECRUITER')")
@@ -48,6 +58,11 @@ public class RecruiterController {
 	private SkillService skillService;
 	@Autowired
 	private StaffRequirementService staffRequirementService;
+	@Autowired
+	private RecruitingPlanService recruitingPlanService;
+	
+	@Autowired
+	private PlanFormValidator planFormValidator;
 
 	@RequestMapping(value = "/showAnalyzeRequirments",  method = RequestMethod.GET)
 	public String showAnalyzeRequirments(String strStartDate, String strEndDate, Long departmentId, HttpServletRequest request, Model model) throws ParseException {
@@ -194,5 +209,46 @@ public class RecruiterController {
 			requirement = staffRequirementService.findOne(requirementId);
 		}
 		return "redirect:/requirement/showStaffRequirements";
+	}
+	
+	@RequestMapping(value = "/addPlan",  method = RequestMethod.GET)
+	public String addPlan(Model model) {
+		List<Skill> skills = skillService.findAll();
+		model.addAttribute("chooseSkills", skills);
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+		List<StaffRequirement> requirements = staffRequirementService.findByRecruiterAndStatus(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
+		model.addAttribute("chooseRequirements", requirements);
+		PlanForm plan = new PlanForm();
+		model.addAttribute("plan", plan);
+		return "recruiter/addPlan";
+	}
+	@RequestMapping(value = "/addPlan",  method = RequestMethod.POST)
+	public String addPlan(@ModelAttribute("plan") @Valid PlanForm plan, BindingResult bindingResult) {
+		System.out.println("@addPlan start!");
+		//TODO Check Manager existed!
+		planFormValidator.validate(plan, bindingResult);
+		
+		if (bindingResult.hasErrors()) {
+			System.out.println("expectDate: " + plan.getExpectDate());
+			System.out.println("invalidDate: " + plan.getInvalidDate());
+			System.out.println("Adding plan occurs error!");
+			return "recruiter/addPlan";
+		}
+		try {
+			recruitingPlanService.add(plan);
+        } catch (DataIntegrityViolationException e) {
+            return "recruiter/addPlan";
+        }
+		return "redirect:/plan/showRecruitingPlans";
+	}
+	
+	@PreAuthorize("@currentUserServiceImpl.canDeletePlan(principal, #planId)")
+	//@ResponseBody
+	@RequestMapping(value = "/deleteOnePlan")
+	public String deleteOnePlan(Long planId) {
+		//RecruitingPlan plan = recruitingPlanService.findOne(planId);
+		//List<StaffRequirement> requirement = plan.getRequirements();
+		recruitingPlanService.delete(planId);
+		return "redirect:/plan/showRecruitingPlans";
 	}
 }

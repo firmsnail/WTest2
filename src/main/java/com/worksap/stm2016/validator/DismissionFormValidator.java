@@ -43,8 +43,9 @@ public class DismissionFormValidator implements Validator {
 	private void validateExpectDate(Errors errors, DismissionForm form) {
 		Date expectDate = form.getExpectDate();
 		Date date = new Date();
+		date = CommonUtils.OneWeekAfter(date);
 		Calendar calendar = new GregorianCalendar(); 
-		calendar.setTime(date); 
+		calendar.setTime(date);
 		calendar.set(Calendar.HOUR, 0);
 		date=calendar.getTime();
 		calendar.setTime(expectDate);

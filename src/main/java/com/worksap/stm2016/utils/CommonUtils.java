@@ -174,6 +174,14 @@ public class CommonUtils {
 		c.set(Calendar.DATE, day+1);
 		return c.getTime();
 	}
+	
+	public static Date OneWeekAfter(Date afterDate) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(afterDate);
+		Integer day = c.get(Calendar.DATE);
+		c.set(Calendar.DATE, day+7);
+		return c.getTime();
+	}
 
 	public static boolean RequirementContainSkills(StaffRequirement requirement, List<Long> skills, SkillService skillService) {
 		List<Skill> reqSkills = requirement.getStfrqSkillList();

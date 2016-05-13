@@ -1,5 +1,6 @@
 package com.worksap.stm2016.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class RecruitingPlan {
 	private List<StaffRequirement> requirements;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planForInterview", targetEntity = Interview.class, fetch = FetchType.LAZY)
-	private List<Interview> interviews;
+	private List<Interview> interviews ;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planForApplicant", targetEntity = Applicant.class, fetch = FetchType.LAZY)
 	private List<Applicant> applicants;
@@ -65,7 +66,7 @@ public class RecruitingPlan {
 	@ManyToMany
 	@JoinTable(name="ss1604c187_rd4.plan_skill", joinColumns = {@JoinColumn(name = "skill_id")},
 			inverseJoinColumns = {@JoinColumn(name = "plan_id")})
-	List<Skill> planSkillList;
+	List<Skill> planSkillList = new ArrayList<Skill>();
 	
 	@Column(name = "\"expectDate\"")
 	@Temporal(TemporalType.DATE)
