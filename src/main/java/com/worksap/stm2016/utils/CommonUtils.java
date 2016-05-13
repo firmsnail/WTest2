@@ -3,7 +3,9 @@ package com.worksap.stm2016.utils;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -171,5 +173,42 @@ public class CommonUtils {
 		Integer day = c.get(Calendar.DATE);
 		c.set(Calendar.DATE, day+1);
 		return c.getTime();
+	}
+
+	public static boolean RequirementContainSkills(StaffRequirement requirement, List<Long> skills, SkillService skillService) {
+		List<Skill> reqSkills = requirement.getStfrqSkillList();
+		for (Long skillId : skills) {
+			Skill skill = skillService.findOne(skillId);
+			if (!reqSkills.contains(skill)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static List<Department> extractDepartmentsByRequirements(List<StaffRequirement> staffingRequirements, DepartmentService departmentService) {
+		Set<Long> depIdSet = new HashSet<Long>();
+		for (StaffRequirement requirement : staffingRequirements) {
+			depIdSet.add(requirement.getStfrqDepartment().getDepartmentId());
+		}
+		List<Department> departments = new ArrayList<Department>();
+		for (Long depId : depIdSet) {
+			departments.add(departmentService.findOne(depId));
+		}
+		return departments;
+	}
+
+	public static List<Skill> extractSkillsByRequirements(List<StaffRequirement> staffingRequirements, SkillService skillService) {
+		Set<Long> skillIdSet = new HashSet<Long>();
+		for (StaffRequirement requirement : staffingRequirements) {
+			for (Skill skill : requirement.getStfrqSkillList()) {
+				skillIdSet.add(skill.getSkillId());
+			}
+		}
+		List<Skill> skills = new ArrayList<Skill>();
+		for (Long skillId : skillIdSet) {
+			skills.add(skillService.findOne(skillId));
+		}
+		return skills;
 	}
 }

@@ -281,6 +281,10 @@
                     <a href="/requirement/showStaffRequirements"><i class="fa fa-users fa-fw"></i> Staffing Requirements</a>
                 </li>
                 
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 2}">class="hidden"</c:if> >
+                    <a href="/recruiter/showAnalyzeRequirments"><i class="fa fa-users fa-fw"></i> Analyze Requirements</a>
+                </li>
+                
                 <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 5)}">class="hidden"</c:if> >
                     <a href="/plan/showRecruitingPlans"><i class="fa fa-users fa-fw"></i> Recruiting Plans</a>
                 </li>

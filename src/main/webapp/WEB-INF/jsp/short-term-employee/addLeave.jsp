@@ -54,10 +54,8 @@
 								              	
 								              	<div class="form-group">
 									                <label>Date range</label>
+									                <i class="fa fa-calendar"></i>
 									                <div>
-										                  <div class="input-group-addon">
-										                  		<i class="fa fa-calendar"></i>
-										                  </div>
 										                  <springForm:input path="dateRange" name="dateRange" type="text" class="form-control pull-right" id="reservation" />
 										                  <springForm:input path="startDate" name="startDate" type="text" class="form-control pull-right hidden" id="startDate"/>
 										            	  <springForm:input path="endDate" name="endDate" type="text" class="form-control pull-right hidden" id="endDate"/>
