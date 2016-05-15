@@ -54,7 +54,7 @@ public class RecruitingPlan {
 	@JsonIgnore
 	private Person planMaker;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "recruitingPlan", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.DETACH, mappedBy = "recruitingPlan", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
 	private List<StaffRequirement> requirements;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planForInterview", targetEntity = Interview.class, fetch = FetchType.LAZY)

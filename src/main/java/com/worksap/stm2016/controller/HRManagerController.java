@@ -163,24 +163,24 @@ public class HRManagerController {
 		return "redirect:/requirement/showStaffRequirements";
 	}
 	
-	@RequestMapping(value = "/aprroveOnePlan",  method = RequestMethod.POST)
+	@RequestMapping(value = "/aprroveOnePlan")
 	public String aprroveOnePlan(Long planId, Model model) {
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (plan != null) {
-			plan.setPlanHRManager(curUser.getUser());
 			plan.setStatus(CommonUtils.PLAN_VERIFIED);
+			plan = recruitingPlanService.findOne(planId);
 		}
 		return "redirect:/plan/showRecruitingPlans";
 	}
 	
-	@RequestMapping(value = "/rejectOnePlan",  method = RequestMethod.POST)
+	@RequestMapping(value = "/rejectOnePlan")
 	public String rejectOnePlan(Long planId, Model model) {
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (plan != null) {
-			plan.setPlanHRManager(curUser.getUser());
 			plan.setStatus(CommonUtils.PLAN_REJECT);
+			plan = recruitingPlanService.findOne(planId);
 		}
 		return "redirect:/plan/showRecruitingPlans";
 	}

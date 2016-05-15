@@ -162,4 +162,11 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 		return plan != null && plan.getPlanMaker() != null && plan.getPlanMaker().getPersonId().equals(currentUser.getId());
 	}
 
+	@Override
+	public boolean canPostPlan(CurrentUser currentUser, Long planId) {
+		if (currentUser == null) return false;
+		RecruitingPlan plan = recruitingPlanService.findOne(planId);
+		return plan != null && plan.getPlanMaker() != null && plan.getPlanMaker().getPersonId().equals(currentUser.getId());
+	}
+
 }

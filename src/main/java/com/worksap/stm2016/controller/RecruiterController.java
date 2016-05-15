@@ -5,10 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -32,7 +30,6 @@ import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.PlanForm;
-import com.worksap.stm2016.modelForm.RequirementForm;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.InterviewService;
@@ -41,7 +38,6 @@ import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.validator.PlanFormValidator;
-import com.worksap.stm2016.validator.RequirementFormValidator;
 
 @Controller
 @PreAuthorize("hasAuthority('RECRUITER')")
@@ -69,8 +65,10 @@ public class RecruiterController {
 		
 		List<Long> skills = new ArrayList<Long>();
 		String [] arr = request.getParameterValues("skills");
-		for (int i = 0; i < arr.length; ++i) {
-			skills.add(Long.parseLong(arr[i]));
+		if (arr != null) {
+			for (int i = 0; i < arr.length; ++i) {
+				skills.add(Long.parseLong(arr[i]));
+			}
 		}
 		
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
@@ -239,6 +237,17 @@ public class RecruiterController {
         } catch (DataIntegrityViolationException e) {
             return "recruiter/addPlan";
         }
+		return "redirect:/plan/showRecruitingPlans";
+	}
+	
+	@PreAuthorize("@currentUserServiceImpl.canPostPlan(principal, #planId)")
+	//@ResponseBody
+	@RequestMapping(value = "/postOnePlan")
+	public String postOnePlan(Long planId) {
+		RecruitingPlan plan = recruitingPlanService.findOne(planId);
+		//List<StaffRequirement> requirement = plan.getRequirements();
+		plan.setStatus(CommonUtils.PLAN_RECRUITING);
+		recruitingPlanService.findOne(planId);
 		return "redirect:/plan/showRecruitingPlans";
 	}
 	
