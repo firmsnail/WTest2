@@ -20,18 +20,6 @@
 	        document.getElementById("logoutForm").submit();
 	    }
 	</script>
-	<!-- 
-	<c:if test="${currentUser != null}">
-	    <h2>
-	        Welcome : ${pageContext.request.userPrincipal.name} | <a
-	            href="javascript:formSubmit()"> Logout</a>
-	            
-		    <form id="logoutForm" action="/logout" method="post">
-			    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			</form>
-	    </h2>
-	</c:if>
-	-->
     <ul class="nav navbar-top-links navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -293,6 +281,19 @@
                     <a href="/hire/showHires"><i class="fa fa-users fa-fw"></i> Hires</a>
                 </li>
                 
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId == 1 or currentUser.user.role.roleId == 3}">class="hidden"</c:if>>
+                	<a href="/applicant/showApplicants"><i class="fa fa-users fa-fw"></i>
+                		<c:choose>
+                			<c:when test="${currentUser.user.role.roleId == 5 }">
+                				Applications
+                			</c:when>
+                			<c:otherwise>
+                				Applicants
+                			</c:otherwise>
+                		</c:choose>
+                	</a>
+                </li>
+               
                 <li <c:if test="${currentUser == null or currentUser.user.role.roleId == 2}">class="hidden"</c:if> >
                     <a href="/dismission/showDismissions"><i class="fa fa-users fa-fw"></i> Dismissions</a>
                 </li>

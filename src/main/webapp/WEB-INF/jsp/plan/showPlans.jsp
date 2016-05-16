@@ -148,7 +148,14 @@
 															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 5}">
-															<button type="button" class="btn btn-primary">Apply</button>
+															<c:choose>
+																<c:when test="${isApply[plan.planId] == false}">		<!-- PLAN_VERIFIED -->
+																	<a href="/short-term-employee/applyOnePlan?planId=${plan.planId }"><button type="button" class="btn btn-success">Apply</button></a>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-success disabled">Apply</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:otherwise>
 															Unknown

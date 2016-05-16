@@ -54,7 +54,7 @@ public class RecruitingPlan {
 	@JsonIgnore
 	private Person planMaker;
 	
-	@OneToMany(cascade = CascadeType.DETACH, mappedBy = "recruitingPlan", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "recruitingPlan", targetEntity = StaffRequirement.class, fetch = FetchType.LAZY)
 	private List<StaffRequirement> requirements;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planForInterview", targetEntity = Interview.class, fetch = FetchType.LAZY)
@@ -62,6 +62,9 @@ public class RecruitingPlan {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planForApplicant", targetEntity = Applicant.class, fetch = FetchType.LAZY)
 	private List<Applicant> applicants;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hirePlan", targetEntity = Hire.class, fetch = FetchType.LAZY)
+	private List<Hire> hires;
 	
 	@ManyToMany
 	@JoinTable(name="ss1604c187_rd4.plan_skill", joinColumns = {@JoinColumn(name = "skill_id")},

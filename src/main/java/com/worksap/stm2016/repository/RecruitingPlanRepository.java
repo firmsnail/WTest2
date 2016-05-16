@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 
 @Repository
@@ -15,5 +16,9 @@ public interface RecruitingPlanRepository extends PagingAndSortingRepository<Rec
 	Page<RecruitingPlan> findAll(Pageable pageable);
 
 	List<RecruitingPlan> findByStatus(Integer status);
+
+	List<RecruitingPlan> findByPlanHRManager(Person user);
+
+	List<RecruitingPlan> findByPlanMaker(Person user);
 
 }

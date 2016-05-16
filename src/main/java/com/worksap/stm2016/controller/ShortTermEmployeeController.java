@@ -1,5 +1,6 @@
 package com.worksap.stm2016.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,13 +16,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Interview;
+import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.modelForm.DismissionForm;
 import com.worksap.stm2016.modelForm.LeaveForm;
+import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.LeaveService;
+import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.service.RecruitingPlanService;
+import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.validator.DismissionFormValidator;
 import com.worksap.stm2016.validator.LeaveFormValidator;
 
@@ -36,6 +44,12 @@ public class ShortTermEmployeeController {
 	private DismissionService dismissionService;
 	@Autowired
 	private LeaveService leaveService;
+	@Autowired
+	private RecruitingPlanService recruitingPlanService;
+	@Autowired
+	private PersonService personService;
+	@Autowired
+	private ApplicantService applicantService;
 	
 	@Autowired
 	private DismissionFormValidator  dismissionFormValidator;
@@ -120,5 +134,22 @@ public class ShortTermEmployeeController {
 	public String deleteOneLeave(Long leaveId) {
 		leaveService.delete(leaveId);
 		return "redirect:/leave/showLeaves";
+	}
+	
+	//@PreAuthorize("@currentUserServiceImpl.canDeleteLeave(principal, #dismissionId)")
+	//@ResponseBody
+	@RequestMapping(value = "/applyOnePlan")
+	public String applyOnePlan(Long planId) {
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		RecruitingPlan plan = recruitingPlanService.findOne(planId);
+		Person user = personService.findById(curUser.getId());
+		Applicant applicant = new Applicant();
+		applicant.setApplicant(user);
+		applicant.setPlanForApplicant(plan);
+		applicant.setStatus(CommonUtils.APPLY_PENDING_FILTER);
+		applicant.setApplyDate(new Date());
+		applicantService.save(applicant);
+		//leaveService.delete(planId);
+		return "redirect:/plan/showRecruitingPlans";
 	}
 }

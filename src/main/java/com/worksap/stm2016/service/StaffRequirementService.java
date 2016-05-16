@@ -35,4 +35,5 @@ public interface StaffRequirementService {
 	public List<StaffRequirement> findByDepartment(Department department);
 	public List<StaffRequirement> findByHRManager(Person cUser);
 	public void delete(Long requirementId);
+	public List<StaffRequirement> findByStfrqDepartmentAndStatus(Department dept, Integer status);
 }

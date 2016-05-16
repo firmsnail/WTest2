@@ -101,5 +101,15 @@ public class RecruitingPlanServiceImpl implements RecruitingPlanService{
 	public void delete(Long planId) {
 		recruitingPlanRepository.delete(planId);
 	}
+
+	@Override
+	public List<RecruitingPlan> findByPlanHRManager(Person user) {
+		return recruitingPlanRepository.findByPlanHRManager(user);
+	}
+
+	@Override
+	public List<RecruitingPlan> findByPlanMaker(Person user) {
+		return recruitingPlanRepository.findByPlanMaker(user);
+	}
 	
 }

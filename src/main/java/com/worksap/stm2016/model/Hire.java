@@ -54,7 +54,12 @@ public class Hire {
 	private Person hireRecruiter;
 	@Column(name = "\"recruiterComments\"")
 	private String recruiterComments;
-	//TODO			Add plan relation
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "plan_id", referencedColumnName = "plan_id")
+	@JsonIgnore
+	private RecruitingPlan hirePlan;
+
 	@Column(name = "\"hireDate\"")
 	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)

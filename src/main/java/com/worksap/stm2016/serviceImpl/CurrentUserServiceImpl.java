@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
@@ -13,6 +14,7 @@ import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.StaffRequirement;
+import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.CurrentUserService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
@@ -35,6 +37,8 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 	DismissionService dismissionService;
 	@Autowired
 	LeaveService leaveService;
+	@Autowired
+	ApplicantService applicantService;
 	
 	@Override
 	public boolean canAccessUser(CurrentUser currentUser, Long userId) {
@@ -167,6 +171,14 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 		if (currentUser == null) return false;
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
 		return plan != null && plan.getPlanMaker() != null && plan.getPlanMaker().getPersonId().equals(currentUser.getId());
+	}
+
+	@Override
+	public boolean canOperateApplicant(CurrentUser currentUser, Long applicantId) {
+		if (currentUser == null) return false;
+		Applicant applicant = applicantService.findOne(applicantId);
+		if (applicant.getPlanForApplicant() == null || applicant.getPlanForApplicant().getPlanMaker() == null) return false;
+		return currentUser.getId().equals(applicant.getPlanForApplicant().getPlanMaker().getPersonId());
 	}
 
 }

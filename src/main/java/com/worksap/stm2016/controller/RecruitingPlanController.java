@@ -1,8 +1,9 @@
 package com.worksap.stm2016.controller;
 
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,9 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
+import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -28,18 +31,32 @@ public class RecruitingPlanController {
 	RecruitingPlanService recruitingPlanService;
 	@Autowired
 	PersonService personService;
+	@Autowired
+	ApplicantService applicantService;
 	
 	@RequestMapping(value={"/showRecruitingPlans"},  method = RequestMethod.GET)
 	public String showRecruitingPlans(Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Person cUser = personService.findById(curUser.getId());
+		//Person cUser = personService.findById(curUser.getId());
 		List<RecruitingPlan> plans = null;
 		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
-			plans = cUser.getPlansForHRM();//curUser.getUser().getPlansForHRM();
+			plans = recruitingPlanService.findByPlanHRManager(curUser.getUser());
+			//plans = cUser.getPlansForHRM();//curUser.getUser().getPlansForHRM();
 		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_RECRUITER) {
-			plans = cUser.getPlansForRecruiter();//curUser.getUser().getPlansForRecruiter();
+			plans = recruitingPlanService.findByPlanMaker(curUser.getUser());
+			//plans = cUser.getPlansForRecruiter();//curUser.getUser().getPlansForRecruiter();
 		} else {
+			Map<Long, Boolean> isApply = new HashMap<Long, Boolean>();
 			plans = recruitingPlanService.findByStatus(CommonUtils.PLAN_RECRUITING);
+			for (RecruitingPlan plan : plans) {
+				List<Applicant> applicants = applicantService.findByApplicantAndPlanForApplicant(curUser.getUser(), plan);
+				if (applicants != null && applicants.size() > 0) {
+					isApply.put(plan.getPlanId(), true);
+				} else {
+					isApply.put(plan.getPlanId(), false);
+				}
+			}
+			model.addAttribute("isApply", isApply);
 		}
 		
 		model.addAttribute("plans", plans);

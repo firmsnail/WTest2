@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Interview;
@@ -248,6 +249,11 @@ public class RecruiterController {
 		//List<StaffRequirement> requirement = plan.getRequirements();
 		plan.setStatus(CommonUtils.PLAN_RECRUITING);
 		recruitingPlanService.findOne(planId);
+		List<StaffRequirement> requirements = plan.getRequirements();
+		for (StaffRequirement requirement : requirements) {
+			requirement.setStatus(CommonUtils.REQUIREMENTS_RECRUITING);
+			staffRequirementService.findOne(requirement.getStaffRequirementId());
+		}
 		return "redirect:/plan/showRecruitingPlans";
 	}
 	
@@ -255,9 +261,32 @@ public class RecruiterController {
 	//@ResponseBody
 	@RequestMapping(value = "/deleteOnePlan")
 	public String deleteOnePlan(Long planId) {
-		//RecruitingPlan plan = recruitingPlanService.findOne(planId);
-		//List<StaffRequirement> requirement = plan.getRequirements();
+		RecruitingPlan plan = recruitingPlanService.findOne(planId);
+		List<StaffRequirement> requirements = plan.getRequirements();
+		for (StaffRequirement requirement : requirements) {
+			requirement.setRecruitingPlan(null);
+			requirement = staffRequirementService.findOne(requirement.getStaffRequirementId());
+		}
 		recruitingPlanService.delete(planId);
 		return "redirect:/plan/showRecruitingPlans";
+	}
+	
+	@PreAuthorize("@currentUserServiceImpl.canOperateApplicant(principal, #applicantId)")
+	//@ResponseBody
+	@RequestMapping(value = "/passOneApplicant")
+	public String passOneApplicant(Long applicantId) {
+		Applicant applicant = applicantService.findOne(applicantId);
+		applicant.setStatus(CommonUtils.APPLY_PASS_FILTER);
+		applicant = applicantService.findOne(applicantId);
+		return "redirect:/applicant/showApplicants";
+	}
+	@PreAuthorize("@currentUserServiceImpl.canOperateApplicant(principal, #applicantId)")
+	//@ResponseBody
+	@RequestMapping(value = "/failOneApplicant")
+	public String failOneApplicant(Long applicantId) {
+		Applicant applicant = applicantService.findOne(applicantId);
+		applicant.setStatus(CommonUtils.APPLY_FAILED);
+		applicant = applicantService.findOne(applicantId);
+		return "redirect:/applicant/showApplicants";
 	}
 }

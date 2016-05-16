@@ -39,9 +39,9 @@ public class Applicant {
 	@Column(name = "status")
 	Integer status;
 	
-	@Column(name = "\"applyTime\"")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "\"applyDate\"")
+	@Temporal(TemporalType.DATE)
 	@JsonDeserialize(using = DateDeserializer.class)
-	Date applyTime;
+	Date applyDate;
 	
 }

@@ -46,6 +46,16 @@ public class CommonUtils {
 	final static public Integer HIRE_HR_MANAGER_PROCESSING = 2;
 	final static public Integer HIRE_FINISH = 3;
 	final static public Integer HIRE_REJECT = 4;
+	
+	final static public Integer APPLY_PENDING_FILTER = 1;
+	final static public Integer APPLY_PASS_FILTER = 2;
+	final static public Integer APPLY_FAILED = 3;
+	final static public Integer APPLY_CHOOSED = 4;
+	
+	final static public Integer INTERVIEW_PENDING_SCHEDULE = 1;
+	final static public Integer INTERVIEW_INTERVIEWING = 2;
+	final static public Integer INTERVIEW_FAILED = 3;
+	final static public Integer INTERVIEW_PASSED = 4;
 
 	final static public Integer DISMISSION_ALL = 0;
 	final static public Integer DISMISSION_TEAM_MANAGER_PROCESSING = 1;

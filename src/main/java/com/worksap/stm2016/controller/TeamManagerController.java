@@ -1,13 +1,20 @@
 package com.worksap.stm2016.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +23,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
+import com.worksap.stm2016.model.Applicant;
+import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Dismission;
+import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.modelForm.RequirementForm;
+import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DismissionService;
+import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RoleService;
@@ -48,6 +63,10 @@ public class TeamManagerController {
 	private RoleService roleService;
 	@Autowired
 	private PersonService personService;
+	@Autowired
+	private ApplicantService applicantService;
+	@Autowired
+	private InterviewService interviewService;
 	
 	@Autowired
 	private RequirementFormValidator requirementFormValidator;
@@ -138,4 +157,22 @@ public class TeamManagerController {
 		}
 		return "redirect:/leave/showLeaves";
 	}
+	
+	@RequestMapping(value = "/chooseOneApplicant")
+	public String chooseOneApplicant(Long applicantId, Model model) {
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Applicant applicant = applicantService.findOne(applicantId);
+		applicant.setStatus(CommonUtils.APPLY_CHOOSED);
+		applicant = applicantService.findOne(applicantId);
+		Interview interview = new Interview();
+		interview.setInterviewee(applicant.getApplicant());
+		interview.setInterviewer(curUser.getUser());
+		interview.setPlanForInterview(applicant.getPlanForApplicant());
+		interview.setStatus(CommonUtils.INTERVIEW_PENDING_SCHEDULE);
+		interview.setTurns(0);
+		interview.setUpdateTime(new Date());
+		interviewService.save(interview);
+		return "redirect:/applicant/showApplicants";
+	}
+	
 }

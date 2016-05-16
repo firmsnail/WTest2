@@ -148,4 +148,9 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 		staffRequirementRepository.delete(requirementId);
 	}
 
+	@Override
+	public List<StaffRequirement> findByStfrqDepartmentAndStatus(Department dept, Integer status) {
+		return staffRequirementRepository.findByStfrqDepartmentAndStatus(dept, status);
+	}
+
 }
