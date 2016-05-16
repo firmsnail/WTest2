@@ -35,11 +35,14 @@ public class HireController {
 		Person cUser = personService.findById(curUser.getId());
 		List<Hire> hires = null;
 		if (curUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
-			hires = cUser.getHiresForHRM();//curUser.getUser().getHiresForHRM();
+			hires = hireService.findByHireHRManager(cUser);
+			//hires = cUser.getHiresForHRM();//curUser.getUser().getHiresForHRM();
 		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_RECRUITER) {
-			hires = cUser.getHiresForRecruiter();//curUser.getUser().getHiresForRecruiter();
+			hires = hireService.findByHireRecruiter(cUser);
+			//hires = cUser.getHiresForRecruiter();//curUser.getUser().getHiresForRecruiter();
 		} else if (curUser.getUser().getDepartment() != null){
-			hires = cUser.getDepartment().getHireList();//curUser.getUser().getDepartment().getHireList();
+			hires = hireService.findByHireDepartment(cUser.getDepartment());
+			//hires = cUser.getDepartment().getHireList();//curUser.getUser().getDepartment().getHireList();
 		}
 		model.addAttribute("hires", hires);
 		return "hire/showHires";

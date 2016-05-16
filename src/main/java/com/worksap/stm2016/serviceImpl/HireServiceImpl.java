@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Hire;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.repository.HireRepository;
 import com.worksap.stm2016.service.HireService;
 
@@ -41,6 +43,21 @@ public class HireServiceImpl implements HireService{
 	public Hire findOne(Long id) {
 		// TODO Auto-generated method stub
 		return hireRepository.findOne(id);
+	}
+
+	@Override
+	public List<Hire> findByHireHRManager(Person hrManager) {
+		return hireRepository.findByHireHRManager(hrManager);
+	}
+
+	@Override
+	public List<Hire> findByHireRecruiter(Person recruiter) {
+		return hireRepository.findByHireRecruiter(recruiter);
+	}
+
+	@Override
+	public List<Hire> findByHireDepartment(Department department) {
+		return hireRepository.findByHireDepartment(department);
 	}
 	
 

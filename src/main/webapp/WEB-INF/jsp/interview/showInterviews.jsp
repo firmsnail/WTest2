@@ -36,10 +36,21 @@
 	        	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 	        	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 	        	  var modal = $(this)
-	        	  alert(curId);
+	        	  //alert(curId);
 	        	  //modal.find('.modal-title').text('New message to ' + recipient)
 	        	  modal.find('.modal-body input#interview').val(curId);
-	        })
+	        });
+	        
+	        $('#hireModal').on('shown.bs.modal', function (event) {
+	        	  var button = $(event.relatedTarget) // Button that triggered the modal
+	        	  var curId = button.data('interviewid') // Extract info from data-* attributesdata-interviewId
+	        	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	        	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	        	  var modal = $(this)
+	        	  //alert(curId);
+	        	  //modal.find('.modal-title').text('New message to ' + recipient)
+	        	  modal.find('.modal-body input#interview').val(curId);
+	        });
 	        
 	        
 	    });
@@ -48,19 +59,6 @@
 
 <body>
 
-<!-- 
-<div class="row">
-            	<div class="form-group">
-	            	<label for="dtp_input1" class="col-md-2 control-label">DateTime Picking</label>
-	                <div class="input-group date form_datetime col-md-5">
-	                    <input class="form-control" type="text" value="" readonly>
-	                    <span class="input-group-addon" hidden="hidden"><span class="glyphicon glyphicon-remove"></span></span>
-	                </div>
-					<input type="hidden" id="dtp_input1" value="" /><br/>
-				</div>
-            </div>
-
- -->
 
 	<div class="modal fade" id="interviewModal" tabindex="-1" role="dialog" aria-labelledby="interviewModalLabel">
 		<div class="modal-dialog" role="document">
@@ -71,8 +69,10 @@
 				</div>
 				<div class="modal-body">
 					<form role="form" action="/recruiter/scheduleOneInterview" method="POST">
-	                    <div class="form-group">
-	                    	<input type="text" class="hidden" id="interview" name="interviewId" value=""></input>
+						<div class="form-group">
+							<input type="text" class="hidden" id="interview" name="interviewId" value=""></input>
+						</div>
+						<div class="form-group">
 	                    	<label for="interviewTime" class="control-label">Interview Time:</label>
 	                    	<div class="input-group date interviewTime col-md-5" data-link-field="interviewTime">
 			                    <input class="form-control" type="text" value="" readonly>
@@ -82,6 +82,49 @@
 	                    </div>
 	                    <div class="form-group">
 	                    	<button type="submit" class="btn btn-success">Schedule</button>
+	                    </div>
+	                    <br />
+					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                </form>
+				</div>
+				<div class="modal-footer">
+					<!--
+					<button type="button" class="btn btn-success" data-toggle="modal" data-target="interviewModal" data-whatever="@mdo">Schedule</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="hireModal" tabindex="-1" role="dialog" aria-labelledby="hireModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="hireModalLabel">Hire</h4>
+				</div>
+				<div class="modal-body">
+					<form role="form" action="/team-manager/passOneInterview" method="POST">
+						<div class="form-group">
+							<input type="text" class="hidden" id="interview" name="interviewId" value=""></input>
+						</div>
+	                    <div class="form-group">
+	                    	<label for="salary" class="control-label">Salary:</label>
+	                        <input type="text" class="form-control" name="salary" placeholder="0">
+	                    </div>
+	                    <div class="form-group">
+	                    	<label for="period" class="control-label">Period:</label>
+	                    	<select class="form-control" name="period">
+	                    		  <option value=1 selected="selected">1 Month</option>
+			                	  <option value=2>2 Months</option>
+			                	  <option value=3>3 Months</option>
+			                	  <option value=4>4 Months</option>
+			                	  <option value=5>5 Months</option>
+			                </select>
+	                    </div>
+	                    <div class="form-group">
+	                    	<button type="submit" class="btn btn-success">Hire</button>
 	                    </div>
 	                    <br />
 					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -206,7 +249,6 @@
 															<c:when test="${currentUser.user.role.roleId == 2}">
 																<c:choose>
 																	<c:when test="${interview.status == 1}">		<!-- APPLY_PENDING_FILTER -->
-																		<!-- TODO   schedule Interview -->
 																		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#interviewModal" data-interviewid="${interview.interviewId }">Schedule Interview</button>
 																	</c:when>
 																	<c:otherwise>
@@ -216,8 +258,19 @@
 															</c:when>
 															<c:when test="${currentUser.user.role.roleId == 4}">
 																<!-- TODO Hire-->
-																<a href="/team-manager/passOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-success">Hire</button></a>
-																<a href="/team-manager/failOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-success">Fail</button></a>
+																<c:choose>
+																	<c:when test="${interview.status == 2 }">
+																		<a href="/team-manager/addOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-primary">More</button></a>
+																		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hireModal" data-interviewid="${interview.interviewId }">Hire</button>
+																		<!-- <a href="/team-manager/passOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-success">Hire</button></a>-->
+																		<a href="/team-manager/failOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-danger">Fail</button></a>
+																	</c:when>
+																	<c:otherwise>
+																		<button type="button" class="btn btn-primary">More</button>
+																		<button type="button" class="btn btn-success">Hire</button>
+																		<button type="button" class="btn btn-danger">Fail</button>
+																	</c:otherwise>
+																</c:choose>
 															</c:when>
 															<c:otherwise>
 																Unknown

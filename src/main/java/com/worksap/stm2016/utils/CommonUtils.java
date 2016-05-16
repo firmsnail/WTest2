@@ -45,7 +45,8 @@ public class CommonUtils {
 	final static public Integer HIRE_RECRUITER_PROCESSING = 1;
 	final static public Integer HIRE_HR_MANAGER_PROCESSING = 2;
 	final static public Integer HIRE_FINISH = 3;
-	final static public Integer HIRE_REJECT = 4;
+	final static public Integer HIRE_RECRUITER_REJECT = 4;
+	final static public Integer HIRE_HR_MANAGER_REJECT = 5;
 	
 	final static public Integer APPLY_PENDING_FILTER = 1;
 	final static public Integer APPLY_PASS_FILTER = 2;
@@ -190,6 +191,20 @@ public class CommonUtils {
 		c.setTime(afterDate);
 		Integer day = c.get(Calendar.DATE);
 		c.set(Calendar.DATE, day+7);
+		return c.getTime();
+	}
+	
+	public static Date OneMonthAfter(Date afterDate) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(afterDate);
+		c.add(Calendar.MONTH, 1);
+		return c.getTime();
+	}
+	
+	public static Date kMonthAfter(Date afterDate, Integer k) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(afterDate);
+		c.add(Calendar.MONTH, k);
 		return c.getTime();
 	}
 

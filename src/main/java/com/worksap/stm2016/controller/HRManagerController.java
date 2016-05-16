@@ -1,6 +1,7 @@
 package com.worksap.stm2016.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -185,24 +186,43 @@ public class HRManagerController {
 		return "redirect:/plan/showRecruitingPlans";
 	}
 	
-	@RequestMapping(value = "/aprroveOneHire",  method = RequestMethod.POST)
+	@RequestMapping(value = "/aprroveOneHire")
 	public String aprroveOneHire(Long hireId, Model model) {
 		Hire hire = hireService.findOne(hireId);
-		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (hire != null) {
-			hire.setHireHRManager(curUser.getUser());
 			hire.setStatus(CommonUtils.HIRE_FINISH);
+			Date now = new Date();
+			hire.setHireDate(now);
+			RecruitingPlan plan = hire.getHirePlan();
+			plan.setHiredNum(plan.getHiredNum()+1);
+			if (plan.getHiredNum().equals(plan.getPlanNum())) {
+				plan.setStatus(CommonUtils.PLAN_FINISH);
+			}
+			plan = recruitingPlanService.findOne(plan.getPlanId());
+			StaffRequirement requirement = hire.getRequirementForHire();
+			requirement.setHiredNum(requirement.getHiredNum()+1);
+			if (requirement.getHiredNum().equals(requirement.getRequireNum())) {
+				requirement.setStatus(CommonUtils.REQUIREMENTS_FINISH);
+			}
+			requirement = staffRequirementService.findOne(requirement.getStaffRequirementId());
+			Person employee = hire.getHirePerson();
+			employee.setStatus(CommonUtils.EMPLOYEE_WORKING);
+			employee.setStartDate(now);
+			employee.setEndDate(CommonUtils.kMonthAfter(now, hire.getPeriod()));
+			employee.setSalary(hire.getSalary());
+			employee = personService.findById(employee.getPersonId());
+			hire = hireService.findOne(hireId);
 		}
 		return "redirect:/hire/showHires";
 	}
 	
-	@RequestMapping(value = "/rejectOneHire",  method = RequestMethod.POST)
+	@RequestMapping(value = "/rejectOneHire")
 	public String rejectOneHire(Long hireId, Model model) {
 		Hire hire = hireService.findOne(hireId);
-		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (hire != null) {
-			hire.setHireHRManager(curUser.getUser());
-			hire.setStatus(CommonUtils.HIRE_REJECT);
+			hire.setStatus(CommonUtils.HIRE_HR_MANAGER_REJECT);
+			hire = hireService.findOne(hireId);
 		}
 		return "redirect:/hire/showHires";
 	}

@@ -50,13 +50,13 @@
                                             <th>Recruiter</th>
                                             <th>Details</th>
                                             <th>Status</th>
-                                            <th>Operation</th>
+                                            <th <c:if test="${currentUser.user.role.roleId == 4}">hidden="hidden"</c:if> >Operation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="hire" items="${hires}" varStatus="status">
 											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd"</c:when><c:otherwise>class="even"</c:otherwise></c:choose>>
-												<td><fmt:formatDate value="${requirement.submitDate}" pattern="yyyy-MM-dd"/></td>
+												<td><fmt:formatDate value="${hire.submitDate}" pattern="yyyy-MM-dd"/></td>
 												<td><a href="/department/showOneDepartment?departmentId=${hire.hireDepartment.departmentId}">${hire.hireDepartment.departmentName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${hire.hirePerson.personId}">${hire.hirePerson.firstName} ${hire.hirePerson.lastName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${hire.hireRecruiter.personId}">${hire.hireRecruiter.firstName} ${hire.hireRecruiter.lastName}</a></td>
@@ -64,78 +64,82 @@
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
-															<c:when test="${hire.status == 2}">		<!-- HIRE_HR_MANAGER_PROCESSING -->
-																<span class="label label-warning">Pending</span>
-															</c:when>
-															<c:when test="${hire.status == 4}">		<!-- HIRE_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Approved -->
-																<span class="label label-success">Approved</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${hire.status == 2}">		<!-- HIRE_HR_MANAGER_PROCESSING -->
+																	<span class="label label-warning">Pending</span>
+																</c:when>
+																<c:when test="${hire.status == 5}">		<!-- HIRE_REJECT -->
+																	<span class="label label-danger">Denied</span>
+																</c:when>
+																<c:otherwise>				<!-- Approved -->
+																	<span class="label label-success">Approved</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
+														
 														<c:when test="${currentUser.user.role.roleId == 2}">
-															<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																<span class="label label-warning">Pending</span>
-															</c:when>
-															<c:when test="${hire.status == 2}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
-																<span class="label label-warning">Pending Verify</span>
-															</c:when>
-															<c:when test="${hire.status == 4}">		<!-- HIRE_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Finished -->
-																<span class="label label-success">Finished</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
+																	<span class="label label-warning">Pending</span>
+																</c:when>
+																<c:when test="${hire.status == 5}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
+																	<span class="label label-danger">Denied</span>
+																</c:when>
+																<c:otherwise>				<!-- Finished -->
+																	<span class="label label-success">Approved</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
+														
 														<c:when test="${currentUser.user.role.roleId == 4}">
-															<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																<span class="label label-warning">Pending</span>
-															</c:when>
-															<c:when test="${hire.status == 2}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
-																<span class="label label-warning">Pending Verify</span>
-															</c:when>
-															<c:when test="${hire.status == 4}">		<!-- HIRE_REJECT -->
-																<span class="label label-danger">Denied</span>
-															</c:when>
-															<c:otherwise>				<!-- Finished -->
-																<span class="label label-success">Finished</span>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
+																	<span class="label label-warning">Recruiter Processing</span>
+																</c:when>
+																<c:when test="${hire.status == 2}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
+																	<span class="label label-warning">HR Manager Processing</span>
+																</c:when>
+																<c:when test="${hire.status == 4}">		<!-- HIRE_REJECT -->
+																	<span class="label label-danger">Denied By Recruiter</span>
+																</c:when>
+																<c:when test="${hire.status == 5}">		<!-- HIRE_REJECT -->
+																	<span class="label label-danger">Denied By HR Manager</span>
+																</c:when>
+																<c:otherwise>				<!-- Finished -->
+																	<span class="label label-success">Finished</span>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:otherwise>
 															Unknown
 														</c:otherwise>
 													</c:choose>
 												</td>
-												<td>
+												<td <c:if test="${currentUser.user.role.roleId == 4}">hidden="hidden"</c:if>>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
-															<c:when test="${hire.status == 2}">		<!-- HIRE_HR_MANAGER_PROCESSING -->
-																<a href="/hr-manager/aprroveOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-success">Approve</button></a>
-																<a href="/hr-manager/rejectOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-danger">Reject</button></a>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-success disabled">Approve</button>
-																<button type="button" class="btn btn-danger disabled">Reject</button>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${hire.status == 2}">		<!-- HIRE_HR_MANAGER_PROCESSING -->
+																	<a href="/hr-manager/aprroveOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-success">Approve</button></a>
+																	<a href="/hr-manager/rejectOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-danger">Reject</button></a>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-success disabled">Approve</button>
+																	<button type="button" class="btn btn-danger disabled">Reject</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 2}">
-															<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																<button type="button" class="btn btn-success">Approve</button>
-																<button type="button" class="btn btn-danger">Reject</button>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-success disabled">Approve</button>
-																<button type="button" class="btn btn-danger disabled">Reject</button>
-															</c:otherwise>
-														</c:when>
-														<c:when test="${currentUser.user.role.roleId == 4}">
-															<c:when test="${hire.status == 1}">		<!-- REQUIREMENTS_RECRUITING -->
-																<button type="button" class="btn btn-danger">Delete</button>
-															</c:when>
-															<c:otherwise>
-																<button type="button" class="btn btn-danger disabled">Delete</button>
-															</c:otherwise>
+															<c:choose>
+																<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
+																	<a href="/recruiter/aprroveOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-success">Approve</button></a>
+																	<a href="/recruiter/rejectOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-danger">Reject</button></a>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" class="btn btn-success disabled">Approve</button>
+																	<button type="button" class="btn btn-danger disabled">Reject</button>
+																</c:otherwise>
+															</c:choose>
 														</c:when>
 														<c:otherwise>
 															Unknown

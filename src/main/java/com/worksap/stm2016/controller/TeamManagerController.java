@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializ
 import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Dismission;
+import com.worksap.stm2016.model.Hire;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Person;
@@ -38,6 +39,7 @@ import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.RequirementForm;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DismissionService;
+import com.worksap.stm2016.service.HireService;
 import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.service.PersonService;
@@ -68,6 +70,8 @@ public class TeamManagerController {
 	private ApplicantService applicantService;
 	@Autowired
 	private InterviewService interviewService;
+	@Autowired
+	private HireService hireService;
 	
 	@Autowired
 	private RequirementFormValidator requirementFormValidator;
@@ -184,6 +188,60 @@ public class TeamManagerController {
 		
 		interviewService.save(interview);
 		return "redirect:/applicant/showApplicants";
+	}
+	
+	@RequestMapping(value = "/passOneInterview")
+	public String passOneInterview(Long interviewId, Double salary, Integer period, Model model) {
+		Interview interview = interviewService.findOne(interviewId);
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (interview != null) {
+			interview.setStatus(CommonUtils.INTERVIEW_PASSED);
+			interview.setTurns(interview.getTurns()+1);
+			interview.setInterviewTime(null);
+			interview.setUpdateTime(new Date());
+			interview = interviewService.findOne(interviewId);
+			
+			Hire hire = new Hire();
+			hire.setHireDepartment(curUser.getUser().getDepartment());
+			//hire.setHireHRManager(curUser.getUser());
+			hire.setHirePerson(interview.getInterviewee());
+			hire.setHirePlan(interview.getPlanForInterview());
+			hire.setRequirementForHire(interview.getRequirementForInterview());
+			hire.setHireRecruiter(interview.getPlanForInterview().getPlanMaker());
+			hire.setPeriod(period);
+			hire.setSalary(salary);
+			hire.setStatus(CommonUtils.HIRE_RECRUITER_PROCESSING);
+			hire.setSubmitDate(new Date());
+			
+			hireService.save(hire);
+		}
+		return "redirect:/interview/showInterviews";
+	}
+	
+	@RequestMapping(value = "/addOneInterview")
+	public String addOneInterview(Long interviewId, Model model) {
+		Interview interview = interviewService.findOne(interviewId);
+		if (interview != null) {
+			interview.setStatus(CommonUtils.INTERVIEW_PENDING_SCHEDULE);
+			interview.setTurns(interview.getTurns()+1);
+			interview.setInterviewTime(null);
+			interview.setUpdateTime(new Date());
+			interview = interviewService.findOne(interviewId);
+		}
+		return "redirect:/interview/showInterviews";
+	}
+	
+	@RequestMapping(value = "/failOneInterview")
+	public String failOneInterview(Long interviewId, Model model) {
+		Interview interview = interviewService.findOne(interviewId);
+		if (interview != null) {
+			interview.setStatus(CommonUtils.INTERVIEW_FAILED);
+			interview.setTurns(interview.getTurns()+1);
+			interview.setInterviewTime(null);
+			interview.setUpdateTime(new Date());
+			interview = interviewService.findOne(interviewId);
+		}
+		return "redirect:/interview/showInterviews";
 	}
 	
 }

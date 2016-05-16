@@ -25,14 +25,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Hire;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.PlanForm;
+import com.worksap.stm2016.repository.PersonRepository;
+import com.worksap.stm2016.repository.RoleRepository;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DepartmentService;
+import com.worksap.stm2016.service.HireService;
 import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.service.SkillService;
@@ -57,6 +62,13 @@ public class RecruiterController {
 	private StaffRequirementService staffRequirementService;
 	@Autowired
 	private RecruitingPlanService recruitingPlanService;
+	@Autowired
+	private HireService hireService;
+	@Autowired
+	private RoleRepository roleRepository;
+	@Autowired
+	private PersonRepository personRepository;
+
 	
 	@Autowired
 	private PlanFormValidator planFormValidator;
@@ -228,8 +240,7 @@ public class RecruiterController {
 		planFormValidator.validate(plan, bindingResult);
 		
 		if (bindingResult.hasErrors()) {
-			System.out.println("expectDate: " + plan.getExpectDate());
-			System.out.println("invalidDate: " + plan.getInvalidDate());
+
 			System.out.println("Adding plan occurs error!");
 			return "recruiter/addPlan";
 		}
@@ -271,7 +282,7 @@ public class RecruiterController {
 		interview.setInterviewTime(interviewT);
 		interview.setUpdateTime(new Date());
 		interview = interviewService.findOne(interviewId);
-		return "redirect:/plan/showRecruitingPlans";
+		return "redirect:/interview/showInterviews";
 	}
 	
 	@PreAuthorize("@currentUserServiceImpl.canDeletePlan(principal, #planId)")
@@ -305,5 +316,29 @@ public class RecruiterController {
 		applicant.setStatus(CommonUtils.APPLY_FAILED);
 		applicant = applicantService.findOne(applicantId);
 		return "redirect:/applicant/showApplicants";
+	}
+	
+	@RequestMapping(value = "/aprroveOneHire")
+	public String aprroveOneHire(Long hireId, Model model) {
+		Hire hire = hireService.findOne(hireId);
+		//CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (hire != null) {
+			hire.setStatus(CommonUtils.HIRE_HR_MANAGER_PROCESSING);
+			Role hrManagerRole = roleRepository.findOne(CommonUtils.ROLE_HR_MANAGER);
+			Person hrManager = personRepository.findByRole(hrManagerRole).get(0);
+			hire.setHireHRManager(hrManager);
+			hire = hireService.findOne(hireId);
+		}
+		return "redirect:/hire/showHires";
+	}
+	
+	@RequestMapping(value = "/rejectOneHire")
+	public String rejectOneHire(Long hireId, Model model) {
+		Hire hire = hireService.findOne(hireId);
+		if (hire != null) {
+			hire.setStatus(CommonUtils.HIRE_RECRUITER_REJECT);
+			hire = hireService.findOne(hireId);
+		}
+		return "redirect:/hire/showHires";
 	}
 }
