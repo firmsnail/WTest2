@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.RequirementForm;
@@ -119,7 +120,7 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 		curRequirement.setRequireNum(requirement.getRequireNum());
 		curRequirement.setExpectDate(requirement.getExpectDate());
 		curRequirement.setSubmitDate(new Date());
-		
+		curRequirement.setHiredNum(0);
 		for (Long skillId : requirement.getSkills()) {
 			curRequirement.getStfrqSkillList().add(skillRepository.findOne(skillId));
 		}
@@ -151,6 +152,12 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 	@Override
 	public List<StaffRequirement> findByStfrqDepartmentAndStatus(Department dept, Integer status) {
 		return staffRequirementRepository.findByStfrqDepartmentAndStatus(dept, status);
+	}
+
+	@Override
+	public List<StaffRequirement> findByDepartmentAndStatusAndRecruitingPlan(Department department, Integer status,
+			RecruitingPlan plan) {
+		return staffRequirementRepository.findByStfrqDepartmentAndStatusAndRecruitingPlan(department, status, plan);
 	}
 
 }

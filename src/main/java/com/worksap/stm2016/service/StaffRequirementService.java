@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.RequirementForm;
 
@@ -36,4 +37,6 @@ public interface StaffRequirementService {
 	public List<StaffRequirement> findByHRManager(Person cUser);
 	public void delete(Long requirementId);
 	public List<StaffRequirement> findByStfrqDepartmentAndStatus(Department dept, Integer status);
+	public List<StaffRequirement> findByDepartmentAndStatusAndRecruitingPlan(Department department,
+			Integer status, RecruitingPlan planForApplicant);
 }

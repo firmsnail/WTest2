@@ -257,6 +257,23 @@ public class RecruiterController {
 		return "redirect:/plan/showRecruitingPlans";
 	}
 	
+	@RequestMapping(value = "/scheduleOneInterview",  method = RequestMethod.POST)
+	public String scheduleOneInterview(Long interviewId, String interviewTime) throws ParseException {
+		System.out.println("@scheduleOneInterview start!");
+		System.out.println("interviewId: " + interviewId);
+		System.out.println("interviewTime: " + interviewTime);
+		if (interviewTime == null || interviewTime.length() <= 0) return "redirect:/interview/showInterviews";
+		System.out.println("@scheduleOneInterview here");
+		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		Date interviewT = df.parse(interviewTime);
+		Interview interview = interviewService.findOne(interviewId);
+		interview.setStatus(CommonUtils.INTERVIEW_INTERVIEWING);
+		interview.setInterviewTime(interviewT);
+		interview.setUpdateTime(new Date());
+		interview = interviewService.findOne(interviewId);
+		return "redirect:/plan/showRecruitingPlans";
+	}
+	
 	@PreAuthorize("@currentUserServiceImpl.canDeletePlan(principal, #planId)")
 	//@ResponseBody
 	@RequestMapping(value = "/deleteOnePlan")

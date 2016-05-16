@@ -17,4 +17,10 @@ public interface InterviewRepository extends PagingAndSortingRepository<Intervie
 
 	List<Interview> findByPlanForInterviewPlanMaker(Person user);
 
+	List<Interview> findByPlanForInterviewPlanMakerAndStatusIn(Person recruiter, List<Integer> statuses);
+
+	List<Interview> findByInterviewee(Person interviewee);
+
+	List<Interview> findByInterviewerAndStatusIn(Person interviewer, List<Integer> statuses);
+
 }

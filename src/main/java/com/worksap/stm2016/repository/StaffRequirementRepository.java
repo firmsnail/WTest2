@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.StaffRequirement;
 
 @Repository
@@ -43,6 +44,9 @@ public interface StaffRequirementRepository extends PagingAndSortingRepository<S
 	List<StaffRequirement> findByHrManager(Person hrManager);
 
 	List<StaffRequirement> findByStfrqDepartmentAndStatus(Department dept, Integer status);
+
+	List<StaffRequirement> findByStfrqDepartmentAndStatusAndRecruitingPlan(Department department, Integer status,
+			RecruitingPlan plan);
 
 
 

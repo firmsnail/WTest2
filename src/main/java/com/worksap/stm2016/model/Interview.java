@@ -40,6 +40,11 @@ public class Interview {
 	@JoinColumn(nullable = false, name = "plan_id", referencedColumnName = "plan_id")
 	private RecruitingPlan planForInterview;
 	
+	@ManyToOne(optional = false)
+	@JoinColumn(nullable = false, name = "requirement_id", referencedColumnName = "stfrq_id")
+	private StaffRequirement requirementForInterview;
+	
+	
 	@Column(name = "status")
 	Integer status;
 	

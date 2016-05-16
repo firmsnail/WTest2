@@ -14,4 +14,7 @@ public interface InterviewService {
 	public Interview save(Interview interview);
 	public Interview findOne(Long id);
 	public List<Interview> findByRecruiter(Person user);
+	public List<Interview> findByRecruiterAndStatusIn(Person recruiter, List<Integer> statuses);
+	public List<Interview> findByInterviewee(Person interviewee);
+	public List<Interview> findByInterviewerAndStatusIn(Person interviewer, List<Integer> statuses);
 }

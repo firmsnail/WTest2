@@ -277,6 +277,10 @@
                     <a href="/plan/showRecruitingPlans"><i class="fa fa-users fa-fw"></i> Recruiting Plans</a>
                 </li>
                 
+                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4 and currentUser.user.role.roleId != 5)}">class="hidden"</c:if> >
+                    <a href="/interview/showInterviews"><i class="fa fa-users fa-fw"></i> Interviews</a>
+                </li>
+                
                 <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4)}">class="hidden"</c:if> >
                     <a href="/hire/showHires"><i class="fa fa-users fa-fw"></i> Hires</a>
                 </li>

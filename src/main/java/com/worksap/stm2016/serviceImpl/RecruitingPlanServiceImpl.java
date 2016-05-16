@@ -85,7 +85,7 @@ public class RecruitingPlanServiceImpl implements RecruitingPlanService{
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		curPlan.setPlanMaker(curUser.getUser());
 		curPlan.setStatus(CommonUtils.PLAN_PENDING_VERIFY);
-		
+		curPlan.setHiredNum(0);
 		curPlan = recruitingPlanRepository.save(curPlan);
 		
 		for (Long requirementId : plan.getRequirements()) {

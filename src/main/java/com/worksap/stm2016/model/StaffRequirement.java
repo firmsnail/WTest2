@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -67,6 +68,13 @@ public class StaffRequirement {
 	
 	@Column(name = "\"requireNum\"", nullable = false)
 	Integer requireNum;
+	@Column(name = "\"hiredNum\"", nullable = false)
+	Integer hiredNum;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "requirementForHire", targetEntity = Hire.class, fetch = FetchType.LAZY)
+	private List<Hire> hires;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "requirementForInterview", targetEntity = Interview.class, fetch = FetchType.LAZY)
+	private List<Interview> interviews;
 	
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name="ss1604c187_rd4.stfrq_skill", joinColumns = {@JoinColumn(name = "skill_id")},

@@ -102,7 +102,7 @@
 																<c:when test="${applicant.status == 2}">		<!-- APPLY_PASS_FILTER -->
 																	<span class="label label-primary">Filter Passed</span>
 																</c:when>
-																<c:when test="${applicant.status == 2}">		<!-- APPLY_CHOOSED -->
+																<c:when test="${applicant.status == 3}">		<!-- APPLY_CHOOSED -->
 																	<span class="label label-success">Choosed</span>
 																</c:when>
 																<c:otherwise>
@@ -131,7 +131,6 @@
 																</c:choose>
 															</c:when>
 															<c:when test="${currentUser.user.role.roleId == 4}">
-																<!-- TODO -->
 																<a href="/team-manager/chooseOneApplicant?applicantId=${applicant.applicantId }"><button type="button" class="btn btn-success">Choose</button></a>
 															</c:when>
 															<c:otherwise>

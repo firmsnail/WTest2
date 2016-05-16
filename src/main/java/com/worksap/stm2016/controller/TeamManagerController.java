@@ -34,6 +34,7 @@ import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
+import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.RequirementForm;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DismissionService;
@@ -171,6 +172,16 @@ public class TeamManagerController {
 		interview.setStatus(CommonUtils.INTERVIEW_PENDING_SCHEDULE);
 		interview.setTurns(0);
 		interview.setUpdateTime(new Date());
+		
+		List<StaffRequirement> requirements = staffRequirementService.findByDepartmentAndStatusAndRecruitingPlan(curUser.getUser().getDepartment(), CommonUtils.REQUIREMENTS_RECRUITING, applicant.getPlanForApplicant());
+		
+		if (requirements != null && requirements.size() > 0) {
+			Random rand = new Random();
+			int idx = rand.nextInt(requirements.size());
+			StaffRequirement requirement = requirements.get(idx);
+			interview.setRequirementForInterview(requirement);
+		}
+		
 		interviewService.save(interview);
 		return "redirect:/applicant/showApplicants";
 	}

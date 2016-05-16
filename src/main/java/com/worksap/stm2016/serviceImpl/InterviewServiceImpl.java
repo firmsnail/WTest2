@@ -49,6 +49,23 @@ public class InterviewServiceImpl implements InterviewService{
 		// TODO Auto-generated method stub
 		return interviewRepository.findByPlanForInterviewPlanMaker(user);
 	}
+
+	@Override
+	public List<Interview> findByRecruiterAndStatusIn(Person recruiter, List<Integer> statuses) {
+		return interviewRepository.findByPlanForInterviewPlanMakerAndStatusIn(recruiter, statuses);
+	}
+
+	@Override
+	public List<Interview> findByInterviewee(Person interviewee) {
+		return interviewRepository.findByInterviewee(interviewee);
+	}
+
+	@Override
+	public List<Interview> findByInterviewerAndStatusIn(Person interviewer, List<Integer> statuses) {
+		return interviewRepository.findByInterviewerAndStatusIn(interviewer, statuses);
+	}
+	
+	
 	
 
 }

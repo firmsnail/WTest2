@@ -23,6 +23,7 @@
 	    	$('#startDate').val(picker.startDate.format('YYYY-MM-DD'));
 	    	$('#endDate').val(picker.endDate.format('YYYY-MM-DD'));
 	  	});
+	    
 	  });
 	</script>
 	
@@ -31,6 +32,7 @@
 <body>
 	<div id="wrapper">
 		<jsp:include page="../common/nav.jsp" />
+		
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -38,7 +40,6 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">

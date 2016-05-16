@@ -55,10 +55,14 @@ public class Hire {
 	@Column(name = "\"recruiterComments\"")
 	private String recruiterComments;
 	
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "plan_id", referencedColumnName = "plan_id")
+	@ManyToOne(optional = false)
+	@JoinColumn(nullable = false, name = "plan_id", referencedColumnName = "plan_id")
 	@JsonIgnore
 	private RecruitingPlan hirePlan;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(nullable = false, name = "requirement_id", referencedColumnName = "stfrq_id")
+	private StaffRequirement requirementForHire;
 
 	@Column(name = "\"hireDate\"")
 	@Temporal(TemporalType.DATE)
