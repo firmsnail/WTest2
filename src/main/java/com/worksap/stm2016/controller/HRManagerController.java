@@ -17,9 +17,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.modelForm.UserCreateForm;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.worksap.stm2016.chartData.PieData;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
@@ -47,7 +51,6 @@ import com.worksap.stm2016.validator.UserCreateFormValidator;
 @RequestMapping(value = "/hr-manager")
 public class HRManagerController {
 	
-	
 	@Autowired
 	private SkillService skillService;
 	@Autowired
@@ -74,67 +77,162 @@ public class HRManagerController {
 	
 	@RequestMapping(value = "/analyzeEmployeeStructure",  method = RequestMethod.GET)
 	public String analyzeEmployeeStructure(Model model) {
+		/*
 		analyzeEmployeeByDepartment(model);
 		analyzeEmployeeByAge(model);
 		analyzeEmployeeByGender(model);
 		analyzeEmployeeBySkill(model);
 		analyzeEmployeeByPeriod(model);
+		*/
 		return "hr-manager/analyzeEmployeeStructure";
 	}
 	
-	private void analyzeEmployeeByPeriod(Model model) {
+	@RequestMapping(value={"/analyzeEmployeeByPeriod"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzeEmployeeByPeriod(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByPeriod();
 		model.addAttribute("periodKeys", keyList);
 		List<List<Person> > employeesByPeriod = new ArrayList<List<Person> >();
 		for (int i = 0; i < keyList.size(); ++i) {
 			employeesByPeriod.add(personService.findByPeriod(keyList.get(i)));
 		}
-		model.addAttribute("employeesByPeriod", employeesByPeriod);
+		for (int i = 0; i < keyList.size(); ++i) {
+			PieData oneData = new PieData();
+			if (keyList.get(i) == 1) {
+				oneData.setName("OneMonth");
+			} else if (keyList.get(i) == 2) {
+				oneData.setName("TwoMonths");
+			} else if (keyList.get(i) == 3) {
+				oneData.setName("ThreeMonths");
+			} else if (keyList.get(i) == 4) {
+				oneData.setName("FourMonths");
+			} else if (keyList.get(i) == 5) {
+				oneData.setName("FiveMonths");
+			} else if (keyList.get(i) == 6) {
+				oneData.setName("SixMonths");
+			}
+			oneData.setY(employeesByPeriod.get(i).size()+0.0);
+			data.add(oneData);
+		}
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		//model.addAttribute("employeesByPeriod", employeesByPeriod);
+		return json;
 	}
 
-	private void analyzeEmployeeBySkill(Model model) {
+	@RequestMapping(value={"/analyzeEmployeeBySkill"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzeEmployeeBySkill(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
 		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
 		if (keyList != null) {
 			model.addAttribute("skillKeys", keyList);
 			List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
 			for (int i = 0; i < keyList.size(); ++i) {
 				employeesBySkill.add(personService.findBySkill(keyList.get(i)));
+				
+				PieData oneData = new PieData();
+				oneData.setName(keyList.get(i).getSkillName());
+				oneData.setY(employeesBySkill.get(i).size()+0.0);
+				data.add(oneData);
 			}
-			model.addAttribute("employeesBySkill", employeesBySkill);
+			//model.addAttribute("employeesBySkill", employeesBySkill);
 		}
-		
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
 	}
 
-	private void analyzeEmployeeByGender(Model model) {
+	@RequestMapping(value={"/analyzeEmployeeByGender"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzeEmployeeByGender(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByGender();
 		model.addAttribute("genderKeys", keyList);
 		List<List<Person> > employeesByGender = new ArrayList<List<Person> >();
 		for (int i = 0; i < keyList.size(); ++i) {
 			employeesByGender.add(personService.findByGender(keyList.get(i)));
+			PieData oneData = new PieData();
+			if (keyList.get(i) == CommonUtils.GENDER_FEMALE) {
+				oneData.setName("Female");
+			} else if (keyList.get(i) == CommonUtils.GENDER_MALE) {
+				oneData.setName("Male");
+			} else {
+				oneData.setName("Unknown");
+			}
+			oneData.setY(employeesByGender.get(i).size()+0.0);
+			data.add(oneData);
 		}
-		model.addAttribute("employeesByGender", employeesByGender);
+		//model.addAttribute("employeesByGender", employeesByGender);
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
 	}
 
-	private void analyzeEmployeeByAge(Model model) {
+	@RequestMapping(value={"/analyzeEmployeeByAge"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzeEmployeeByAge(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByAge();
 		model.addAttribute("ageKeys", keyList);
 		List<List<Person> > employeesByAge = new ArrayList<List<Person> >();
 		for (int i = 0; i < keyList.size(); ++i) {
 			employeesByAge.add(personService.findByAgeRange(keyList.get(i)));
+			
+			PieData oneData = new PieData();
+			if (keyList.get(i) == CommonUtils.AGE_1stRANGE) {
+				oneData.setName(CommonUtils.AGE_1stRANGE_MIN+"~"+CommonUtils.AGE_1stRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_2ndRANGE) {
+				oneData.setName(CommonUtils.AGE_2ndRANGE_MIN+"~"+CommonUtils.AGE_2ndRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_3rdRANGE) {
+				oneData.setName(CommonUtils.AGE_3rdRANGE_MIN+"~"+CommonUtils.AGE_3rdRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_4thRANGE) {
+				oneData.setName(CommonUtils.AGE_4thRANGE_MIN+"~"+CommonUtils.AGE_4thRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_5thRANGE) {
+				oneData.setName(CommonUtils.AGE_5thRANGE_MIN+"~"+CommonUtils.AGE_5thRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_6thRANGE) {
+				oneData.setName(CommonUtils.AGE_6thRANGE_MIN+"~"+CommonUtils.AGE_6thRANGE_MAX);
+			} else {
+				oneData.setName("Unknown");
+			}
+			oneData.setY(employeesByAge.get(i).size()+0.0);
+			
+			data.add(oneData);
 		}
-		model.addAttribute("employeesByAge", employeesByAge);
+		//model.addAttribute("employeesByAge", employeesByAge);
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
 	}
 
-	private void analyzeEmployeeByDepartment(Model model) {
+	@RequestMapping(value={"/analyzeEmployeeByDepartment"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzeEmployeeByDepartment(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
 		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService);
 		List<List<Person> > employeesByDepartment = new ArrayList<List<Person> >();
 		if (keyList != null) {
 			model.addAttribute("ageKeys", keyList);
 			for (int i = 0; i < keyList.size(); ++i) {
 				employeesByDepartment.add(personService.findByDepartment(keyList.get(i)));
+				
+				PieData oneData = new PieData();
+				oneData.setName(keyList.get(i).getDepartmentName());
+				oneData.setY(employeesByDepartment.get(i).size()+0.0);
+				
+				data.add(oneData);
 			}
-			model.addAttribute("employeesByDepartment", employeesByDepartment);
+			//model.addAttribute("employeesByDepartment", employeesByDepartment);
 		}
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
 	}
 
 	@RequestMapping(value = "/aprroveOneRequirement")

@@ -11,6 +11,54 @@
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/morris.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
 	
+	<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js">
+	<script src="//cdn.bootcss.com/highcharts/4.2.5/modules/exporting.js"></script>
+	
+	<script>
+		$(function() {
+			/*
+			$.ajax({
+				//url: "/hr-manager/analyzeEmployeeByPeriod",
+				url: "/testChart",
+				dataType: 'json',
+				success: function(data) {
+					//alert(data);
+					$('#container').highcharts({
+				        chart: {
+				            plotBackgroundColor: null,
+				            plotBorderWidth: null,
+				            plotShadow: false
+				        },
+				        title: {
+				            text: 'Browser market shares at a specific website, 2010'
+				        },
+				        tooltip: {
+				    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				        },
+				        plotOptions: {
+				            pie: {
+				                allowPointSelect: true,
+				                cursor: 'pointer',
+				                dataLabels: {
+				                    enabled: true,
+				                    color: '#000000',
+				                    connectorColor: '#000000',
+				                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+				                }
+				            }
+				        },
+				        series: [{
+				        	type: 'pie',
+				            name: 'Browser share',
+				            data: data
+				        }]
+				    });
+				}
+			});
+			*/
+		});
+	</script>
+	
 </head>
 
 <body>
@@ -25,15 +73,11 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            
-            <!-- 
-            <div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 1 }">hidden="hidden"</c:if>>
-           		<a href="/hr-manager/addUser">
-					<button type="button" class="btn btn-success btn-lg">Add Employees</button>
-				</a>
-           	</div>
-            -->
-            
+            <div class="row">
+            	<div class="col-lg-4">
+            		<div id="container" style="min-width:700px;height:400px"></div>
+            	</div>
+            </div>
             <div class="row" <c:if test="${currentUser == null or currentUser.role.roleId != 5 }">hidden="hidden"</c:if>>
             	<div class="col-lg-4">
            			<a href="/short-term-employee/sign"><button type="button" class="btn btn-success">Sign</button></a>

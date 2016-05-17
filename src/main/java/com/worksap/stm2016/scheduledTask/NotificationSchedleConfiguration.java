@@ -22,7 +22,7 @@ public class NotificationSchedleConfiguration {
         return bean;  
     }
   
-    @Bean(name = "cronTriggerBean1")  
+    @Bean(name = "cronTriggerBeanForNotification")  
     public CronTriggerFactoryBean cronTriggerBeanForNotification(@Qualifier("detailFactoryBeanForNotification") MethodInvokingJobDetailFactoryBean detailFactoryBeanForNotification){  
         CronTriggerFactoryBean trigger = new CronTriggerFactoryBean ();  
         trigger.setJobDetail (detailFactoryBeanForNotification.getObject ());  

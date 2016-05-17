@@ -1,6 +1,9 @@
 package com.worksap.stm2016.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.worksap.stm2016.chartData.PieData;
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
@@ -94,7 +100,27 @@ public class GeneralController {
 	
 	@RequestMapping(value={"/", "/index"}, method = RequestMethod.GET)
 	public String index() {
+		
 		return "index";
+	}
+	
+	@RequestMapping(value={"/testChart"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String testChart() throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
+		Map<String, Double> mapData = new HashMap<String, Double>();
+		for (int i = 0; i < 5; ++i) {
+			PieData oneData = new PieData();
+			oneData.setName("label"+i);
+			oneData.setY(i+1.0);
+			//mapData.put(oneData.getLabel(), oneData.getValue());
+			data.add(oneData);
+		}
+		ObjectMapper mapper = new ObjectMapper();  
+		//mapper.
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
 	}
 	
 	@RequestMapping(value={"/login"})

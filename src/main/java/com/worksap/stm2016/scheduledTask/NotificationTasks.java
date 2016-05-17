@@ -9,7 +9,36 @@ import org.springframework.stereotype.Component;
 @EnableScheduling  
 public class NotificationTasks {
 	public void work(){
-		//System.out.println("Schedule1 Success!");
+		NotifyForHRManager();
+		NotifyForRecruiter();
+		NotifyForCBSpecialist();
+		NotifyForTeamManager();
+		NotifyForShortTermEmployee();
+	}
+
+	private void NotifyForShortTermEmployee() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void NotifyForTeamManager() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void NotifyForCBSpecialist() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void NotifyForRecruiter() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void NotifyForHRManager() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
