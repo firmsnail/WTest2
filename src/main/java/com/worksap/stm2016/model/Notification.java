@@ -29,6 +29,12 @@ public class Notification {
 	@Column(name = "content")
 	private String content;
 	
+	@Column(name = "url")
+	private String url;
+	
+	@Column(name = "urgency")
+	private Integer urgency;
+	
 	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "person_id", referencedColumnName = "person_id")
 	@JsonIgnore

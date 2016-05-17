@@ -82,6 +82,17 @@ public class CommonUtils {
 	final static public Integer LEAVE_FINISH = 3;
 	final static public Integer LEAVE_REJECT = 4;
 	
+	final static public Integer NOTIFICATION_TYPE_REQUIREMENT = 1;
+	final static public Integer NOTIFICATION_TYPE_PLAN = 2;
+	final static public Integer NOTIFICATION_TYPE_HIRE = 3;
+	final static public Integer NOTIFICATION_TYPE_DISMISSION = 4;
+	final static public Integer NOTIFICATION_TYPE_LEAVE = 5;
+	final static public Integer NOTIFICATION_TYPE_INTERVIEW = 6;
+	
+	final static public Integer NOTIFICATION_URGENCY_LOW = 1;
+	final static public Integer NOTIFICATION_URGENCY_MIDDLE = 2;
+	final static public Integer NOTIFICATION_URGENCY_HIGH = 3;
+	
 	final static public Integer MAX_PERIOD = 6;
 	
 	final static public Integer PERIOD_1MONTH = 1;
