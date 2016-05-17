@@ -178,5 +178,10 @@ public class PersonServiceImpl implements PersonService{
 		return personRepository.findByRole(role);
 	}
 
+	@Override
+	public List<Person> findByRoleAndStatus(Role role, Integer status) {
+		return personRepository.findByRoleAndStatus(role, status);
+	}
+
 }
 

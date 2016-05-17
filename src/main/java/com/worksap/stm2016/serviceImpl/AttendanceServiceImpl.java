@@ -105,4 +105,9 @@ public class AttendanceServiceImpl implements AttendanceService{
 		return attendanceRepository.findByAttendanceDateBefore(afterDay);
 	}
 
+	@Override
+	public List<Attendance> findByAttendancePersonAndAttendanceDate(Person user, Date today) {
+		return attendanceRepository.findByAttendancePersonAndAttendanceDate(user, today);
+	}
+
 }

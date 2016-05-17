@@ -27,4 +27,5 @@ public interface AttendanceService {
 	public List<Attendance> findByStartDateAndEndDate(Date startDate, Date endDate);
 	public List<Attendance> findByStartDate(Date startDate);
 	public List<Attendance> findByEndDate(Date endDate);
+	public List<Attendance> findByAttendancePersonAndAttendanceDate(Person user, Date today);
 }

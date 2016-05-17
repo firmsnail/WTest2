@@ -36,7 +36,7 @@ public class Payroll {
 	@JoinColumn(nullable = false, name = "employee_id", referencedColumnName = "person_id")
 	private Person payrollEmployee;
 	
-	@Column(name = "amount")
+	@Column(nullable = false, name = "amount")
 	private Double amount;
 	
 	@Column(name = "comment")
@@ -47,5 +47,4 @@ public class Payroll {
 	@JsonDeserialize(using = DateDeserializer.class)
 	private Date issueDate;
 	
-
 }

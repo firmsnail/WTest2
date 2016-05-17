@@ -266,9 +266,9 @@
 																		<a href="/team-manager/failOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-danger">Fail</button></a>
 																	</c:when>
 																	<c:otherwise>
-																		<button type="button" class="btn btn-primary">More</button>
-																		<button type="button" class="btn btn-success">Hire</button>
-																		<button type="button" class="btn btn-danger">Fail</button>
+																		<button type="button" class="btn btn-primary disabled">More</button>
+																		<button type="button" class="btn btn-success disabled">Hire</button>
+																		<button type="button" class="btn btn-danger disabled">Fail</button>
 																	</c:otherwise>
 																</c:choose>
 															</c:when>

@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.logoutSuccessUrl("/").logoutUrl("/logout").permitAll()
 			.and()
 			.rememberMe()
-			.tokenValiditySeconds(1209600);	
+			.tokenValiditySeconds(1209600);
 			//tokenRepository(tokenRepository());
 		
 		/*

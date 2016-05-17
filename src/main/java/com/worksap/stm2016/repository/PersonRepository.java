@@ -34,6 +34,8 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 	List<Person> findByRoleAndGender(Role role, Integer gender);
 
 	List<Person> findByAgeIsBetween(Integer startAge, Integer endAge);
+
+	List<Person> findByRoleAndStatus(Role role, Integer status);
 	
 
 }

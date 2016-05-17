@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.Applicant;
+import com.worksap.stm2016.model.Attendance;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Person;
@@ -24,6 +25,7 @@ import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.modelForm.DismissionForm;
 import com.worksap.stm2016.modelForm.LeaveForm;
 import com.worksap.stm2016.service.ApplicantService;
+import com.worksap.stm2016.service.AttendanceService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.LeaveService;
@@ -50,6 +52,8 @@ public class ShortTermEmployeeController {
 	private PersonService personService;
 	@Autowired
 	private ApplicantService applicantService;
+	@Autowired
+	private AttendanceService attendanceService;
 	
 	@Autowired
 	private DismissionFormValidator  dismissionFormValidator;
@@ -151,5 +155,37 @@ public class ShortTermEmployeeController {
 		applicantService.save(applicant);
 		//leaveService.delete(planId);
 		return "redirect:/plan/showRecruitingPlans";
+	}
+	
+	@RequestMapping(value = "/sign")
+	public String sign() {
+		Date today = new Date();
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Attendance> attendances = attendanceService.findByAttendancePersonAndAttendanceDate(curUser.getUser(), today);
+		Attendance todayAttendance = null;
+		if (attendances != null && attendances.size() > 0) {
+			todayAttendance = attendances.get(0);
+			todayAttendance.setLeaveTime(today);
+			Date startTime = CommonUtils.getDayStartTime(todayAttendance.getAttendanceDate());
+			Date endTime = CommonUtils.getDayEndTime(todayAttendance.getAttendanceDate());
+			if (todayAttendance.getAttendanceTime().after(startTime)) {
+				todayAttendance.setType(CommonUtils.ATTENDANCE_ATTEND_LATE);
+			} else if (todayAttendance.getLeaveTime().before(endTime)) {
+				todayAttendance.setType(CommonUtils.ATTENDANCE_LEAVE_EARLY);
+			} else {
+				todayAttendance.setType(CommonUtils.ATTENDANCE_NORMAL);
+			}
+			todayAttendance = attendanceService.findOne(todayAttendance.getAttendanceId());
+		} else {
+			todayAttendance = new Attendance();
+			todayAttendance.setAttendanceTime(today);
+			todayAttendance.setType(CommonUtils.ATTENDANCE_LEAVE_NOT_RECORD);
+			todayAttendance.setAttendancePerson(curUser.getUser());
+			todayAttendance.setAttendanceDepartment(curUser.getUser().getDepartment());
+			todayAttendance.setAttendanceDate(today);
+			attendanceService.save(todayAttendance);
+		}
+
+		return "redirect:/index";
 	}
 }

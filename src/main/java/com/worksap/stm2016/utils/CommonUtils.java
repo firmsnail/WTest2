@@ -207,6 +207,20 @@ public class CommonUtils {
 		c.add(Calendar.MONTH, k);
 		return c.getTime();
 	}
+	
+	public static Date OneMonthBefore(Date beforeDate) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(beforeDate);
+		c.add(Calendar.MONTH, -1);
+		return c.getTime();
+	}
+	
+	public static Date kMonthBefore(Date beforeDate, Integer k) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(beforeDate);
+		c.add(Calendar.MONTH, -k);
+		return c.getTime();
+	}
 
 	public static boolean RequirementContainSkills(StaffRequirement requirement, List<Long> skills, SkillService skillService) {
 		List<Skill> reqSkills = requirement.getStfrqSkillList();
@@ -243,5 +257,21 @@ public class CommonUtils {
 			skills.add(skillService.findOne(skillId));
 		}
 		return skills;
+	}
+
+	public static Date getDayStartTime(Date attendanceDate) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(attendanceDate);
+		c.set(Calendar.HOUR, 9);
+		c.set(Calendar.MINUTE, 30);
+		return c.getTime();
+	}
+
+	public static Date getDayEndTime(Date attendanceDate) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(attendanceDate);
+		c.set(Calendar.HOUR, 18);
+		c.set(Calendar.MINUTE, 30);
+		return c.getTime();
 	}
 }

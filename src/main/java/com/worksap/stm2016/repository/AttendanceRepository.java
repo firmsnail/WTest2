@@ -39,4 +39,6 @@ public interface AttendanceRepository extends PagingAndSortingRepository<Attenda
 
 	List<Attendance> findByAttendanceDateBefore(Date endDate);
 
+	List<Attendance> findByAttendancePersonAndAttendanceDate(Person user, Date today);
+
 }

@@ -28,4 +28,5 @@ public interface PersonService {
 	public List<Person> findByGender(Integer integer);
 	public List<Person> findByAgeRange(Integer integer);
 	public List<Person> findByRole(Role role);
+	public List<Person> findByRoleAndStatus(Role role, Integer status);
 }
