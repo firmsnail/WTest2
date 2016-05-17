@@ -310,6 +310,10 @@
                     <a href="/hr-manager/analyzeEmployeeStructure"><i class="fa fa-users fa-fw"></i> Analyze Employee Structure</a>
                 </li>
                 
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 1}">class="hidden"</c:if> >
+                    <a href="/hr-manager/analyzePayrollStructure"><i class="fa fa-users fa-fw"></i> Analyze Payroll Structure</a>
+                </li>
+                
                 <li>
                     <a href="/help"><i class="fa fa-question-circle fa-fw"></i> Help</a>
                 </li>

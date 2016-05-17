@@ -28,6 +28,7 @@ import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Hire;
+import com.worksap.stm2016.model.Payroll;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Role;
@@ -36,6 +37,7 @@ import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
+import com.worksap.stm2016.service.PayrollService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.service.RoleService;
@@ -67,6 +69,8 @@ public class HRManagerController {
 	private HireService hireService;
 	@Autowired
 	private DismissionService dismissionService;
+	@Autowired
+	private PayrollService payrollService;
 
 	@Autowired
 	private UserCreateFormValidator  userCreateFormValidator;
@@ -85,6 +89,18 @@ public class HRManagerController {
 		analyzeEmployeeByPeriod(model);
 		*/
 		return "hr-manager/analyzeEmployeeStructure";
+	}
+	
+	@RequestMapping(value = "/analyzePayrollStructure",  method = RequestMethod.GET)
+	public String analyzePayrollStructure(Model model) {
+		/*
+		analyzeEmployeeByDepartment(model);
+		analyzeEmployeeByAge(model);
+		analyzeEmployeeByGender(model);
+		analyzeEmployeeBySkill(model);
+		analyzeEmployeeByPeriod(model);
+		*/
+		return "hr-manager/analyzePayrollStructure";
 	}
 	
 	@RequestMapping(value={"/analyzeEmployeeByPeriod"}, method = RequestMethod.GET)
@@ -234,6 +250,185 @@ public class HRManagerController {
 		System.out.println("json: " + json);
 		return json;
 	}
+	
+	
+	@RequestMapping(value={"/analyzePayrollByPeriod"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzePayrollByPeriod(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
+		List<Integer> keyList = CommonUtils.getKeysByPeriod();
+		model.addAttribute("periodKeys", keyList);
+		List<List<Payroll> > payrollByPeriod = new ArrayList<List<Payroll> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			payrollByPeriod.add(payrollService.findByPayrollEmployeePeriod(keyList.get(i)));
+			//employeesByPeriod.add(personService.findByPeriod(keyList.get(i)));
+		}
+		for (int i = 0; i < keyList.size(); ++i) {
+			PieData oneData = new PieData();
+			if (keyList.get(i) == 1) {
+				oneData.setName("OneMonth");
+			} else if (keyList.get(i) == 2) {
+				oneData.setName("TwoMonths");
+			} else if (keyList.get(i) == 3) {
+				oneData.setName("ThreeMonths");
+			} else if (keyList.get(i) == 4) {
+				oneData.setName("FourMonths");
+			} else if (keyList.get(i) == 5) {
+				oneData.setName("FiveMonths");
+			} else if (keyList.get(i) == 6) {
+				oneData.setName("SixMonths");
+			}
+			Double total = 0.0;
+			for (Payroll payroll : payrollByPeriod.get(i)) {
+				total += payroll.getAmount();
+			}
+			oneData.setY(total);
+			data.add(oneData);
+		}
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		//model.addAttribute("employeesByPeriod", employeesByPeriod);
+		return json;
+	}
+
+	@RequestMapping(value={"/analyzePayrollBySkill"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzePayrollBySkill(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
+		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
+		if (keyList != null) {
+			model.addAttribute("skillKeys", keyList);
+			//List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
+			List<List<Payroll> > payrollBySkill = new ArrayList<List<Payroll> >();
+			for (int i = 0; i < keyList.size(); ++i) {
+				//employeesBySkill.add(personService.findBySkill(keyList.get(i)));
+				payrollBySkill.add(payrollService.findByEmployeeSkill(keyList.get(i))); 
+				
+				PieData oneData = new PieData();
+				oneData.setName(keyList.get(i).getSkillName());
+				Double total = 0.0;
+				for (Payroll payroll : payrollBySkill.get(i)) {
+					total += payroll.getAmount();
+				}
+				oneData.setY(total);
+				data.add(oneData);
+			}
+			//model.addAttribute("employeesBySkill", employeesBySkill);
+		}
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
+	}
+
+	@RequestMapping(value={"/analyzePayrollByGender"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzePayrollByGender(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
+		List<Integer> keyList = CommonUtils.getKeysByGender();
+		model.addAttribute("genderKeys", keyList);
+		//List<List<Person> > employeesByGender = new ArrayList<List<Person> >();
+		List<List<Payroll> > payrollsByGender = new ArrayList<List<Payroll> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			payrollsByGender.add(payrollService.findByPayrollEmployeeGender(keyList.get(i)));
+			//employeesByGender.add(personService.findByGender(keyList.get(i)));
+			PieData oneData = new PieData();
+			if (keyList.get(i) == CommonUtils.GENDER_FEMALE) {
+				oneData.setName("Female");
+			} else if (keyList.get(i) == CommonUtils.GENDER_MALE) {
+				oneData.setName("Male");
+			} else {
+				oneData.setName("Unknown");
+			}
+			Double total = 0.0;
+			for (Payroll payroll : payrollsByGender.get(i)) {
+				total += payroll.getAmount();
+			}
+			oneData.setY(total);
+			data.add(oneData);
+		}
+		//model.addAttribute("employeesByGender", employeesByGender);
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
+	}
+
+	@RequestMapping(value={"/analyzePayrollByAge"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzePayrollByAge(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
+		List<Integer> keyList = CommonUtils.getKeysByAge();
+		model.addAttribute("ageKeys", keyList);
+		//List<List<Person> > employeesByAge = new ArrayList<List<Person> >();
+		List<List<Payroll> > payrollsByAge = new ArrayList<List<Payroll> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			payrollsByAge.add(payrollService.findByPayrollEmployeeAgeRange(keyList.get(i)));
+			
+			PieData oneData = new PieData();
+			if (keyList.get(i) == CommonUtils.AGE_1stRANGE) {
+				oneData.setName(CommonUtils.AGE_1stRANGE_MIN+"~"+CommonUtils.AGE_1stRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_2ndRANGE) {
+				oneData.setName(CommonUtils.AGE_2ndRANGE_MIN+"~"+CommonUtils.AGE_2ndRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_3rdRANGE) {
+				oneData.setName(CommonUtils.AGE_3rdRANGE_MIN+"~"+CommonUtils.AGE_3rdRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_4thRANGE) {
+				oneData.setName(CommonUtils.AGE_4thRANGE_MIN+"~"+CommonUtils.AGE_4thRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_5thRANGE) {
+				oneData.setName(CommonUtils.AGE_5thRANGE_MIN+"~"+CommonUtils.AGE_5thRANGE_MAX);
+			} else if (keyList.get(i) == CommonUtils.AGE_6thRANGE) {
+				oneData.setName(CommonUtils.AGE_6thRANGE_MIN+"~"+CommonUtils.AGE_6thRANGE_MAX);
+			} else {
+				oneData.setName("Unknown");
+			}
+			
+			Double total = 0.0;
+			for (Payroll payroll : payrollsByAge.get(i)) {
+				total += payroll.getAmount();
+			}
+			oneData.setY(total);
+			
+			data.add(oneData);
+		}
+		//model.addAttribute("employeesByAge", employeesByAge);
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
+	}
+
+	@RequestMapping(value={"/analyzePayrollByDepartment"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String analyzePayrollByDepartment(Model model) throws JsonProcessingException {
+		List<PieData> data = new ArrayList<PieData>();
+		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService);
+		List<List<Payroll> > payrollsByDepartment = new ArrayList<List<Payroll> >();
+		//List<List<Person> > employeesByDepartment = new ArrayList<List<Person> >();
+		if (keyList != null) {
+			model.addAttribute("ageKeys", keyList);
+			for (int i = 0; i < keyList.size(); ++i) {
+				payrollsByDepartment.add(payrollService.findByPayrollEmployeeDepartment(keyList.get(i)));
+				//employeesByDepartment.add(personService.findByDepartment(keyList.get(i)));
+				
+				PieData oneData = new PieData();
+				oneData.setName(keyList.get(i).getDepartmentName());
+				Double total = 0.0;
+				for (Payroll payroll : payrollsByDepartment.get(i)) {
+					total += payroll.getAmount();
+				}
+				oneData.setY(total);
+				
+				data.add(oneData);
+			}
+			//model.addAttribute("employeesByDepartment", employeesByDepartment);
+		}
+		ObjectMapper mapper = new ObjectMapper();  
+		String json = mapper.writeValueAsString(data);
+		System.out.println("json: " + json);
+		return json;
+	}
+	
 
 	@RequestMapping(value = "/aprroveOneRequirement")
 	public String aprroveOneRequirement(Long requirementId, Model model) {

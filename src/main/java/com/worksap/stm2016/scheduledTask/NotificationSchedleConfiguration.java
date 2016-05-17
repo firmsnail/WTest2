@@ -36,7 +36,7 @@ public class NotificationSchedleConfiguration {
     }
 	
     @Bean  
-    public SchedulerFactoryBean schedulerFactory1(@Qualifier("cronTriggerBeanForNotification") CronTriggerFactoryBean cronTriggerBeanForNotification){  
+    public SchedulerFactoryBean schedulerFactory(@Qualifier("cronTriggerBeanForNotification") CronTriggerFactoryBean cronTriggerBeanForNotification){  
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean ();  
         schedulerFactory.setTriggers(cronTriggerBeanForNotification.getObject());  
         return schedulerFactory;  
