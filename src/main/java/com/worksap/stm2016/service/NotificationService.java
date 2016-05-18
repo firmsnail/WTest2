@@ -14,4 +14,5 @@ public interface NotificationService {
 	public Notification save(Notification person);
 	public Notification findOne(Long id);
 	public List<Notification> findByOwner(Person user);
+	public List<Notification> findUnreadByOwner(Person user);
 }

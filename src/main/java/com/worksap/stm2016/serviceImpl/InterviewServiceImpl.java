@@ -64,6 +64,11 @@ public class InterviewServiceImpl implements InterviewService{
 	public List<Interview> findByInterviewerAndStatusIn(Person interviewer, List<Integer> statuses) {
 		return interviewRepository.findByInterviewerAndStatusIn(interviewer, statuses);
 	}
+
+	@Override
+	public List<Interview> findByStatus(Integer status) {
+		return interviewRepository.findByStatus(status);
+	}
 	
 	
 	

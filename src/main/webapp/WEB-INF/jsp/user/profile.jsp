@@ -27,42 +27,7 @@
 	                responsive: false
 	        });
 	        
-	        /*function myrefresh() {
-	            $.post("../refresh.aspx", { 'action': 'refresh' }, function(data) {
-	                if (data > 0) {
-	                    $("#sp_talk").removeClass('icon70-tel');
-	                    $("#sp_talk").addClass('icon70-telcall');//有消息改变样式
-	                } else {
-	                    $("#sp_talk").removeClass('icon70-telcall');
-	                    $("#sp_talk").addClass('icon70-tel');
-	                }
-	            });
-	        }*/
-	        
-	        function getNowFormatDate() {
-	            var date = new Date();
-	            var seperator1 = "-";
-	            var seperator2 = ":";
-	            var month = date.getMonth() + 1;
-	            var strDate = date.getDate();
-	            if (month >= 1 && month <= 9) {
-	                month = "0" + month;
-	            }
-	            if (strDate >= 0 && strDate <= 9) {
-	                strDate = "0" + strDate;
-	            }
-	            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-	                    + " " + date.getHours() + seperator2 + date.getMinutes()
-	                    + seperator2 + date.getSeconds();
-	            return currentdate;
-	        }
-	        
-	        function myrefresh() {
-	        	$("#notify-num").remove()
-	        	$("#notifyA").append('<span class=\"label label-danger\" id=\"notify-num\">'+getNowFormatDate()+'</span>')
-	        }
-	        setInterval(myrefresh, 5000); //指定时间刷新一次 
-	        
+
 	    });
 	    
 	    

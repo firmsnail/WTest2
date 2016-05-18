@@ -27,8 +27,8 @@ public class PayrollScheduleConfiguration {
         CronTriggerFactoryBean trigger = new CronTriggerFactoryBean ();  
         trigger.setJobDetail (detailFactoryBeanForPayroll.getObject ());  
         try {  
-            //trigger.setCronExpression ("1 0 0 1 * ?");//Executed in the first day of every months.
-        	trigger.setCronExpression ("0/50 * * ? * *");
+            trigger.setCronExpression ("1 0 0 1 * ?");//Executed in the first day of every months.
+        	//trigger.setCronExpression ("0/50 * * ? * *");
         } catch (ParseException e) {  
             e.printStackTrace ();  
         }  

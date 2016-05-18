@@ -19,14 +19,38 @@
 	    function formSubmit() {
 	        document.getElementById("logoutForm").submit();
 	    }
+		$(document).ready(function() {
+	    	
+	    	//Initialize Select2 Elements
+		    $(".select2").select2();
+	        $('#dataTables-example').DataTable({
+	                responsive: false
+	        });
+			function myrefresh() {
+	        	
+	        	$.ajax({
+	        		url: "/user/ajaxNotify",
+	        		dataType: 'json',
+	        		success: function(data) {
+	        			$("#notify-num").remove()
+	        			if (data > 0) {
+	        				$("#notifyA").append('<span class=\"label label-danger\" id=\"notify-num\">'+data+'</span>')
+	        			}
+	        		}
+	        	});
+	        	
+	        }
+	        setInterval(myrefresh, 5000); //指定时间刷新一次 
+	        
+	    });
 	</script>
     <ul class="nav navbar-top-links navbar-right">
         
         <!-- /.dropdown -->
-        <li>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="notifyA">
+        <li <c:if test="${currentUser != null}">class="hidden"</c:if> >
+            <a class="dropdown-toggle" data-toggle="dropdown" href="/user/profile?userId=${currentUser.user.personId }" id="notifyA">
                 <i class="fa fa-bell"></i>
-                <span class="label label-danger" id="notify-num">4</span>
+                <!-- <span class="label label-danger" id="notify-num">4</span>-->
             </a>
         </li>
         <!-- /.dropdown -->

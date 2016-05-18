@@ -17,4 +17,6 @@ public interface NotificationRepository extends PagingAndSortingRepository<Notif
 
 	List<Notification> findByOwner(Person user);
 
+	List<Notification> findByOwnerAndStatus(Person user, Integer status);
+
 }

@@ -12,6 +12,7 @@ import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.repository.NotificationRepository;
 import com.worksap.stm2016.service.NotificationService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Service
 @Transactional
@@ -47,6 +48,11 @@ public class NotificationServiceImpl implements NotificationService{
 	@Override
 	public List<Notification> findByOwner(Person user) {
 		return notificationRepository.findByOwner(user);
+	}
+
+	@Override
+	public List<Notification> findUnreadByOwner(Person user) {
+		return notificationRepository.findByOwnerAndStatus(user, CommonUtils.NOTIFICATION_STATUS_UNREAD);
 	}
 	
 

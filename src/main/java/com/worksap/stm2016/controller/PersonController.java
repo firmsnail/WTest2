@@ -3,6 +3,7 @@ package com.worksap.stm2016.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.validation.Valid;
 
@@ -16,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
@@ -97,6 +99,7 @@ public class PersonController {
 		return "user/profile";
 	}
 	
+	@PreAuthorize("@currentUserServiceImpl.hasLogIn(principal)")
 	@RequestMapping(value = "/edit",  method = RequestMethod.POST)
 	public String edit(@ModelAttribute("userForm") @Valid UserUpdateForm userForm, BindingResult bindingResult, Model model) {
 		System.out.println("@edit start!");
@@ -116,5 +119,13 @@ public class PersonController {
             return "user/profile";
         }
 		return "redirect:/user/profile?userId="+curUser.getId();
+	}
+	
+	@RequestMapping(value = "/ajaxNotify")
+	@ResponseBody
+	public Integer ajaxNotify() {
+		System.out.println("@ajaxNotify start!");
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return notificationService.findUnreadByOwner(curUser.getUser()).size();
 	}
 }
