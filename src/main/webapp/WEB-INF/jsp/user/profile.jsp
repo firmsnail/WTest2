@@ -16,8 +16,6 @@
 	
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/select2.min.css" rel="stylesheet">
-	<link href="${pageContext.request.contextPath}/resources/static/css/common/_all-skins.min.css" rel="stylesheet">
-	<link href="${pageContext.request.contextPath}/resources/static/plugins/iCheck/all.css" rel="stylesheet">
 	
 	
 	<script>
@@ -28,6 +26,42 @@
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
+	        
+	        /*function myrefresh() {
+	            $.post("../refresh.aspx", { 'action': 'refresh' }, function(data) {
+	                if (data > 0) {
+	                    $("#sp_talk").removeClass('icon70-tel');
+	                    $("#sp_talk").addClass('icon70-telcall');//有消息改变样式
+	                } else {
+	                    $("#sp_talk").removeClass('icon70-telcall');
+	                    $("#sp_talk").addClass('icon70-tel');
+	                }
+	            });
+	        }*/
+	        
+	        function getNowFormatDate() {
+	            var date = new Date();
+	            var seperator1 = "-";
+	            var seperator2 = ":";
+	            var month = date.getMonth() + 1;
+	            var strDate = date.getDate();
+	            if (month >= 1 && month <= 9) {
+	                month = "0" + month;
+	            }
+	            if (strDate >= 0 && strDate <= 9) {
+	                strDate = "0" + strDate;
+	            }
+	            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+	                    + " " + date.getHours() + seperator2 + date.getMinutes()
+	                    + seperator2 + date.getSeconds();
+	            return currentdate;
+	        }
+	        
+	        function myrefresh() {
+	        	$("#notify-num").remove()
+	        	$("#notifyA").append('<span class=\"label label-danger\" id=\"notify-num\">'+getNowFormatDate()+'</span>')
+	        }
+	        setInterval(myrefresh, 5000); //指定时间刷新一次 
 	        
 	    });
 	    
@@ -242,101 +276,106 @@
 		              <li><a href="#settings" data-toggle="tab">Settings</a></li>
 		            </ul>
 		            <div class="tab-content">
-		              <div class="active tab-pane" id="timeline">
-		                <!-- The timeline -->
-		                <ul class="timeline timeline-inverse">
-		                  <!-- timeline time label -->
-		                  <li class="time-label">
-		                        <span class="bg-red">
-		                          10 Feb. 2014
-		                        </span>
-		                  </li>
-		                  <!-- /.timeline-label -->
-		                  <!-- timeline item -->
-		                  <li>
-		                    <i class="fa fa-envelope bg-blue"></i>
-		
-		                    <div class="timeline-item">
-		                      <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-		
-		                      <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-		
-		                      <div class="timeline-body">
-		                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-		                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
-		                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-		                        quora plaxo ideeli hulu weebly balihoo...
-		                      </div>
-		                      <div class="timeline-footer">
-		                        <a class="btn btn-primary btn-xs">Read more</a>
-		                        <a class="btn btn-danger btn-xs">Delete</a>
-		                      </div>
-		                    </div>
-		                  </li>
-		                  <!-- END timeline item -->
-		                  <!-- timeline item -->
-		                  <li>
-		                    <i class="fa fa-user bg-aqua"></i>
-		
-		                    <div class="timeline-item">
-		                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-		
-		                      <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
-		                      </h3>
-		                    </div>
-		                  </li>
-		                  <!-- END timeline item -->
-		                  <!-- timeline item -->
-		                  <li>
-		                    <i class="fa fa-comments bg-yellow"></i>
-		
-		                    <div class="timeline-item">
-		                      <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-		
-		                      <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-		
-		                      <div class="timeline-body">
-		                        Take me to your leader!
-		                        Switzerland is small and neutral!
-		                        We are more like Germany, ambitious and misunderstood!
-		                      </div>
-		                      <div class="timeline-footer">
-		                        <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-		                      </div>
-		                    </div>
-		                  </li>
-		                  <!-- END timeline item -->
-		                  <!-- timeline time label -->
-		                  <li class="time-label">
-		                        <span class="bg-green">
-		                          3 Jan. 2014
-		                        </span>
-		                  </li>
-		                  <!-- /.timeline-label -->
-		                  <!-- timeline item -->
-		                  <li>
-		                    <i class="fa fa-camera bg-purple"></i>
-		
-		                    <div class="timeline-item">
-		                      <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-		
-		                      <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-		
-		                      <div class="timeline-body">
-		                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-		                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-		                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-		                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-		                      </div>
-		                    </div>
-		                  </li>
-		                  <!-- END timeline item -->
-		                  <li>
-		                    <i class="fa fa-clock-o bg-gray"></i>
-		                  </li>
-		                </ul>
-		              </div>
-		              <!-- /.tab-pane -->
+			              <div class="active tab-pane" id="timeline">
+							<c:choose>
+								<c:when test="${notifications == null or fn:length(notifications) == 0 }">
+									<h2>You haven't any notifications!</h2>
+								</c:when>
+								<c:otherwise>
+									<ul class="timeline timeline-inverse">
+										<c:forEach var="notification" items="${notifications}" varStatus="status">
+				                	  		<li>
+				                	  			<c:set var="showColor" value="bg-blue" />
+				                	  			<c:choose>
+				                	  				<c:when test="${notification.urgency == 1 }">
+				                	  					<c:set var="showColor" value="bg-blue" />
+				                	  				</c:when>
+				                	  				<c:when test="${notification.urgency == 2 }">
+				                	  					<c:set var="showColor" value="bg-yellow" />
+				                	  				</c:when>
+				                	  				<c:otherwise>
+				                	  					<c:set var="showColor" value="bg-red" />
+				                	  				</c:otherwise>
+				                	  			</c:choose>
+				                	  		<!-- 
+				                	  		
+				                	  		final static public Integer NOTIFICATION_TYPE_REQUIREMENT = 1;
+											final static public Integer NOTIFICATION_TYPE_PLAN = 2;
+											final static public Integer NOTIFICATION_TYPE_HIRE = 3;
+											final static public Integer NOTIFICATION_TYPE_DISMISSION = 4;
+											final static public Integer NOTIFICATION_TYPE_LEAVE = 5;
+											final static public Integer NOTIFICATION_TYPE_INTERVIEW = 6;
+				                	  		
+				                	  		 -->
+				                	  			
+				                	  			<c:choose>
+			                	  					<c:when test="${notification.type == 1}">
+			                	  						<i class="fa fa-users ${showColor }"></i>
+			                	  					</c:when>
+			                	  					<c:when test="${notification.type == 2}">
+			                	  						<i class="fa fa-list ${showColor }"></i>
+			                	  					</c:when>
+			                	  					<c:when test="${notification.type == 3}">
+			                	  						<i class="fa fa-user ${showColor }"></i>
+			                	  					</c:when>
+			                	  					<c:when test="${notification.type == 4}">
+			                	  						<i class="fa fa-fire ${showColor }"></i>
+			                	  					</c:when>
+			                	  					<c:when test="${notification.type == 5}">
+			                	  						<i class="fa fa-send-o ${showColor }"></i>
+			                	  					</c:when>
+			                	  					<c:otherwise>
+			                	  						<i class="fa fa-skype ${showColor }"></i>
+			                	  					</c:otherwise>
+			                	  				</c:choose>
+				                	  			
+				                	  			<div class="timeline-item">
+				                	  				<span class="time"><i class="fa fa-clock-o"></i> <fmt:formatDate value="${notification.issueTime}" pattern="yyyy-MM-dd hh:ss"/></span>
+				                	  				<h3 class="timeline-header">
+				                	  					<c:choose>
+					                	  					<c:when test="${notification.type == 1}">
+					                	  						Staffing Requirement Notification
+					                	  					</c:when>
+					                	  					<c:when test="${notification.type == 2}">
+					                	  						Recruiting Plan Notification
+					                	  					</c:when>
+					                	  					<c:when test="${notification.type == 3}">
+					                	  						Hire Notification
+					                	  					</c:when>
+					                	  					<c:when test="${notification.type == 4}">
+					                	  						Dismission Request Notification
+					                	  					</c:when>
+					                	  					<c:when test="${notification.type == 5}">
+					                	  						Leaving Request Notification
+					                	  					</c:when>
+					                	  					<c:otherwise>
+					                	  						Interview Notification
+					                	  					</c:otherwise>
+					                	  				</c:choose>
+				                	  				</h3>
+				                	  				<div class="timeline-body">
+					                	  				<c:choose>
+					                	  					<c:when test="${notification.status == 1}">
+					                	  						<strong>
+					                	  							${notification.content }
+					                	  						</strong>
+					                	  					</c:when>
+					                	  					<c:otherwise>
+					                	  						${notification.content }
+					                	  					</c:otherwise>
+					                	  				</c:choose>
+					                	  			</div>
+					                	  			<div class="timeline-footer">
+					                	  				<a class="btn btn-primary btn-xs" href="${notification.url }">View Details</a>
+					                	  			</div>
+				                	  			</div>
+				                	  		</li>
+					                	</c:forEach>
+									</ul>
+								</c:otherwise>
+							</c:choose>
+			              </div>
+			              <!-- /.tab-pane -->
 		
 		              <div class="tab-pane" id="settings">
 							<springForm:form class="form-horizontal" action="/user/edit" modelAttribute="userForm" method="POST">

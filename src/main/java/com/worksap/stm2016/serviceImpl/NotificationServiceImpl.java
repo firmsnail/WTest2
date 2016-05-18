@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.worksap.stm2016.model.Notification;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.repository.NotificationRepository;
 import com.worksap.stm2016.service.NotificationService;
 
@@ -41,6 +42,11 @@ public class NotificationServiceImpl implements NotificationService{
 	public Notification findOne(Long id) {
 		// TODO Auto-generated method stub
 		return notificationRepository.findOne(id);
+	}
+
+	@Override
+	public List<Notification> findByOwner(Person user) {
+		return notificationRepository.findByOwner(user);
 	}
 	
 

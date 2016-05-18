@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.modelForm.UserUpdateForm;
 import com.worksap.stm2016.service.DepartmentService;
+import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.validator.UserUpdateFormValidator;
@@ -36,6 +38,9 @@ public class PersonController {
 	DepartmentService deptService;
 	@Autowired
 	SkillService skillService;
+	@Autowired
+	NotificationService notificationService;
+	
 	
 	@Autowired
 	UserUpdateFormValidator userUpdateFormValidator;
@@ -85,6 +90,10 @@ public class PersonController {
 		model.addAttribute("allSkills", allSkills);
 		UserUpdateForm userForm = new UserUpdateForm();
 		model.addAttribute("userForm", userForm);
+		
+		List<Notification> notifications = notificationService.findByOwner(user);
+		model.addAttribute("notifications", notifications);
+		
 		return "user/profile";
 	}
 	
