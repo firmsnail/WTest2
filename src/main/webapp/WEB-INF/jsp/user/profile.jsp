@@ -12,14 +12,26 @@
 	<jsp:include page="../common/header.jsp" />
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/jquery.dataTables.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/dataTables.bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/static/js/common/select2.full.min.js"></script>
+	
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/select2.min.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/_all-skins.min.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/static/plugins/iCheck/all.css" rel="stylesheet">
+	
 	
 	<script>
 	    $(document).ready(function() {
+	    	
+	    	//Initialize Select2 Elements
+		    $(".select2").select2();
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
+	        
 	    });
+	    
+	    
     </script>
 </head>
 
@@ -84,7 +96,6 @@
 										<a href="/department/showOneDepartment">
 											${currentUser.user.department.departmentName}
 										</a>
-										${currentUser.user.email}
 									</c:when>
 									<c:otherwise>
 										Unknown
@@ -208,9 +219,9 @@
 							<strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
 							<p>
 								<c:choose>
-									<c:when test="${skills != null and fn:length(skills) > 0}">
-										<c:forEach var="skill" items="${skills}">
-											<span class="label label-success">skill.skillName</span>
+									<c:when test="${curSkillsOb != null and fn:length(curSkillsOb) > 0}">
+										<c:forEach var="skill" items="${curSkillsOb}">
+											<span class="label label-success">${skill.skillName}</span>
 										</c:forEach>
 									</c:when>
 									<c:otherwise>
@@ -328,49 +339,81 @@
 		              <!-- /.tab-pane -->
 		
 		              <div class="tab-pane" id="settings">
-							<springForm:form class="form-horizontal" action="/user/edit" modelAttribute="user" method="POST">
+							<springForm:form class="form-horizontal" action="/user/edit" modelAttribute="userForm" method="POST">
 								<springForm:errors path="" element="div" />
 								
 								<!-- text input -->
 								<div class="form-group">
-									  <label for="" class="col-sm-2 control-label">Total Requirement</label>
+									  <label for="email" class="col-sm-2 control-label">Email</label>
 									  <div class="col-sm-10">
-											<springForm:input path="planNum" type="text" class="form-control" id="planNum" name="planNum" />
-											<div class="alert-danger">	
-												<springForm:errors path="planNum" cssClass="error"/>
+											<springForm:input path="email" type="text" class="form-control" id="email" name="email" value="${currentUser.user.email }"/>
+											<div class="alert-danger">
+												<springForm:errors path="email" cssClass="error"/>
 											</div>
 									  </div>
 								</div>
 								
 								<div class="form-group">
-									  <label>Expect Date</label>
-									  <div>
-											<springForm:input path="expectDate" type="text" class="form-control" id="expectDate" name="expectDate" />
-											<div class="alert-danger">	
-												<springForm:errors path="expectDate" cssClass="error"/>
+									  <label for="gender" class="col-sm-2 control-label">Gender</label>
+									  <div class="col-sm-10">
+											<springForm:select path="gender" class="form-control select2" name="gender" value="${currentUser.user.gender }" style="width: 100%;">
+							                	  <option <c:if test="${currentUser.user.gender != 1  and currentUser.user.gender != 2}">selected="selected"</c:if>></option>
+							                	  <option value=1 <c:if test="${currentUser.user.gender == 1}">selected="selected"</c:if>>Female</option>
+							                	  <option value=2 <c:if test="${currentUser.user.gender == 2}">selected="selected"</c:if>>Male</option>
+							                </springForm:select>
+											
+											<div class="alert-danger">
+												<springForm:errors path="gender" cssClass="error"/>
 											</div>
 									  </div>
 								</div>
 								
 								<div class="form-group">
-									  <label>Invalid Date</label>
-									  <div>
-											<springForm:input path="invalidDate" type="text" class="form-control" id="invalidDate" name="invalidDate" />
-											<div class="alert-danger">	
-												<springForm:errors path="invalidDate" cssClass="error"/>
+									  <label for="age" class="col-sm-2 control-label">Age</label>
+									  <div class="col-sm-10">
+											<springForm:input path="age" type="text" class="form-control" id="age" name="age" value="${currentUser.user.age }"/>
+											<div class="alert-danger">
+												<springForm:errors path="age" cssClass="error"/>
 											</div>
 									  </div>
 								</div>
 								
 								<div class="form-group">
-									  <label>Skills</label>
-									  <div>
+									  <label for="address" class="col-sm-2 control-label">Address</label>
+									  <div class="col-sm-10">
+											<springForm:input path="address" type="text" class="form-control" id="address" name="address" value="${currentUser.user.address }"/>
+											<div class="alert-danger">
+												<springForm:errors path="address" cssClass="error"/>
+											</div>
+									  </div>
+								</div>
+								
+								<div class="form-group">
+									  <label for="phone" class="col-sm-2 control-label">Mobile Phone</label>
+									  <div class="col-sm-10">
+											<springForm:input path="phone" type="text" class="form-control" id="phone" name="phone" value="${currentUser.user.phone }"/>
+											<div class="alert-danger">
+												<springForm:errors path="phone" cssClass="error"/>
+											</div>
+									  </div>
+								</div>
+								
+								<div class="form-group">
+									  <label for="skills" class="col-sm-2 control-label">Skills</label>
+									  <div class="col-sm-10">
 											<springForm:select path="skills" class="form-control select2" multiple="multiple" data-placeholder="Select skills" name="skills" style="width: 100%;">
-												  <c:forEach var="skill" items="${chooseSkills}" varStatus="status">
-														<option value="${skill.skillId}">
-															${skill.skillName}
-														</option>
-												  </c:forEach>
+												  <c:forEach var="skill" items="${allSkills}" varStatus="status">
+							                	  		<c:set var="contains" value="false" />
+														<c:forEach var="item" items="${curSkills}">
+															  <c:if test="${item == skill.skillId}">
+															  	<c:set var="contains" value="true" />
+															  </c:if>
+														</c:forEach>
+							                	  		<option style="background: green" value="${skill.skillId}" <c:if test="${contains}">selected="selected"</c:if> >
+							                	  			<!-- ${skill.skillName}-->
+							                	  			${skill.skillName}
+							                	  		</option>
+							                	  </c:forEach>
 											</springForm:select>
 											<div class="alert-danger">
 												<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
@@ -380,36 +423,27 @@
 								</div>
 								
 								<div class="form-group">
-									  <label>Staffing Requirements</label>
-									  <div>
-											<springForm:select path="requirements" class="form-control select2" multiple="multiple" data-placeholder="Select requirements" name="requirements" style="width: 100%;">
-												  <c:forEach var="requirement" items="${chooseRequirements}" varStatus="status">
-														<option value="${requirement.staffRequirementId}">
-															ID:${requirement.staffRequirementId}
-														</option>
-												  </c:forEach>
-											</springForm:select>
+									  <label for="password" class="col-sm-2 control-label">Password</label>
+									  <div class="col-sm-10">
+											<springForm:input path="password" type="text" class="form-control" id="password" name="password"/>
 											<div class="alert-danger">
-												<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
-												<springForm:errors path="requirements" cssClass="error"/>
+												<springForm:errors path="password" cssClass="error"/>
+											</div>
+									  </div>
+								</div>
+								<div class="form-group">
+									  <label for="confirmPassword" class="col-sm-2 control-label">Confirm Password</label>
+									  <div class="col-sm-10">
+											<springForm:input path="confirmPassword" type="text" class="form-control" id="confirmPassword" name="confirmPassword"/>
+											<div class="alert-danger">
+												<springForm:errors path="confirmPassword" cssClass="error"/>
 											</div>
 									  </div>
 								</div>
 								
 								<div class="form-group">
-									  <label>Reason</label>
-									  <div>
-											<springForm:textarea path="reason" type="text" class="form-control" id="reason" name="reason" />
-											<div class="alert-danger">
-												<springForm:errors path="reason" cssClass="error"/>
-											</div>
-									  </div>
-								</div>
-								
-								<div class="form-group">
-								   <div class="col-lg-9 ">
-										<button type="submit" class="btn btn-danger">Create</button>
-										<button type="reset" class="btn btn-success">Reset</button>
+								   <div class="col-sm-offset-2 col-sm-10">
+										<button type="submit" class="btn btn-danger">Submit</button>
 								   </div>
 								</div>
 								<br />

@@ -6,17 +6,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.modelForm.UserCreateForm;
+import com.worksap.stm2016.modelForm.UserUpdateForm;
 import com.worksap.stm2016.repository.DepartmentRepository;
 import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.repository.RoleRepository;
+import com.worksap.stm2016.repository.SkillRepository;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.specification.PersonSpecification;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -34,6 +38,9 @@ public class PersonServiceImpl implements PersonService{
 	
 	@Autowired
 	private DepartmentRepository deptRepository;
+	
+	@Autowired
+	private SkillRepository skillRepository;
 	
 	@Override
 	public List<Person> findAll( ) {
@@ -181,6 +188,31 @@ public class PersonServiceImpl implements PersonService{
 	@Override
 	public List<Person> findByRoleAndStatus(Role role, Integer status) {
 		return personRepository.findByRoleAndStatus(role, status);
+	}
+
+	@Override
+	public void update(UserUpdateForm userForm) {
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Person user = personRepository.findOne(curUser.getId());
+		user.setUserSkillList(null);
+		user = personRepository.findOne(curUser.getId());
+		user.setUserSkillList(new ArrayList<Skill>());
+		user = personRepository.findOne(curUser.getId());
+		user.setGender(userForm.getGender());
+		user.setEmail(userForm.getEmail());
+		user.setAddress(userForm.getAddress());
+		user.setAge(userForm.getAge());
+		user.setPhone(userForm.getPhone());
+		if (userForm.getPassword() != null && userForm.getPassword().length() > 0) {
+			user.setPassword(CommonUtils.passwordEncoder().encode(userForm.getPassword()));
+		}
+		if (userForm.getSkills() != null) {
+			for (Long skillId : userForm.getSkills()) {
+				user.getUserSkillList().add(skillRepository.findOne(skillId));
+			}
+		}
+		user = personRepository.findOne(curUser.getId());
+		curUser.setUser(user);
 	}
 
 }

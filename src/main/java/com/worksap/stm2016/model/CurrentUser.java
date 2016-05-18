@@ -1,13 +1,14 @@
 package com.worksap.stm2016.model;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+import com.worksap.stm2016.service.PersonService;
 
 public class CurrentUser extends org.springframework.security.core.userdetails.User{
-	/**
-	 * 
-	 */
+	
+	
 	private static final long serialVersionUID = 1L;
 	private Person user;
 	
@@ -19,6 +20,11 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
 	
 	public Person getUser() {
 		return user;
+		//return userService.findById(user.getPersonId());
+	}
+	
+	public void setUser(Person person) {
+		user = person;
 	}
 	
 	public Long getId() {

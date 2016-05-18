@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -32,10 +34,9 @@ public class Skill {
 	@Column(name = "description")
 	private String description;
 	
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinTable(name="ss1604c187_rd4.skill_person", joinColumns = {@JoinColumn(name = "person_id")},
-			inverseJoinColumns = {@JoinColumn(name = "skill_id")})
-	List<Person> users;
+	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "userSkillList")
+	@JsonIgnore
+	private List<Person> users;
 	
 	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "stfrqSkillList")
 	private List<StaffRequirement> stfrqList;

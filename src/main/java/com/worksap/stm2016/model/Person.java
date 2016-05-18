@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -123,8 +124,12 @@ public class Person {
 	@OrderBy("expectDate ASC, submitDate ASC")
 	private List<StaffRequirement> requirementsForRecruiter;
 	
-	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "users")
-	private List<Skill> skillList;
+	
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinTable(name="ss1604c187_rd4.person_skill", joinColumns = {@JoinColumn(name = "skill_id")},
+			inverseJoinColumns = {@JoinColumn(name = "person_id")})
+	@JsonIgnore
+	private List<Skill> userSkillList;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "interviewer", targetEntity = Interview.class, fetch = FetchType.LAZY)
 	private List<Interview> interviewList;		// for interviewer

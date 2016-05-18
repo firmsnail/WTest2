@@ -164,7 +164,7 @@ public class PayrollServiceImpl implements PayrollService{
 		List<Payroll> tmpPayrolls = (List<Payroll>) payrollRepository.findAll();
 		List<Payroll> payrolls = new ArrayList<Payroll>();
 		for (Payroll payroll : tmpPayrolls) {
-			List<Skill> skills = payroll.getPayrollEmployee().getSkillList();
+			List<Skill> skills = payroll.getPayrollEmployee().getUserSkillList();
 			boolean exists = false;
 			for (Skill oneSkill : skills) {
 				if (oneSkill.getSkillId().equals(skill.getSkillId())) {

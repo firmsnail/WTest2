@@ -10,6 +10,7 @@ import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.modelForm.UserCreateForm;
+import com.worksap.stm2016.modelForm.UserUpdateForm;
 
 public interface PersonService {
 	public List<Person> findAll();
@@ -29,4 +30,5 @@ public interface PersonService {
 	public List<Person> findByAgeRange(Integer integer);
 	public List<Person> findByRole(Role role);
 	public List<Person> findByRoleAndStatus(Role role, Integer status);
+	public void update(UserUpdateForm userForm);
 }
