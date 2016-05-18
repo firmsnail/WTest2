@@ -5,12 +5,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.PersonService;
 
@@ -42,5 +46,21 @@ public class PersonController {
 		Person employee = userService.findById(personId);
 		model.addAttribute("employee", employee);
 		return "user/showOneEmployee";
+	}
+	
+	@PreAuthorize("@currentUserServiceImpl.hasLogIn(principal)")
+	@RequestMapping(value={"/profile"}, method = RequestMethod.GET)
+	public String profile(Long userId, Model model) {
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Person user = userService.findById(curUser.getId());
+		List<Skill> skills = user.getSkillList();
+		if (skills != null && skills.size() > 0) {
+			model.addAttribute("skills", skills);
+		}
+		if (userId != null) {
+			model.addAttribute("curUserId", userId);
+		}
+		model.addAttribute("user", user);
+		return "user/profile";
 	}
 }

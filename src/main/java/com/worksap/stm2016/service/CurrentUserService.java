@@ -18,5 +18,6 @@ public interface CurrentUserService {
 	boolean canAccessLeave(CurrentUser currentUser, Long leaveId);
 	boolean canDeleteLeave(CurrentUser currentUser, Long leaveId);
 	boolean canOperateApplicant(CurrentUser currentUser, Long applicantId);
+	boolean hasLogIn(CurrentUser currentUser);
 
 }

@@ -181,4 +181,9 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 		return currentUser.getId().equals(applicant.getPlanForApplicant().getPlanMaker().getPersonId());
 	}
 
+	@Override
+	public boolean hasLogIn(CurrentUser currentUser) {
+		return currentUser != null;
+	}
+
 }

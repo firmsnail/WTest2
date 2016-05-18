@@ -23,6 +23,8 @@ var WEB_ROOT = function(){
 <!-- Custom Fonts -->
 <link href="${pageContext.request.contextPath}/resources/static/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
 
 
 <!-- jQuery -->
