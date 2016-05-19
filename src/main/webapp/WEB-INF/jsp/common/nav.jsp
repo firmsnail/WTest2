@@ -21,11 +21,6 @@
 	    }
 		$(document).ready(function() {
 	    	
-	    	//Initialize Select2 Elements
-		    $(".select2").select2();
-	        $('#dataTables-example').DataTable({
-	                responsive: false
-	        });
 			function myrefresh() {
 	        	
 	        	$.ajax({
@@ -47,7 +42,7 @@
     <ul class="nav navbar-top-links navbar-right">
         
         <!-- /.dropdown -->
-        <li <c:if test="${currentUser != null}">class="hidden"</c:if> >
+        <li <c:if test="${currentUser == null}">class="hidden"</c:if> >
             <a class="dropdown-toggle" data-toggle="dropdown" href="/user/profile?userId=${currentUser.user.personId }" id="notifyA">
                 <i class="fa fa-bell"></i>
                 <!-- <span class="label label-danger" id="notify-num">4</span>-->

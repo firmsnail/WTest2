@@ -121,6 +121,7 @@ public class PersonController {
 		return "redirect:/user/profile?userId="+curUser.getId();
 	}
 	
+	@PreAuthorize("@currentUserServiceImpl.hasLogIn(principal)")
 	@RequestMapping(value = "/ajaxNotify")
 	@ResponseBody
 	public Integer ajaxNotify() {
