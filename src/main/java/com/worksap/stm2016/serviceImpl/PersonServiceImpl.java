@@ -134,7 +134,7 @@ public class PersonServiceImpl implements PersonService{
 
 	@Override
 	public List<Person> findByPeriod(Integer months) {
-		return personRepository.findByPeriodMonth(months);
+		return personRepository.findByPeriodMonth(months, months-1);
 	}
 
 	@Override

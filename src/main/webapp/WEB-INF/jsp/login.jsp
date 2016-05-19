@@ -33,6 +33,7 @@
 		                  <!-- Login form -->
 		                  <form class="loginForm form-horizontal" action="/login" method='POST'>
 		                  	<!-- Select box -->
+	                        <!-- 
 	                        <div class="form-group">
 	                          <label class="control-label col-lg-3">Role</label>
 	                          <div class="col-lg-9">                               
@@ -45,6 +46,7 @@
 	                              </select>
 	                          </div>
 	                        </div>
+	                        -->
 		                    <!-- Email -->
 		                    <div class="form-group">
 		                      <label class="control-label col-lg-3" for="inputUsername">UserName</label>
@@ -83,7 +85,8 @@
 		            </div>
 	              
 	                <div class="widget-foot">
-	                  Not Registred? <a href="/register">Register here</a>
+	                  Not Registred?<a href="/register">Register here</a>
+	                  <a class="col-lg-offset-4" href="/help">Help</a>
 	                </div>
 	            </div>  
 	      </div>

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.service.DepartmentService;
 
 @Controller
@@ -33,7 +34,9 @@ public class DepartmentController {
 	@RequestMapping(value = "/showOneDepartment")
 	public String showOneDepartment(Long departmentId, Model model) {
 		Department department = departmentService.findOne(departmentId);
+		List<Person> employees = department.getEmployees();
 		model.addAttribute("department", department);
+		model.addAttribute("employees", employees);
 		return "department/showOneDepartment";
 	}
 	

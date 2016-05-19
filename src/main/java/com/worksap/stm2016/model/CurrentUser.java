@@ -1,10 +1,8 @@
 package com.worksap.stm2016.model;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 
-import com.worksap.stm2016.service.PersonService;
 
 public class CurrentUser extends org.springframework.security.core.userdetails.User{
 	

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.worksap.stm2016.model.CurrentUser;
-import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Role;

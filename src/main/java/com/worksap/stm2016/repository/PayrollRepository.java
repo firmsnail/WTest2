@@ -41,8 +41,8 @@ public interface PayrollRepository extends PagingAndSortingRepository<Payroll, L
 
 	List<Payroll> findByIssueDateBefore(Date endDate);
 
-	@Query("select p from Payroll p where EXTRACT(month from age(p.payrollEmployee.endDate, payrollEmployee.startDate)) <= ?1")
-	List<Payroll> findByPayrollEmployeePeriodMonth(Integer months);
+	@Query("select p from Payroll p where EXTRACT(month from age(p.payrollEmployee.endDate, payrollEmployee.startDate)) <= ?1 and EXTRACT(month from age(p.payrollEmployee.endDate, payrollEmployee.startDate)) > ?2")
+	List<Payroll> findByPayrollEmployeePeriodMonth(Integer months, Integer months1);
 
 	List<Payroll> findByPayrollEmployeeGender(Integer gender);
 

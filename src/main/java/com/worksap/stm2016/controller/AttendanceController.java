@@ -36,6 +36,7 @@ public class AttendanceController {
 	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'C&B-SPECIALIST')")
 	@RequestMapping(value={"/showAttendances"},  method = RequestMethod.GET)
 	public String showAttendances(Long departmentId, Long personId, Date startDate, Date endDate, Model model) {
+		System.out.println("@showAttendances Start!");
 		List<Attendance> attendances = null;
 		if (personId != null) {
 			Person cUser = personService.findById(personId);
@@ -71,7 +72,9 @@ public class AttendanceController {
 			} else if (endDate != null) {
 				attendances = attendanceService.findByEndDate(endDate);
 			} else {
+				System.out.println("here");
 				attendances = attendanceService.findAll();
+				System.out.println("attendances.size: " + attendances.size());
 			}
 		}
 		if (attendances != null) {

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
-import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
+import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
@@ -67,8 +67,10 @@ public class RecruitingPlanController {
 	@RequestMapping(value={"/showOneRecruitingPlan"},  method = RequestMethod.GET)
 	public String showOneRecruitingPlan(Long planId, Model model) {
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
+		List<Skill> skills = plan.getPlanSkillList();
 		model.addAttribute("plan", plan);
-		return "plan/showOneRecruitingPlan";
+		model.addAttribute("skills", skills);
+		return "plan/showOnePlan";
 	}
 	
 }

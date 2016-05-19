@@ -53,7 +53,7 @@
                                             <th>End Date</th>
                                             <th>Department</th>
                                             <th>Leave Person</th>
-                                            <th>Details</th>
+                                            <!-- <th>Details</th> -->
                                             <th>Status</th>
                                             <th>Operation</th>
                                         </tr>
@@ -65,7 +65,7 @@
 												<td><fmt:formatDate value="${leave.endDate}" pattern="yyyy-MM-dd"/></td>
 												<td><a href="/department/showOneDepartment?departmentId=${leave.leaveDepartment.departmentId}">${leave.leaveDepartment.departmentName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${leave.leavePerson.personId}">${leave.leavePerson.firstName} ${leave.leavePerson.lastName}</a></td>
-												<td><a href="/hire/showOneLeave?leaveId=${leave.leaveId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>
+												<!-- <td><a href="/hire/showOneLeave?leaveId=${leave.leaveId }"><i class="fa fa-search fa-fw"></i> See Details</a></td> -->
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 3}">

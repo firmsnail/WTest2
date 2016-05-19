@@ -43,7 +43,7 @@
         
         <!-- /.dropdown -->
         <li <c:if test="${currentUser == null}">class="hidden"</c:if> >
-            <a class="dropdown-toggle" data-toggle="dropdown" href="/user/profile?userId=${currentUser.user.personId }" id="notifyA">
+            <a href="/user/profile?userId=${currentUser.user.personId }" id="notifyA">
                 <i class="fa fa-bell"></i>
                 <!-- <span class="label label-danger" id="notify-num">4</span>-->
             </a>
@@ -78,20 +78,10 @@
 
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
+        	<br>
             <ul class="nav" id="side-menu">
-                <li class="sidebar-search">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                    </div>
-                    <!-- /input-group -->
-                </li>
                 <li>
-                    <a href="/index"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="/index"><i class="fa fa-dashboard fa-fw"></i> News</a>
                 </li>
                 
                 <li <c:if test="${currentUser == null or currentUser.user.role.roleId < 1 or currentUser.user.role.roleId > 3 }">class="hidden"</c:if> >
@@ -151,6 +141,13 @@
                     <a href="/hr-manager/analyzePayrollStructure"><i class="fa fa-users fa-fw"></i> Analyze Payroll Structure</a>
                 </li>
                 
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >
+                	<a href="#"><i class="fa fa-users fa-fw"></i> Payrolls</a>
+                </li>
+                
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >
+                	<a href="/attendance/showAttendances"><i class="fa fa-users fa-fw"></i> Attendances</a>
+                </li>
                 <li>
                     <a href="/help"><i class="fa fa-question-circle fa-fw"></i> Help</a>
                 </li>

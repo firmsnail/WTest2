@@ -63,7 +63,6 @@
                                             	<th>Applicant</th>
                                             </c:if>
                                             <th>Recruiting Plan</th>
-                                            <th>Details</th>
                                             <th>Status</th>
                                             <c:if test="${currentUser.user.role.roleId != 5 }">
                                             	<th>Operation</th>
@@ -78,7 +77,6 @@
 													<td><a href="/user/showOneEmployee?personId=${applicant.applicant.personId}">${applicant.applicant.firstName} ${applicant.applicant.lastName}</a></td>
 												</c:if>
 												<td><a href="/plan/showOneRecruitingPlan?planId=${applicant.planForApplicant.planId }"><i class="fa fa-search fa-fw"></i> ${applicant.planForApplicant.planId }</a></td>
-												<td><a href="/applicant/showOneApplicant?applicantId=${applicant.applicantId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 4}">

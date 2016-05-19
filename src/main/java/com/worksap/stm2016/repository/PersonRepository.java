@@ -10,7 +10,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.worksap.stm2016.model.Department;
-import com.worksap.stm2016.model.Payroll;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 
@@ -27,8 +26,8 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 
 	List<Person> findByDepartmentIsNullAndRoleIn(List<Role> roleCol);
 
-	@Query("select u from Person u where EXTRACT(month from age(u.endDate, u.startDate)) <= ?1")
-	List<Person> findByPeriodMonth(Integer months);
+	@Query("select u from Person u where EXTRACT(month from age(u.endDate, u.startDate)) <= ?1 and EXTRACT(month from age(u.endDate, u.startDate)) > ?2")
+	List<Person> findByPeriodMonth(Integer months, Integer months1);
 
 	List<Person> findByRole(Role role);
 

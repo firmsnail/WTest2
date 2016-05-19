@@ -3,7 +3,6 @@ package com.worksap.stm2016.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.validation.Valid;
 
@@ -29,6 +28,7 @@ import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.SkillService;
+import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.validator.UserUpdateFormValidator;
 
 @Controller
@@ -64,16 +64,18 @@ public class PersonController {
 	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessUser(principal, #personId)")
 	@RequestMapping(value = "/showOneEmployee")
 	public String showOneEmployee(Long personId, Model model) {
-		Person employee = userService.findById(personId);
-		model.addAttribute("employee", employee);
-		return "user/showOneEmployee";
+		//Person employee = userService.findById(personId);
+		//model.addAttribute("employee", employee);
+		return "redirect:/user/profile?userId="+personId;
 	}
 	
-	@PreAuthorize("@currentUserServiceImpl.hasLogIn(principal)")
+	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessUser(principal, #personId)")
 	@RequestMapping(value={"/profile"}, method = RequestMethod.GET)
 	public String profile(Long userId, Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Person user = userService.findById(curUser.getId());
+		Person user = null;
+		if (userId == null) user = userService.findById(curUser.getId());
+		else user = userService.findById(userId);
 		List<Skill> curSkillsOb = user.getUserSkillList();
 		System.out.println("skill.size: " + curSkillsOb.size());
 		if (curSkillsOb != null && curSkillsOb.size() > 0) {
@@ -94,6 +96,13 @@ public class PersonController {
 		model.addAttribute("userForm", userForm);
 		
 		List<Notification> notifications = notificationService.findByOwner(user);
+		if (userId == curUser.getId()) {
+			for (Notification notification : notifications) {
+				notification.setStatus(CommonUtils.NOTIFICATION_STATUS_READ);
+				notification = notificationService.findOne(notification.getNotificationId());
+			}
+			notifications = notificationService.findByOwner(user);
+		}
 		model.addAttribute("notifications", notifications);
 		
 		return "user/profile";

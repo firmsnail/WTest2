@@ -16,7 +16,6 @@ import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.repository.PayrollRepository;
-import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.repository.RoleRepository;
 import com.worksap.stm2016.service.PayrollService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -29,8 +28,6 @@ public class PayrollServiceImpl implements PayrollService{
 	private PayrollRepository payrollRepository;
 	@Autowired
 	private RoleRepository roleRepository;
-	@Autowired
-	private PersonRepository personRepository;
 
 	@Override
 	public List<Payroll> findAll() {
@@ -115,7 +112,7 @@ public class PayrollServiceImpl implements PayrollService{
 
 	@Override
 	public List<Payroll> findByPayrollEmployeePeriod(Integer months) {
-		return payrollRepository.findByPayrollEmployeePeriodMonth(months);
+		return payrollRepository.findByPayrollEmployeePeriodMonth(months, months-1);
 	}
 
 	@Override

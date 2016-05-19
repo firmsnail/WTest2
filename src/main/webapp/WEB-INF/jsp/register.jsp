@@ -23,7 +23,7 @@
 	        <!-- Widget starts -->
 	        	<div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    You can only registered as a short-term employee, for more details, please check <a href="/help" class="alert-link">help</a>.
+                    You can only register as a short-term employee, for more details, please check <a href="/help" class="alert-link">help</a>.
                 </div>
                 
 	            <div class="widget wred">

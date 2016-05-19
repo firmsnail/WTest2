@@ -58,7 +58,7 @@
                                             <th>Submit Date</th>
                                             <th>Department</th>
                                             <th>Dismission Person</th>
-                                            <th>Details</th>
+                                            <!-- <th>Details</th>  -->
                                             <th>Status</th>
                                             <th>Operation</th>
                                         </tr>
@@ -70,7 +70,7 @@
 												<td><fmt:formatDate value="${dismission.submitDate}" pattern="yyyy-MM-dd"/></td>
 												<td><a href="/department/showOneDepartment?departmentId=${dismission.dismissionDepartment.departmentId}">${dismission.dismissionDepartment.departmentName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${dismission.dismissionPerson.personId}">${dismission.dismissionPerson.firstName} ${dismission.dismissionPerson.lastName}</a></td>
-												<td><a href="/hire/showOneDismission?dismissionId=${dismission.dismissionId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>
+												<!-- <td><a href="/hire/showOneDismission?dismissionId=${dismission.dismissionId }"><i class="fa fa-search fa-fw"></i> See Details</a></td> -->
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.StaffRequirementService;
@@ -54,8 +55,10 @@ public class StaffRequirementController {
 	@RequestMapping(value={"/showOneStaffRequirement"},  method = RequestMethod.GET)
 	public String showOneStaffRequirement(Long requirementId, Model model) {
 		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
+		List<Skill> skills = requirement.getStfrqSkillList();
 		model.addAttribute("requirement", requirement);
-		return "requirement/showOneStaffRequirement";
+		model.addAttribute("skills", skills);
+		return "requirement/showOneRequirement";
 	}
 	
 }

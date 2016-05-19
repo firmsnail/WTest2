@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,10 +23,10 @@ import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.worksap.stm2016.chartData.PieData;
-import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Hire;
+import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Payroll;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
@@ -37,6 +36,7 @@ import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
+import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.PayrollService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
@@ -71,6 +71,8 @@ public class HRManagerController {
 	private DismissionService dismissionService;
 	@Autowired
 	private PayrollService payrollService;
+	@Autowired
+	private NotificationService notificationService;
 
 	@Autowired
 	private UserCreateFormValidator  userCreateFormValidator;
@@ -443,6 +445,17 @@ public class HRManagerController {
 			requirement.setStatus(CommonUtils.REQUIREMENTS_RECRUITER_PROCESSING);
 			requirement.setRecruiter(recruiter);
 			requirement = staffRequirementService.findOne(requirementId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(recruiter);
+			notification.setContent("You have a staffing requirement need to process!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_REQUIREMENT);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
+			notification.setUrl("/requirement/showStaffRequirements");
+			notification = notificationService.save(notification);
+			
 		}
 		return "redirect:/requirement/showStaffRequirements";
 	}
@@ -453,6 +466,16 @@ public class HRManagerController {
 		if (requirement != null) {
 			requirement.setStatus(CommonUtils.REQUIREMENTS_REJECT);
 			requirement = staffRequirementService.findOne(requirementId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(requirement.getStfrqDepartment().getManager());
+			notification.setContent("Your requirement has been rejected!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_REQUIREMENT);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_LOW);
+			notification.setUrl("/requirement/showStaffRequirements");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/requirement/showStaffRequirements";
 	}
@@ -460,10 +483,19 @@ public class HRManagerController {
 	@RequestMapping(value = "/aprroveOnePlan")
 	public String aprroveOnePlan(Long planId, Model model) {
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
-		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (plan != null) {
 			plan.setStatus(CommonUtils.PLAN_VERIFIED);
 			plan = recruitingPlanService.findOne(planId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(plan.getPlanMaker());
+			notification.setContent("Your recruiting plan has been approved!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_PLAN);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
+			notification.setUrl("/plan/showRecruitingPlans");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/plan/showRecruitingPlans";
 	}
@@ -471,10 +503,19 @@ public class HRManagerController {
 	@RequestMapping(value = "/rejectOnePlan")
 	public String rejectOnePlan(Long planId, Model model) {
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
-		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (plan != null) {
 			plan.setStatus(CommonUtils.PLAN_REJECT);
 			plan = recruitingPlanService.findOne(planId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(plan.getPlanMaker());
+			notification.setContent("Your recruiting plan has been rejected!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_PLAN);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_LOW);
+			notification.setUrl("/plan/showRecruitingPlans");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/plan/showRecruitingPlans";
 	}
@@ -504,8 +545,19 @@ public class HRManagerController {
 			employee.setStartDate(now);
 			employee.setEndDate(CommonUtils.kMonthAfter(now, hire.getPeriod()));
 			employee.setSalary(hire.getSalary());
+			employee.setDepartment(hire.getHireDepartment());
 			employee = personService.findById(employee.getPersonId());
 			hire = hireService.findOne(hireId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(employee);
+			notification.setContent("Your have been hired!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_HIRE);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
+			notification.setUrl("/user/profile?userId=" + employee.getPersonId());
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/hire/showHires";
 	}
@@ -516,6 +568,7 @@ public class HRManagerController {
 		if (hire != null) {
 			hire.setStatus(CommonUtils.HIRE_HR_MANAGER_REJECT);
 			hire = hireService.findOne(hireId);
+			
 		}
 		return "redirect:/hire/showHires";
 	}
@@ -532,6 +585,16 @@ public class HRManagerController {
 			dismission.setStatus(CommonUtils.DISMISSION_CB_SPECIALIST_PROCESSING);
 			dismission.setDismissionCBSpecialist(cbSpecialist);
 			dismission = dismissionService.findOne(dismissionId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(cbSpecialist);
+			notification.setContent("You have a dismission need to process!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_DISMISSION);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+			notification.setUrl("/dismission/showDismissions");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/dismission/showDismissions";
 	}
@@ -542,6 +605,16 @@ public class HRManagerController {
 		if (dismission != null) {
 			dismission.setStatus(CommonUtils.DISMISSION_HR_MANAGER_REJECT);
 			dismission = dismissionService.findOne(dismissionId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(dismission.getDismissionPerson());
+			notification.setContent("Your dismission has been rejected!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_DISMISSION);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_LOW);
+			notification.setUrl("/dismission/showDismissions");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/dismission/showDismissions";
 	}

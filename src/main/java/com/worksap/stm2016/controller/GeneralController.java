@@ -1,9 +1,7 @@
 package com.worksap.stm2016.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,7 +106,6 @@ public class GeneralController {
 	@ResponseBody
 	public String testChart() throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
-		Map<String, Double> mapData = new HashMap<String, Double>();
 		for (int i = 0; i < 5; ++i) {
 			PieData oneData = new PieData();
 			oneData.setName("label"+i);

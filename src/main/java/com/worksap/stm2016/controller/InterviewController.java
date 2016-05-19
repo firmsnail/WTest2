@@ -67,8 +67,8 @@ public class InterviewController {
 	//@PreAuthorize("@currentUserServiceImpl.canAccessHire(principal, #hireId)")
 	@RequestMapping(value={"/showOneInterview"},  method = RequestMethod.GET)
 	public String showOneInterview(Long interviewId, Model model) {
-		//Hire hire = hireService.findOne(hireId);
-		//model.addAttribute("hire", hire);
+		Interview interview = interviewService.findOne(interviewId);
+		model.addAttribute("interview", interview);
 		return "interview/showOneInterview";
 	}
 	

@@ -4,11 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
 import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Dismission;
@@ -32,7 +25,6 @@ import com.worksap.stm2016.model.Hire;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Person;
-import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
@@ -86,19 +78,27 @@ public class TeamManagerController {
 		return "team-manager/addRequirement";
 	}
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.POST)
-	public String addRequirement(@ModelAttribute("requirement") @Valid RequirementForm requirement, BindingResult bindingResult) {
+	public String addRequirement(@ModelAttribute("requirement") @Valid RequirementForm requirement, BindingResult bindingResult, Model model) {
 		System.out.println("@addDepartment start!");
 		//TODO Check Manager existed!
 		requirementFormValidator.validate(requirement, bindingResult);
 		
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding requirement occurs error!");
+			List<Skill> skills = skillService.findAll();
+			model.addAttribute("chooseSkills", skills);
+			RequirementForm rq = new RequirementForm();
+			model.addAttribute("requirement", rq);
 			return "team-manager/addRequirement";
 		}
 		try {
 			System.out.println("requirement: " + requirement);
 			staffRequirementService.add(requirement);
         } catch (DataIntegrityViolationException e) {
+        	List<Skill> skills = skillService.findAll();
+			model.addAttribute("chooseSkills", skills);
+			RequirementForm rq = new RequirementForm();
+			model.addAttribute("requirement", rq);
             return "team-manager/addRequirement";
         }
 		return "redirect:/requirement/showStaffRequirements";

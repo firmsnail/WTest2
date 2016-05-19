@@ -54,20 +54,20 @@
 						<div class="box-body box-profile">
 							<img class="profile-user-img img-responsive img-circle" src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y" alt="User profile picture">
 							
-							<h3 class="profile-username text-center">${currentUser.user.firstName} ${currentUser.user.lastName}</h3>
+							<h3 class="profile-username text-center">${user.firstName} ${user.lastName}</h3>
 							
 							<p class="text-muted text-center">
 								<c:choose>
-									<c:when test="${currentUser.user.role.roleId == 1}">
+									<c:when test="${user.role.roleId == 1}">
 										HR Manager
 									</c:when>
-									<c:when test="${currentUser.user.role.roleId == 2}">
+									<c:when test="${user.role.roleId == 2}">
 										Recruiter
 									</c:when>
-									<c:when test="${currentUser.user.role.roleId == 3}">
+									<c:when test="${user.role.roleId == 3}">
 										C&B Specialist
 									</c:when>
-									<c:when test="${currentUser.user.role.roleId == 4}">
+									<c:when test="${user.role.roleId == 4}">
 										Staff Team Manager
 									</c:when>
 									<c:otherwise>
@@ -91,9 +91,9 @@
 							<strong><i class="fa fa-home margin-r-5"></i> Department</strong>
               				<p class="text-muted">
               					<c:choose>
-									<c:when test="${currentUser.user.department != null}">
+									<c:when test="${user.department != null}">
 										<a href="/department/showOneDepartment">
-											${currentUser.user.department.departmentName}
+											${user.department.departmentName}
 										</a>
 									</c:when>
 									<c:otherwise>
@@ -105,10 +105,10 @@
 							<strong><i class="fa fa-user-md margin-r-5"></i> Gender</strong>
 							<p class="text-muted">
 								<c:choose>
-									<c:when test="${currentUser.user.gender == 1}">
+									<c:when test="${user.gender == 1}">
 										Female
 									</c:when>
-									<c:when test="${currentUser.user.gender == 2}">
+									<c:when test="${user.gender == 2}">
 										Male
 									</c:when>
 									<c:otherwise>
@@ -120,8 +120,8 @@
 							<strong><i class="fa fa-child margin-r-5"></i> Age</strong>
 							<p class="text-muted">
 								<c:choose>
-									<c:when test="${currentUser.user.age != null}">
-										${currentUser.user.age}
+									<c:when test="${user.age != null}">
+										${user.age}
 									</c:when>
 									<c:otherwise>
 										Unknown
@@ -132,8 +132,8 @@
 							<strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
               				<p class="text-muted">
               					<c:choose>
-									<c:when test="${currentUser.user.address != null}">
-										${currentUser.user.address}
+									<c:when test="${user.address != null}">
+										${user.address}
 									</c:when>
 									<c:otherwise>
 										Unknown
@@ -144,8 +144,8 @@
               				<strong><i class="fa fa-mobile margin-r-5"></i> Mobile Phone</strong>
               				<p class="text-muted">
               					<c:choose>
-									<c:when test="${currentUser.user.phone != null}">
-										${currentUser.user.phone}
+									<c:when test="${user.phone != null}">
+										${user.phone}
 									</c:when>
 									<c:otherwise>
 										Unknown
@@ -156,8 +156,8 @@
               				<strong><i class="fa fa-envelope-o margin-r-5"></i> Email</strong>
               				<p class="text-muted">
               					<c:choose>
-									<c:when test="${currentUser.user.email != null}">
-										${currentUser.user.email}
+									<c:when test="${user.email != null}">
+										${user.email}
 									</c:when>
 									<c:otherwise>
 										Unknown
@@ -168,8 +168,8 @@
               				<strong><i class="fa fa-money margin-r-5"></i> Salary</strong>
               				<p class="text-muted">
               					<c:choose>
-									<c:when test="${currentUser.user.salary != null}">
-										${currentUser.user.salary}
+									<c:when test="${user.salary != null}">
+										${user.salary}
 									</c:when>
 									<c:otherwise>
 										Unknown
@@ -180,15 +180,15 @@
               				<strong><i class="fa fa-lightbulb-o margin-r-5"></i> Status</strong>
               				<p class="text-muted">
               					<c:choose>
-									<c:when test="${currentUser.user.status != null}">
+									<c:when test="${user.status != null}">
 										<c:choose>
-											<c:when test="${currentUser.user.status == 0}">
+											<c:when test="${user.status == 0}">
 												Registered
 											</c:when>
-											<c:when test="${currentUser.user.status == 1}">
+											<c:when test="${user.status == 1}">
 												Candidate
 											</c:when>
-											<c:when test="${currentUser.user.status == 2}">
+											<c:when test="${user.status == 2}">
 												Working
 											</c:when>
 											<c:otherwise>
@@ -206,8 +206,8 @@
               				<strong><i class="fa fa-clock-o margin-r-5"></i> Period</strong>
               				<p class="text-muted">
               					<c:choose>
-									<c:when test="${currentUser.user.startDate != null}">
-										<fmt:formatDate value="${currentUser.user.startDate}" pattern="yyyy-MM-dd"/> ~ <fmt:formatDate value="${currentUser.user.endDate}" pattern="yyyy-MM-dd"/>
+									<c:when test="${user.startDate != null}">
+										<fmt:formatDate value="${user.startDate}" pattern="yyyy-MM-dd"/> ~ <fmt:formatDate value="${user.endDate}" pattern="yyyy-MM-dd"/>
 									</c:when>
 									<c:otherwise>
 										Unknown
@@ -350,7 +350,7 @@
 								<div class="form-group">
 									  <label for="email" class="col-sm-2 control-label">Email</label>
 									  <div class="col-sm-10">
-											<springForm:input path="email" type="text" class="form-control" id="email" name="email" value="${currentUser.user.email }"/>
+											<springForm:input path="email" type="text" class="form-control" id="email" name="email" value="${user.email }"/>
 											<div class="alert-danger">
 												<springForm:errors path="email" cssClass="error"/>
 											</div>
@@ -360,10 +360,10 @@
 								<div class="form-group">
 									  <label for="gender" class="col-sm-2 control-label">Gender</label>
 									  <div class="col-sm-10">
-											<springForm:select path="gender" class="form-control select2" name="gender" value="${currentUser.user.gender }" style="width: 100%;">
-							                	  <option <c:if test="${currentUser.user.gender != 1  and currentUser.user.gender != 2}">selected="selected"</c:if>></option>
-							                	  <option value=1 <c:if test="${currentUser.user.gender == 1}">selected="selected"</c:if>>Female</option>
-							                	  <option value=2 <c:if test="${currentUser.user.gender == 2}">selected="selected"</c:if>>Male</option>
+											<springForm:select path="gender" class="form-control select2" name="gender" value="${user.gender }" style="width: 100%;">
+							                	  <option <c:if test="${user.gender != 1  and user.gender != 2}">selected="selected"</c:if>></option>
+							                	  <option value=1 <c:if test="${user.gender == 1}">selected="selected"</c:if>>Female</option>
+							                	  <option value=2 <c:if test="${user.gender == 2}">selected="selected"</c:if>>Male</option>
 							                </springForm:select>
 											
 											<div class="alert-danger">
@@ -375,7 +375,7 @@
 								<div class="form-group">
 									  <label for="age" class="col-sm-2 control-label">Age</label>
 									  <div class="col-sm-10">
-											<springForm:input path="age" type="text" class="form-control" id="age" name="age" value="${currentUser.user.age }"/>
+											<springForm:input path="age" type="text" class="form-control" id="age" name="age" value="${user.age }"/>
 											<div class="alert-danger">
 												<springForm:errors path="age" cssClass="error"/>
 											</div>
@@ -385,7 +385,7 @@
 								<div class="form-group">
 									  <label for="address" class="col-sm-2 control-label">Address</label>
 									  <div class="col-sm-10">
-											<springForm:input path="address" type="text" class="form-control" id="address" name="address" value="${currentUser.user.address }"/>
+											<springForm:input path="address" type="text" class="form-control" id="address" name="address" value="${user.address }"/>
 											<div class="alert-danger">
 												<springForm:errors path="address" cssClass="error"/>
 											</div>
@@ -395,7 +395,7 @@
 								<div class="form-group">
 									  <label for="phone" class="col-sm-2 control-label">Mobile Phone</label>
 									  <div class="col-sm-10">
-											<springForm:input path="phone" type="text" class="form-control" id="phone" name="phone" value="${currentUser.user.phone }"/>
+											<springForm:input path="phone" type="text" class="form-control" id="phone" name="phone" value="${user.phone }"/>
 											<div class="alert-danger">
 												<springForm:errors path="phone" cssClass="error"/>
 											</div>

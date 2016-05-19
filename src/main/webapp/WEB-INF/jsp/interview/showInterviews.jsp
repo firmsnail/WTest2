@@ -121,6 +121,7 @@
 			                	  <option value=3>3 Months</option>
 			                	  <option value=4>4 Months</option>
 			                	  <option value=5>5 Months</option>
+			                	  <option value=6>6 Months</option>
 			                </select>
 	                    </div>
 	                    <div class="form-group">
@@ -204,7 +205,7 @@
 												<td><a href="/user/showOneEmployee?personId=${interview.interviewee.personId}">${interview.interviewee.firstName} ${interview.interviewee.lastName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${interview.interviewer.personId}">${interview.interviewer.firstName} ${interview.interviewer.lastName}</a></td>
 												<td><a href="/plan/showOneRecruitingPlan?planId=${interview.planForInterview.planId }"><i class="fa fa-search fa-fw"></i> ${interview.planForInterview.planId }</a></td>
-												<td>interview.turns</td>
+												<td>${interview.turns}</td>
 												<td><a href="/interview/showOneInterview?interviewId=${interview.interviewId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>
 											
 												<td>

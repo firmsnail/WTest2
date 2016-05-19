@@ -27,6 +27,7 @@ import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Hire;
 import com.worksap.stm2016.model.Interview;
+import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Role;
@@ -39,6 +40,7 @@ import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.HireService;
 import com.worksap.stm2016.service.InterviewService;
+import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.service.StaffRequirementService;
@@ -68,6 +70,8 @@ public class RecruiterController {
 	private RoleRepository roleRepository;
 	@Autowired
 	private PersonRepository personRepository;
+	@Autowired
+	private NotificationService notificationService;
 
 	
 	@Autowired
@@ -234,7 +238,7 @@ public class RecruiterController {
 		return "recruiter/addPlan";
 	}
 	@RequestMapping(value = "/addPlan",  method = RequestMethod.POST)
-	public String addPlan(@ModelAttribute("plan") @Valid PlanForm plan, BindingResult bindingResult) {
+	public String addPlan(@ModelAttribute("plan") @Valid PlanForm plan, BindingResult bindingResult, Model model) {
 		System.out.println("@addPlan start!");
 		//TODO Check Manager existed!
 		planFormValidator.validate(plan, bindingResult);
@@ -242,6 +246,16 @@ public class RecruiterController {
 		if (bindingResult.hasErrors()) {
 
 			System.out.println("Adding plan occurs error!");
+			
+			List<Skill> skills = skillService.findAll();
+			model.addAttribute("chooseSkills", skills);
+			CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+			List<StaffRequirement> requirements = staffRequirementService.findByRecruiterAndStatus(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
+			model.addAttribute("chooseRequirements", requirements);
+			PlanForm pl = new PlanForm();
+			model.addAttribute("plan", pl);
+			
+			
 			return "recruiter/addPlan";
 		}
 		try {
@@ -282,6 +296,28 @@ public class RecruiterController {
 		interview.setInterviewTime(interviewT);
 		interview.setUpdateTime(new Date());
 		interview = interviewService.findOne(interviewId);
+		
+		Notification notification = new Notification();
+		notification.setOwner(interview.getInterviewer());
+		notification.setContent("You have an interview!");
+		notification.setIssueTime(new Date());
+		notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+		notification.setType(CommonUtils.NOTIFICATION_TYPE_INTERVIEW);
+		notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+		notification.setUrl("/interview/showInterviews");
+		notification = notificationService.save(notification);
+		
+		Notification notification1 = new Notification();
+		notification1.setOwner(interview.getInterviewee());
+		notification1.setContent("You have an interview!");
+		notification1.setIssueTime(new Date());
+		notification1.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+		notification1.setType(CommonUtils.NOTIFICATION_TYPE_INTERVIEW);
+		notification1.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+		notification1.setUrl("/interview/showInterviews");
+		notification1 = notificationService.save(notification1);
+		
+		
 		return "redirect:/interview/showInterviews";
 	}
 	
@@ -328,6 +364,16 @@ public class RecruiterController {
 			Person hrManager = personRepository.findByRole(hrManagerRole).get(0);
 			hire.setHireHRManager(hrManager);
 			hire = hireService.findOne(hireId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(hrManager);
+			notification.setContent("You have a hire need to verify!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_HIRE);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+			notification.setUrl("/hire/showHires");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/hire/showHires";
 	}
@@ -338,6 +384,8 @@ public class RecruiterController {
 		if (hire != null) {
 			hire.setStatus(CommonUtils.HIRE_RECRUITER_REJECT);
 			hire = hireService.findOne(hireId);
+			
+			
 		}
 		return "redirect:/hire/showHires";
 	}
