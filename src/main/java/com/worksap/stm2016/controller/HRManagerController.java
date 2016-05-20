@@ -129,6 +129,8 @@ public class HRManagerController {
 				oneData.setName("FiveMonths");
 			} else if (keyList.get(i) == 6) {
 				oneData.setName("SixMonths");
+			} else {
+				oneData.setName("Unknown");
 			}
 			oneData.setY(employeesByPeriod.get(i).size()+0.0);
 			data.add(oneData);
@@ -156,6 +158,10 @@ public class HRManagerController {
 				oneData.setY(employeesBySkill.get(i).size()+0.0);
 				data.add(oneData);
 			}
+			PieData oneData = new PieData();
+			oneData.setName("Unknown");
+			oneData.setY(personService.findBySkill(null).size()+0.0);
+			data.add(oneData);
 			//model.addAttribute("employeesBySkill", employeesBySkill);
 		}
 		ObjectMapper mapper = new ObjectMapper();  
@@ -191,6 +197,7 @@ public class HRManagerController {
 		return json;
 	}
 
+	//TODO improve it.
 	@RequestMapping(value={"/analyzeEmployeeByAge"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String analyzeEmployeeByAge(Model model) throws JsonProcessingException {

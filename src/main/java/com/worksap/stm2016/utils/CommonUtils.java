@@ -98,6 +98,7 @@ public class CommonUtils {
 	
 	final static public Integer MAX_PERIOD = 6;
 	
+	final static public Integer PERIOD_UNKNOWN = 0;
 	final static public Integer PERIOD_1MONTH = 1;
 	final static public Integer PERIOD_2MONTH = 2;
 	final static public Integer PERIOD_3MONTH = 3;
@@ -144,6 +145,7 @@ public class CommonUtils {
 
 	static public List<Integer> getKeysByPeriod() {
 		List<Integer> keys = new ArrayList<Integer>();
+		keys.add(PERIOD_UNKNOWN);
 		for (int i = 1; i <= MAX_PERIOD; ++i) {
 			keys.add(i);
 		}
@@ -156,7 +158,7 @@ public class CommonUtils {
 
 	static public List<Integer> getKeysByGender() {
 		List<Integer> genders = new ArrayList<Integer>();
-		for (int i = 1; i <= GENDERS; ++i) {
+		for (int i = 0; i < GENDERS; ++i) {
 			genders.add(i);
 		}
 		return genders;

@@ -134,22 +134,40 @@ public class PersonServiceImpl implements PersonService{
 
 	@Override
 	public List<Person> findByPeriod(Integer months) {
-		return personRepository.findByPeriodMonth(months, months-1);
+		if (months == 0) {
+			return personRepository.findByPeriodUnknown();
+		} else {
+			return personRepository.findByPeriodMonth(months, months-1);
+		}
 	}
 
 	@Override
 	public List<Person> findBySkill(Skill skill) {
-		return personRepository.findAll(PersonSpecification.hasSkill(skill));
+		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		List<Person> persons = (List<Person>) personRepository.findByRoleAndStatus(role, CommonUtils.EMPLOYEE_WORKING);
+		List<Person> perList = new ArrayList<Person>();
+		for (Person person : persons) {
+			if (skill == null) {
+				if (person.getUserSkillList() == null || person.getUserSkillList().size() <= 0) {
+					perList.add(person);
+				}
+			}
+			else if (person.getUserSkillList() != null && person.getUserSkillList().contains(skill)) {
+				perList.add(person);
+			}
+		}
+		return perList;
 	}
 
 	@Override
 	public List<Person> findByGender(Integer gender) {
 		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
 		if (gender.equals(CommonUtils.GENDER_UNKNOWN)) {
-			return personRepository.findByRole(role);
+			System.out.println("gender unknown: " + personRepository.findByRole(role).size());
+			return personRepository.findByRoleAndStatus(role, CommonUtils.EMPLOYEE_WORKING);
 		}
 		else {
-			return personRepository.findByRoleAndGender(role, gender);
+			return personRepository.findByRoleAndGenderAndStatus(role, gender, CommonUtils.EMPLOYEE_WORKING);
 		}
 	}
 
