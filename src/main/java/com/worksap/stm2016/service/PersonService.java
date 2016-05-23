@@ -31,4 +31,6 @@ public interface PersonService {
 	public List<Person> findByRole(Role role);
 	public List<Person> findByRoleAndStatus(Role role, Integer status);
 	public void update(UserUpdateForm userForm);
+	public List<Person> findByDepartmentAndRole(Department department);
+	public List<Person> findByGenderAndRole(Integer gender, Role role);
 }

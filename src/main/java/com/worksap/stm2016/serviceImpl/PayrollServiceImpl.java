@@ -112,7 +112,11 @@ public class PayrollServiceImpl implements PayrollService{
 
 	@Override
 	public List<Payroll> findByPayrollEmployeePeriod(Integer months) {
-		return payrollRepository.findByPayrollEmployeePeriodMonth(months, months-1);
+		if (months == 0) {
+			return payrollRepository.findByPayrollEmployeePeriodUnknown();
+		} else {
+			return payrollRepository.findByPayrollEmployeePeriodMonth(months, months-1);
+		}
 	}
 
 	@Override
@@ -124,7 +128,7 @@ public class PayrollServiceImpl implements PayrollService{
 	public List<Payroll> findByPayrollEmployeeAgeRange(Integer ageRange) {
 		
 		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
-		if (ageRange.equals(CommonUtils.AGE_UNKNOWN_RANGE)) return payrollRepository.findByPayrollEmployeeRole(role);
+		if (ageRange.equals(CommonUtils.AGE_UNKNOWN_RANGE)) return payrollRepository.findByPayrollEmployeeRoleAndPayrollEmployeeStatusAndPayrollEmployeeAgeIsNull(role, CommonUtils.EMPLOYEE_WORKING);
 		Integer startAge = CommonUtils.AGE_MIN, endAge = CommonUtils.AGE_MAX;
 		if (ageRange.equals(CommonUtils.AGE_1stRANGE)) {
 			startAge = CommonUtils.AGE_1stRANGE_MIN;
@@ -146,35 +150,42 @@ public class PayrollServiceImpl implements PayrollService{
 			endAge = CommonUtils.AGE_6thRANGE_MAX;
 		}
 
-		return payrollRepository.findByPayrollEmployeeAgeIsBetween(startAge, endAge);
+		return payrollRepository.findByPayrollEmployeeRoleAndPayrollEmployeeStatusAndPayrollEmployeeAgeIsBetween(role, CommonUtils.EMPLOYEE_WORKING, startAge, endAge);
 		
 	}
 
 	@Override
 	public List<Payroll> findByPayrollEmployeeDepartment(Department department) {
-		return payrollRepository.findByPayrollEmployeeDepartment(department);
+		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		return payrollRepository.findByPayrollEmployeeDepartmentAndPayrollEmployeeStatusAndPayrollEmployeeRole(department, CommonUtils.EMPLOYEE_WORKING, role);
 	}
 
 	@Override
 	public List<Payroll> findByEmployeeSkill(Skill skill) {
-		
-		List<Payroll> tmpPayrolls = (List<Payroll>) payrollRepository.findAll();
+		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		List<Payroll> tmpPayrolls = payrollRepository.findByPayrollEmployeeRoleAndPayrollEmployeeStatus(role, CommonUtils.EMPLOYEE_WORKING);
 		List<Payroll> payrolls = new ArrayList<Payroll>();
 		for (Payroll payroll : tmpPayrolls) {
 			List<Skill> skills = payroll.getPayrollEmployee().getUserSkillList();
-			boolean exists = false;
-			for (Skill oneSkill : skills) {
-				if (oneSkill.getSkillId().equals(skill.getSkillId())) {
-					exists = true;
-					break;
+			if (skill == null) {
+				if (skills == null || skills.size() <= 0) {
+					payrolls.add(payroll);
 				}
-			}
-			if (exists) {
+			} else if (skills != null && skills.contains(skill)) {
 				payrolls.add(payroll);
 			}
 		}
 		
 		return payrolls;
+	}
+
+	@Override
+	public List<Payroll> findByPayrollEmployeeGenderAndPayrollEmployeeRole(Integer gender, Role role) {
+		if (gender.equals(CommonUtils.GENDER_UNKNOWN)) {
+			return payrollRepository.findByPayrollEmployeeRoleAndPayrollEmployeeStatusAndPayrollEmployeeGenderIsNull(role, CommonUtils.EMPLOYEE_WORKING);
+		} else {
+			return payrollRepository.findByPayrollEmployeeGenderAndPayrollEmployeeRoleAndPayrollEmployeeStatus(gender, role, CommonUtils.EMPLOYEE_WORKING);
+		}
 	}
 	
 

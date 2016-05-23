@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.DepartmentForm;
 
 public interface DepartmentService {
@@ -15,4 +16,5 @@ public interface DepartmentService {
 	public Department findOne(Long id);
 	public Department findByDepartmentName(String departmentName);
 	public Department create(DepartmentForm department);
+	public List<Department> findByManagerIsNot(Person manager);
 }

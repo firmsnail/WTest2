@@ -12,9 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.DepartmentService;
+import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.service.SkillService;
 
 @Component
@@ -166,14 +170,16 @@ public class CommonUtils {
 
 	static public List<Integer> getKeysByAge() {
 		List<Integer> ranges = new ArrayList<Integer>();
-		for (int i = 1; i <= AGE_RANGES; ++i) {
+		for (int i = 0; i <= AGE_RANGES; ++i) {
 			ranges.add(i);
 		}
 		return ranges;
 	}
 
-	static public List<Department> getKeysByDepartment(DepartmentService departmentService) {
-		return departmentService.findAll();
+	static public List<Department> getKeysByDepartment(DepartmentService departmentService, RoleService roleService, PersonService personService) {
+		Role hrManagerRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+		List<Person> pers = personService.findByRole(hrManagerRole);
+		return departmentService.findByManagerIsNot(pers.get(0));
 	}
 
 	public static boolean RequirementContainSkills(StaffRequirement requirement, List<Skill> skills) {

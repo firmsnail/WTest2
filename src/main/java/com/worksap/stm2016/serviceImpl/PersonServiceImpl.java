@@ -22,7 +22,6 @@ import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.repository.RoleRepository;
 import com.worksap.stm2016.repository.SkillRepository;
 import com.worksap.stm2016.service.PersonService;
-import com.worksap.stm2016.specification.PersonSpecification;
 import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.utils.EmailUtils;
 
@@ -92,6 +91,8 @@ public class PersonServiceImpl implements PersonService{
 
 	@Override
 	public List<Person> findByDepartment(Department dept) {
+		//Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		//return personRepository.findByDepartmentAndRoleAndStatus(dept, role, CommonUtils.EMPLOYEE_WORKING);
 		return personRepository.findByDepartment(dept);
 	}
 
@@ -114,21 +115,23 @@ public class PersonServiceImpl implements PersonService{
 		person.setFirstName(form.getFirstName());
 		person.setLastName(form.getLastName());
 		person.setEmail(form.getEmail());
+		person = personRepository.save(person);
 		Department dept = null;
 		if (form.getDepartmentId() != null) {
 			dept = deptRepository.findOne(form.getDepartmentId());
 		}
 		if (dept != null) {
 			person.setDepartment(dept);
-			person = personRepository.save(person);
+			//person = personRepository.save(person);
 			if (dept.getManager() == null && person.getRole().getRoleId() == CommonUtils.ROLE_TEAM_MANAGER) {
+				dept = deptRepository.findOne(dept.getDepartmentId());
 				dept.setManager(person);
+				dept = deptRepository.findOne(dept.getDepartmentId());
 			}
-		} else {
-			person = personRepository.save(person);
 		}
 		EmailUtils.notifyAddingEmployeeByEmail(form.getUserName(), form.getPassword(), form.getEmail());
 		person.setStatus(CommonUtils.EMPLOYEE_WORKING);
+		person = personRepository.findOne(person.getPersonId());
 		return person;
 	}
 
@@ -161,10 +164,13 @@ public class PersonServiceImpl implements PersonService{
 
 	@Override
 	public List<Person> findByGender(Integer gender) {
-		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		return personRepository.findByGenderAndStatus(gender, CommonUtils.EMPLOYEE_WORKING);
+	}
+	
+	@Override
+	public List<Person> findByGenderAndRole(Integer gender, Role role) {
 		if (gender.equals(CommonUtils.GENDER_UNKNOWN)) {
-			System.out.println("gender unknown: " + personRepository.findByRole(role).size());
-			return personRepository.findByRoleAndStatus(role, CommonUtils.EMPLOYEE_WORKING);
+			return personRepository.findByRoleAndStatusAndGenderIsNull(role, CommonUtils.EMPLOYEE_WORKING);
 		}
 		else {
 			return personRepository.findByRoleAndGenderAndStatus(role, gender, CommonUtils.EMPLOYEE_WORKING);
@@ -174,7 +180,7 @@ public class PersonServiceImpl implements PersonService{
 	@Override
 	public List<Person> findByAgeRange(Integer ageRange) {
 		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
-		if (ageRange.equals(CommonUtils.AGE_UNKNOWN_RANGE)) return personRepository.findByRole(role);
+		if (ageRange.equals(CommonUtils.AGE_UNKNOWN_RANGE)) return personRepository.findByRoleAndStatus(role, CommonUtils.EMPLOYEE_WORKING);
 		Integer startAge = CommonUtils.AGE_MIN, endAge = CommonUtils.AGE_MAX;
 		if (ageRange.equals(CommonUtils.AGE_1stRANGE)) {
 			startAge = CommonUtils.AGE_1stRANGE_MIN;
@@ -195,7 +201,7 @@ public class PersonServiceImpl implements PersonService{
 			startAge = CommonUtils.AGE_6thRANGE_MIN;
 			endAge = CommonUtils.AGE_6thRANGE_MAX;
 		}
-		return personRepository.findByAgeIsBetween(startAge, endAge);
+		return personRepository.findByRoleAndStatusAndAgeIsBetween(role, CommonUtils.EMPLOYEE_WORKING, startAge, endAge);
 	}
 
 	@Override
@@ -232,6 +238,14 @@ public class PersonServiceImpl implements PersonService{
 		user = personRepository.findOne(curUser.getId());
 		curUser.setUser(user);
 	}
+
+	@Override
+	public List<Person> findByDepartmentAndRole(Department department) {
+		Role role = roleRepository.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		return personRepository.findByDepartmentAndRoleAndStatus(department, role, CommonUtils.EMPLOYEE_WORKING);
+	}
+
+	
 
 }
 

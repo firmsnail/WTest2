@@ -41,7 +41,7 @@ public interface PayrollRepository extends PagingAndSortingRepository<Payroll, L
 
 	List<Payroll> findByIssueDateBefore(Date endDate);
 
-	@Query("select p from Payroll p where EXTRACT(month from age(p.payrollEmployee.endDate, payrollEmployee.startDate)) <= ?1 and EXTRACT(month from age(p.payrollEmployee.endDate, payrollEmployee.startDate)) > ?2")
+	@Query("select p from Payroll p where p.payrollEmployee.role.roleId=5 and p.payrollEmployee.status=2 and EXTRACT(month from age(p.payrollEmployee.endDate, payrollEmployee.startDate)) <= ?1 and EXTRACT(month from age(p.payrollEmployee.endDate, payrollEmployee.startDate)) > ?2")
 	List<Payroll> findByPayrollEmployeePeriodMonth(Integer months, Integer months1);
 
 	List<Payroll> findByPayrollEmployeeGender(Integer gender);
@@ -51,5 +51,25 @@ public interface PayrollRepository extends PagingAndSortingRepository<Payroll, L
 	List<Payroll> findByPayrollEmployeeDepartment(Department department);
 
 	List<Payroll> findByPayrollEmployeeRole(Role role);
+
+	@Query("select p from Payroll p where p.payrollEmployee.role.roleId=5 and p.payrollEmployee.status=2 and p.payrollEmployee.startDate=null and p.payrollEmployee.endDate=null")
+	List<Payroll> findByPayrollEmployeePeriodUnknown();
+
+	List<Payroll> findByPayrollEmployeeRoleAndPayrollEmployeeStatus(Role role, Integer status);
+
+	List<Payroll> findByPayrollEmployeeRoleAndPayrollEmployeeStatusAndPayrollEmployeeGenderIsNull(Role role,
+			Integer status);
+
+	List<Payroll> findByPayrollEmployeeGenderAndPayrollEmployeeRoleAndPayrollEmployeeStatus(Integer gender, Role role,
+			Integer status);
+
+	List<Payroll> findByPayrollEmployeeRoleAndPayrollEmployeeStatusAndPayrollEmployeeAgeIsNull(Role role,
+			Integer status);
+
+	List<Payroll> findByPayrollEmployeeRoleAndPayrollEmployeeStatusAndPayrollEmployeeAgeIsBetween(Role role,
+			Integer status, Integer startAge, Integer endAge);
+
+	List<Payroll> findByPayrollEmployeeDepartmentAndPayrollEmployeeStatusAndPayrollEmployeeRole(Department department,
+			Integer status, Role role);
 
 }

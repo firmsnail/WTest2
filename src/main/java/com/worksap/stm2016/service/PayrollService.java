@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Payroll;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 
 public interface PayrollService {
@@ -32,4 +33,5 @@ public interface PayrollService {
 	public List<Payroll> findByPayrollEmployeeAgeRange(Integer ageRange);
 	public List<Payroll> findByPayrollEmployeeDepartment(Department department);
 	public List<Payroll> findByEmployeeSkill(Skill skill);
+	public List<Payroll> findByPayrollEmployeeGenderAndPayrollEmployeeRole(Integer integer, Role role);
 }

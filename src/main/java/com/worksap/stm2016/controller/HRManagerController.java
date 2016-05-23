@@ -110,7 +110,7 @@ public class HRManagerController {
 	public String analyzeEmployeeByPeriod(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByPeriod();
-		model.addAttribute("periodKeys", keyList);
+		//model.addAttribute("periodKeys", keyList);
 		List<List<Person> > employeesByPeriod = new ArrayList<List<Person> >();
 		for (int i = 0; i < keyList.size(); ++i) {
 			employeesByPeriod.add(personService.findByPeriod(keyList.get(i)));
@@ -148,7 +148,7 @@ public class HRManagerController {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
 		if (keyList != null) {
-			model.addAttribute("skillKeys", keyList);
+			//model.addAttribute("skillKeys", keyList);
 			List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
 			for (int i = 0; i < keyList.size(); ++i) {
 				employeesBySkill.add(personService.findBySkill(keyList.get(i)));
@@ -173,12 +173,13 @@ public class HRManagerController {
 	@RequestMapping(value={"/analyzeEmployeeByGender"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String analyzeEmployeeByGender(Model model) throws JsonProcessingException {
+		Role role = roleService.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByGender();
-		model.addAttribute("genderKeys", keyList);
+		//model.addAttribute("genderKeys", keyList);
 		List<List<Person> > employeesByGender = new ArrayList<List<Person> >();
 		for (int i = 0; i < keyList.size(); ++i) {
-			employeesByGender.add(personService.findByGender(keyList.get(i)));
+			employeesByGender.add(personService.findByGenderAndRole(keyList.get(i), role));
 			PieData oneData = new PieData();
 			if (keyList.get(i) == CommonUtils.GENDER_FEMALE) {
 				oneData.setName("Female");
@@ -197,17 +198,15 @@ public class HRManagerController {
 		return json;
 	}
 
-	//TODO improve it.
 	@RequestMapping(value={"/analyzeEmployeeByAge"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String analyzeEmployeeByAge(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByAge();
-		model.addAttribute("ageKeys", keyList);
+		//model.addAttribute("ageKeys", keyList);
 		List<List<Person> > employeesByAge = new ArrayList<List<Person> >();
 		for (int i = 0; i < keyList.size(); ++i) {
 			employeesByAge.add(personService.findByAgeRange(keyList.get(i)));
-			
 			PieData oneData = new PieData();
 			if (keyList.get(i) == CommonUtils.AGE_1stRANGE) {
 				oneData.setName(CommonUtils.AGE_1stRANGE_MIN+"~"+CommonUtils.AGE_1stRANGE_MAX);
@@ -239,12 +238,12 @@ public class HRManagerController {
 	@ResponseBody
 	public String analyzeEmployeeByDepartment(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
-		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService);
+		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService, roleService, personService);
 		List<List<Person> > employeesByDepartment = new ArrayList<List<Person> >();
 		if (keyList != null) {
-			model.addAttribute("ageKeys", keyList);
+			//model.addAttribute("deptKeys", keyList);
 			for (int i = 0; i < keyList.size(); ++i) {
-				employeesByDepartment.add(personService.findByDepartment(keyList.get(i)));
+				employeesByDepartment.add(personService.findByDepartmentAndRole(keyList.get(i)));
 				
 				PieData oneData = new PieData();
 				oneData.setName(keyList.get(i).getDepartmentName());
@@ -260,13 +259,12 @@ public class HRManagerController {
 		return json;
 	}
 	
-	
 	@RequestMapping(value={"/analyzePayrollByPeriod"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String analyzePayrollByPeriod(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByPeriod();
-		model.addAttribute("periodKeys", keyList);
+		//model.addAttribute("periodKeys", keyList);
 		List<List<Payroll> > payrollByPeriod = new ArrayList<List<Payroll> >();
 		for (int i = 0; i < keyList.size(); ++i) {
 			payrollByPeriod.add(payrollService.findByPayrollEmployeePeriod(keyList.get(i)));
@@ -286,6 +284,8 @@ public class HRManagerController {
 				oneData.setName("FiveMonths");
 			} else if (keyList.get(i) == 6) {
 				oneData.setName("SixMonths");
+			} else {
+				oneData.setName("Unknown");
 			}
 			Double total = 0.0;
 			for (Payroll payroll : payrollByPeriod.get(i)) {
@@ -307,7 +307,7 @@ public class HRManagerController {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
 		if (keyList != null) {
-			model.addAttribute("skillKeys", keyList);
+			//model.addAttribute("skillKeys", keyList);
 			//List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
 			List<List<Payroll> > payrollBySkill = new ArrayList<List<Payroll> >();
 			for (int i = 0; i < keyList.size(); ++i) {
@@ -323,6 +323,12 @@ public class HRManagerController {
 				oneData.setY(total);
 				data.add(oneData);
 			}
+			
+			PieData oneData = new PieData();
+			oneData.setName("Unknown");
+			oneData.setY(payrollService.findByEmployeeSkill(null).size()+0.0);
+			data.add(oneData);
+			
 			//model.addAttribute("employeesBySkill", employeesBySkill);
 		}
 		ObjectMapper mapper = new ObjectMapper();  
@@ -334,13 +340,14 @@ public class HRManagerController {
 	@RequestMapping(value={"/analyzePayrollByGender"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String analyzePayrollByGender(Model model) throws JsonProcessingException {
+		Role role = roleService.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByGender();
-		model.addAttribute("genderKeys", keyList);
+		//model.addAttribute("genderKeys", keyList);
 		//List<List<Person> > employeesByGender = new ArrayList<List<Person> >();
 		List<List<Payroll> > payrollsByGender = new ArrayList<List<Payroll> >();
 		for (int i = 0; i < keyList.size(); ++i) {
-			payrollsByGender.add(payrollService.findByPayrollEmployeeGender(keyList.get(i)));
+			payrollsByGender.add(payrollService.findByPayrollEmployeeGenderAndPayrollEmployeeRole(keyList.get(i), role));
 			//employeesByGender.add(personService.findByGender(keyList.get(i)));
 			PieData oneData = new PieData();
 			if (keyList.get(i) == CommonUtils.GENDER_FEMALE) {
@@ -369,7 +376,7 @@ public class HRManagerController {
 	public String analyzePayrollByAge(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByAge();
-		model.addAttribute("ageKeys", keyList);
+		//model.addAttribute("ageKeys", keyList);
 		//List<List<Person> > employeesByAge = new ArrayList<List<Person> >();
 		List<List<Payroll> > payrollsByAge = new ArrayList<List<Payroll> >();
 		for (int i = 0; i < keyList.size(); ++i) {
@@ -411,11 +418,11 @@ public class HRManagerController {
 	@ResponseBody
 	public String analyzePayrollByDepartment(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
-		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService);
+		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService, roleService, personService);
 		List<List<Payroll> > payrollsByDepartment = new ArrayList<List<Payroll> >();
 		//List<List<Person> > employeesByDepartment = new ArrayList<List<Person> >();
 		if (keyList != null) {
-			model.addAttribute("ageKeys", keyList);
+			//model.addAttribute("ageKeys", keyList);
 			for (int i = 0; i < keyList.size(); ++i) {
 				payrollsByDepartment.add(payrollService.findByPayrollEmployeeDepartment(keyList.get(i)));
 				//employeesByDepartment.add(personService.findByDepartment(keyList.get(i)));
@@ -565,6 +572,16 @@ public class HRManagerController {
 			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
 			notification.setUrl("/user/profile?userId=" + employee.getPersonId());
 			notification = notificationService.save(notification);
+			
+			Notification notification1 = new Notification();
+			notification1.setOwner(hire.getHireDepartment().getManager());
+			notification1.setContent("A hire of yours have been approved!");
+			notification1.setIssueTime(new Date());
+			notification1.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification1.setType(CommonUtils.NOTIFICATION_TYPE_HIRE);
+			notification1.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
+			notification1.setUrl("/hire/showHires");
+			notification1 = notificationService.save(notification1);
 		}
 		return "redirect:/hire/showHires";
 	}
@@ -576,6 +593,15 @@ public class HRManagerController {
 			hire.setStatus(CommonUtils.HIRE_HR_MANAGER_REJECT);
 			hire = hireService.findOne(hireId);
 			
+			Notification notification = new Notification();
+			notification.setOwner(hire.getHireDepartment().getManager());
+			notification.setContent("A hire of yours have been rejected!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_HIRE);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_LOW);
+			notification.setUrl("/hire/showHires");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/hire/showHires";
 	}

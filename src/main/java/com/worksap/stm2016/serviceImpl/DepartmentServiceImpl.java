@@ -75,6 +75,11 @@ public class DepartmentServiceImpl implements DepartmentService{
 		}
 		return dept;
 	}
+
+	@Override
+	public List<Department> findByManagerIsNot(Person manager) {
+		return departmentRepository.findByManagerIsNot(manager);
+	}
 	
 
 }
