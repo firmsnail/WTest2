@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
@@ -21,7 +20,6 @@ import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.service.SkillService;
 
-@Component
 public class CommonUtils {
 	
 	final static public Long ROLE_HR_MANAGER = (long) 1;
