@@ -593,6 +593,10 @@ public class HRManagerController {
 			hire.setStatus(CommonUtils.HIRE_HR_MANAGER_REJECT);
 			hire = hireService.findOne(hireId);
 			
+			Person employee = personService.findById(hire.getHirePerson().getPersonId());
+			employee.setStatus(CommonUtils.EMPLOYEE_REGISTERED);
+			employee = personService.findById(employee.getPersonId());
+			
 			Notification notification = new Notification();
 			notification.setOwner(hire.getHireDepartment().getManager());
 			notification.setContent("A hire of yours have been rejected!");

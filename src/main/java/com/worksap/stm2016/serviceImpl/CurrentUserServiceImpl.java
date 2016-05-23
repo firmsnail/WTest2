@@ -163,14 +163,14 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 	public boolean canDeletePlan(CurrentUser currentUser, Long planId) {
 		if (currentUser == null) return false;
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
-		return plan != null && plan.getPlanMaker() != null && plan.getPlanMaker().getPersonId().equals(currentUser.getId());
+		return plan != null && plan.getStatus() == CommonUtils.PLAN_PENDING_VERIFY && plan.getPlanMaker() != null && plan.getPlanMaker().getPersonId().equals(currentUser.getId());
 	}
 
 	@Override
 	public boolean canPostPlan(CurrentUser currentUser, Long planId) {
 		if (currentUser == null) return false;
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
-		return plan != null && plan.getPlanMaker() != null && plan.getPlanMaker().getPersonId().equals(currentUser.getId());
+		return plan != null && plan.getStatus() == CommonUtils.PLAN_VERIFIED && plan.getPlanMaker() != null && plan.getPlanMaker().getPersonId().equals(currentUser.getId());
 	}
 
 	@Override
@@ -184,6 +184,53 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 	@Override
 	public boolean hasLogIn(CurrentUser currentUser) {
 		return currentUser != null;
+	}
+
+	@Override
+	public boolean canAddDismission(CurrentUser currentUser) {
+		if (currentUser == null) return false;
+		if (currentUser.getUser().getRole().getRoleId().equals(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE)) {
+			return currentUser.getUser().getStatus().equals(CommonUtils.EMPLOYEE_WORKING);
+		} else if (currentUser.getUser().getRole().getRoleId().equals(CommonUtils.ROLE_TEAM_MANAGER)) {
+			return currentUser.getUser().getDepartment() != null;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean canAddLeave(CurrentUser currentUser) {
+		if (currentUser == null) return false;
+		if (currentUser.getUser().getRole().getRoleId().equals(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE)) {
+			return currentUser.getUser().getStatus().equals(CommonUtils.EMPLOYEE_WORKING);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean canApplyRecruitingPlan(CurrentUser currentUser, Long planId) {
+		RecruitingPlan plan = recruitingPlanService.findOne(planId);
+		if (currentUser == null || plan == null || !plan.getStatus().equals(CommonUtils.PLAN_RECRUITING)) return false;
+		if (currentUser.getUser().getRole().getRoleId().equals(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE)) {
+			return currentUser.getUser().getStatus().equals(CommonUtils.EMPLOYEE_REGISTERED);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean canAddRequirement(CurrentUser currentUser) {
+		if (currentUser == null) return false;
+		if (!currentUser.getRole().getRoleId().equals(CommonUtils.ROLE_TEAM_MANAGER)) {
+			return false;
+		} else {
+			if (currentUser.getUser().getDepartment() != null && currentUser.getUser().getDepartment().getManager().getPersonId().equals(currentUser.getId())) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 
 }

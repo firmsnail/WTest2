@@ -24,6 +24,7 @@ import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Hire;
 import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Leave;
+import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
@@ -34,6 +35,7 @@ import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
 import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.LeaveService;
+import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.service.SkillService;
@@ -64,11 +66,13 @@ public class TeamManagerController {
 	private InterviewService interviewService;
 	@Autowired
 	private HireService hireService;
+	@Autowired
+	private NotificationService notificationService;
 	
 	@Autowired
 	private RequirementFormValidator requirementFormValidator;
 	
-	//TODO need add pre-authorize for check whether can add requirement
+	@PreAuthorize("@currentUserServiceImpl.canAddRequirement(principal)")
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.GET)
 	public String addRequirement(Model model) {
 		List<Skill> skills = skillService.findAll();
@@ -80,7 +84,6 @@ public class TeamManagerController {
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.POST)
 	public String addRequirement(@ModelAttribute("requirement") @Valid RequirementForm requirement, BindingResult bindingResult, Model model) {
 		System.out.println("@addDepartment start!");
-		//TODO Check Manager existed!
 		requirementFormValidator.validate(requirement, bindingResult);
 		
 		if (bindingResult.hasErrors()) {
@@ -94,6 +97,21 @@ public class TeamManagerController {
 		try {
 			System.out.println("requirement: " + requirement);
 			staffRequirementService.add(requirement);
+			
+			Notification notification = new Notification();
+			Role hrmRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+			List<Person> pers = personService.findByRole(hrmRole);
+			Person hrManager = pers.get(0);
+			notification.setOwner(hrManager);
+			notification.setContent("You have a staffing requirement need to process!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_REQUIREMENT);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
+			notification.setUrl("/requirement/showStaffRequirements");
+			notification = notificationService.save(notification);
+			
+			
         } catch (DataIntegrityViolationException e) {
         	List<Skill> skills = skillService.findAll();
 			model.addAttribute("chooseSkills", skills);
@@ -117,12 +135,21 @@ public class TeamManagerController {
 		Dismission dismission = dismissionService.findOne(dismissionId);
 		if (dismission != null) {
 			//dismission.setDismissionHRManager(curUser.getUser());
-			System.out.println("here!");
 			dismission.setStatus(CommonUtils.DISMISSION_HR_MANAGER_PROCESSING);
 			Role hrRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
 			Person hrManager = personService.findByRole(hrRole).get(0);
 			dismission.setDismissionHRManager(hrManager);
 			dismission = dismissionService.findOne(dismissionId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(hrManager);
+			notification.setContent("You have a dismission need to process!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_DISMISSION);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+			notification.setUrl("/dismission/showDismissions");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/dismission/showDismissions";
 	}
@@ -133,6 +160,16 @@ public class TeamManagerController {
 		if (dismission != null) {
 			dismission.setStatus(CommonUtils.DISMISSION_TEAM_MANAGER_REJECT);
 			dismission = dismissionService.findOne(dismissionId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(dismission.getDismissionPerson());
+			notification.setContent("Your dismission has been rejected!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_DISMISSION);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_LOW);
+			notification.setUrl("/dismission/showDismissions");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/dismission/showDismissions";
 	}
@@ -149,6 +186,16 @@ public class TeamManagerController {
 			leave.setStatus(CommonUtils.LEAVE_CB_SPECIALIST_PROCESSING);
 			leave.setLeaveCBSpecialist(cbSpecialist);
 			leave = leaveService.findOne(leaveId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(cbSpecialist);
+			notification.setContent("You have a leaving request that needed to process!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_LEAVE);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+			notification.setUrl("/leave/showLeaves");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/leave/showLeaves";
 	}
@@ -159,6 +206,16 @@ public class TeamManagerController {
 		if (leave != null) {
 			leave.setStatus(CommonUtils.LEAVE_REJECT);
 			leave = leaveService.findOne(leaveId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(leave.getLeavePerson());
+			notification.setContent("Your leaving request has been rejected!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_LEAVE);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_LOW);
+			notification.setUrl("/leave/showLeaves");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/leave/showLeaves";
 	}
@@ -186,7 +243,18 @@ public class TeamManagerController {
 			interview.setRequirementForInterview(requirement);
 		}
 		
-		interviewService.save(interview);
+		interview = interviewService.save(interview);
+		
+		Notification notification = new Notification();
+		notification.setOwner(interview.getPlanForInterview().getPlanMaker());
+		notification.setContent("You have a interview to schedule!");
+		notification.setIssueTime(new Date());
+		notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+		notification.setType(CommonUtils.NOTIFICATION_TYPE_INTERVIEW);
+		notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+		notification.setUrl("/interview/showInterviews");
+		notification = notificationService.save(notification);
+		
 		return "redirect:/applicant/showApplicants";
 	}
 	
@@ -213,7 +281,24 @@ public class TeamManagerController {
 			hire.setStatus(CommonUtils.HIRE_RECRUITER_PROCESSING);
 			hire.setSubmitDate(new Date());
 			
-			hireService.save(hire);
+			hire = hireService.save(hire);
+			
+			Person employee = personService.findById(hire.getHirePerson().getPersonId());
+			employee.setStatus(CommonUtils.EMPLOYEE_CANDIDATE);
+			employee = personService.findById(employee.getPersonId());
+			
+			
+			Notification notification = new Notification();
+			Role hrRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+			Person hrManager = personService.findByRole(hrRole).get(0);
+			notification.setOwner(hrManager);
+			notification.setContent("You have a hire to verify!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_HIRE);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
+			notification.setUrl("/hire/showHires");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/interview/showInterviews";
 	}
@@ -227,6 +312,16 @@ public class TeamManagerController {
 			interview.setInterviewTime(null);
 			interview.setUpdateTime(new Date());
 			interview = interviewService.findOne(interviewId);
+			
+			Notification notification = new Notification();
+			notification.setOwner(interview.getPlanForInterview().getPlanMaker());
+			notification.setContent("You have a interview to schedule!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_INTERVIEW);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+			notification.setUrl("/interview/showInterviews");
+			notification = notificationService.save(notification);
 		}
 		return "redirect:/interview/showInterviews";
 	}
@@ -240,6 +335,7 @@ public class TeamManagerController {
 			interview.setInterviewTime(null);
 			interview.setUpdateTime(new Date());
 			interview = interviewService.findOne(interviewId);
+			
 		}
 		return "redirect:/interview/showInterviews";
 	}

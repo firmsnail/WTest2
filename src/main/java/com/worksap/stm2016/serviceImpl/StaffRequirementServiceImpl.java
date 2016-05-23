@@ -60,7 +60,6 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 
 	@Override
 	public List<StaffRequirement> findByStatus(int status) {
-		
 		return staffRequirementRepository.findByStatus(status);
 	}
 
@@ -130,7 +129,8 @@ public class StaffRequirementServiceImpl implements StaffRequirementService{
 		curRequirement.setHrManager(hrManager);
 		
 		curRequirement.setStatus(CommonUtils.REQUIREMENTS_HR_MANAGER_PROCESSING);
-		staffRequirementRepository.save(curRequirement);
+		curRequirement = staffRequirementRepository.save(curRequirement);
+		
 		return curRequirement;
 	}
 

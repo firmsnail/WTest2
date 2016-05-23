@@ -255,7 +255,6 @@ public class RecruiterController {
 			PlanForm pl = new PlanForm();
 			model.addAttribute("plan", pl);
 			
-			
 			return "recruiter/addPlan";
 		}
 		try {
@@ -317,7 +316,6 @@ public class RecruiterController {
 		notification1.setUrl("/interview/showInterviews");
 		notification1 = notificationService.save(notification1);
 		
-		
 		return "redirect:/interview/showInterviews";
 	}
 	
@@ -328,6 +326,7 @@ public class RecruiterController {
 		RecruitingPlan plan = recruitingPlanService.findOne(planId);
 		List<StaffRequirement> requirements = plan.getRequirements();
 		for (StaffRequirement requirement : requirements) {
+			requirement.setStatus(CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
 			requirement.setRecruitingPlan(null);
 			requirement = staffRequirementService.findOne(requirement.getStaffRequirementId());
 		}
@@ -384,8 +383,6 @@ public class RecruiterController {
 		if (hire != null) {
 			hire.setStatus(CommonUtils.HIRE_RECRUITER_REJECT);
 			hire = hireService.findOne(hireId);
-			
-			
 		}
 		return "redirect:/hire/showHires";
 	}

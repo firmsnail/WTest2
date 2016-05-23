@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Leave;
 import com.worksap.stm2016.model.Notification;
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.LeaveService;
 import com.worksap.stm2016.service.NotificationService;
@@ -39,6 +40,14 @@ public class CBSpecialistController {
 			dismission.setStatus(CommonUtils.DISMISSION_FINISH);
 			dismission.getDismissionPerson().setStatus(CommonUtils.EMPLOYEE_DISMISSION);
 			dismission = dismissionService.findOne(dismissionId);
+			Person employee = personService.findById(dismission.getDismissionPerson().getPersonId());
+			employee.setDepartment(null);
+			employee.setEndDate(null);
+			employee.setSalary(null);
+			employee.setStartDate(null);
+			employee.setStatus(CommonUtils.EMPLOYEE_REGISTERED);
+			employee = personService.findById(employee.getPersonId());
+			
 			Notification notification = new Notification();
 			notification.setOwner(dismission.getDismissionPerson());
 			notification.setContent("Your dismission has been approved!");
@@ -46,7 +55,7 @@ public class CBSpecialistController {
 			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
 			notification.setType(CommonUtils.NOTIFICATION_TYPE_DISMISSION);
 			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
-			notification.setUrl("#");
+			notification.setUrl("/dismission/showDismissions");
 			notification = notificationService.save(notification);
 			personService.findById(dismission.getDismissionPerson().getPersonId());
 		}

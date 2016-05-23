@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
+import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.modelForm.DismissionForm;
@@ -35,25 +36,21 @@ public class DismissionServiceImpl implements DismissionService{
 
 	@Override
 	public List<Dismission> findAll() {
-		// TODO Auto-generated method stub
 		return (List<Dismission>) dismissionRepository.findAll();
 	}
 
 	@Override
 	public Page<Dismission> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
 		return dismissionRepository.findAll(pageable);
 	}
 
 	@Override
 	public Dismission save(Dismission dismission) {
-		// TODO Auto-generated method stub
 		return dismissionRepository.save(dismission);
 	}
 
 	@Override
 	public Dismission findOne(Long id) {
-		// TODO Auto-generated method stub
 		return dismissionRepository.findOne(id);
 	}
 

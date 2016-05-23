@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.Attendance;
 import com.worksap.stm2016.model.CurrentUser;
+import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Interview;
+import com.worksap.stm2016.model.Leave;
+import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.modelForm.DismissionForm;
@@ -29,6 +32,7 @@ import com.worksap.stm2016.service.AttendanceService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.LeaveService;
+import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -54,13 +58,15 @@ public class ShortTermEmployeeController {
 	private ApplicantService applicantService;
 	@Autowired
 	private AttendanceService attendanceService;
+	@Autowired
+	private NotificationService notificationService;
 	
 	@Autowired
 	private DismissionFormValidator  dismissionFormValidator;
 	@Autowired
 	private LeaveFormValidator  leaveFormValidator;
 	
-	//need add pre-authorize for check whether can add requirement
+	@PreAuthorize("@currentUserServiceImpl.canAddDismission(principal)")
 	@RequestMapping(value = "/addDismission",  method = RequestMethod.GET)
 	public String addDismission(Model model) {
 		DismissionForm dismission = new DismissionForm();
@@ -80,20 +86,29 @@ public class ShortTermEmployeeController {
 			return "short-term-employee/addDismission";
 		}
 		try {
-			dismissionService.add(dismission);
+			Dismission oneDis = dismissionService.add(dismission);
+			
+			Notification notification = new Notification();
+			notification.setOwner(oneDis.getDismissionDepartment().getManager());
+			notification.setContent("You have a dismission need to process!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_DISMISSION);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+			notification.setUrl("/dismission/showDismissions");
+			notification = notificationService.save(notification);
+			
         } catch (DataIntegrityViolationException e) {
             return "short-term-employee/addDismission";
         }
 		return "redirect:/dismission/showDismissions";
 	}
 	
-	//need add pre-authorize for check whether can add leave
+	@PreAuthorize("@currentUserServiceImpl.canAddLeave(principal)")
 	@RequestMapping(value = "/addLeave",  method = RequestMethod.GET)
 	public String addLeave(Model model) {
 		LeaveForm leave = new LeaveForm();
-		System.out.println("addLeave here0");
 		model.addAttribute("leave", leave);
-		System.out.println("addLeave here");
 		return "short-term-employee/addLeave";
 	}
 	
@@ -107,9 +122,19 @@ public class ShortTermEmployeeController {
 			return "short-term-employee/addLeave";
 		}
 		try {
-			leaveService.add(leave);
+			Leave oneLeave = leaveService.add(leave);
+			
+			Notification notification = new Notification();
+			notification.setOwner(oneLeave.getLeaveDepartment().getManager());
+			notification.setContent("You have a leaving request need to process!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_LEAVE);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+			notification.setUrl("/leave/showLeaves");
+			notification = notificationService.save(notification);
         } catch (DataIntegrityViolationException e) {
-            return "short-term-employee/addDismission";
+            return "short-term-employee/addLeave";
         }
 		return "redirect:/leave/showLeaves";
 	}
@@ -132,7 +157,7 @@ public class ShortTermEmployeeController {
 		return "redirect:/dismission/showDismissions";
 	}
 	
-	@PreAuthorize("@currentUserServiceImpl.canDeleteLeave(principal, #dismissionId)")
+	@PreAuthorize("@currentUserServiceImpl.canDeleteLeave(principal, #leaveId)")
 	//@ResponseBody
 	@RequestMapping(value = "/deleteOneLeave")
 	public String deleteOneLeave(Long leaveId) {
@@ -140,7 +165,7 @@ public class ShortTermEmployeeController {
 		return "redirect:/leave/showLeaves";
 	}
 	
-	//@PreAuthorize("@currentUserServiceImpl.canDeleteLeave(principal, #dismissionId)")
+	@PreAuthorize("@currentUserServiceImpl.canApplyRecruitingPlan(principal, #planId)")
 	//@ResponseBody
 	@RequestMapping(value = "/applyOnePlan")
 	public String applyOnePlan(Long planId) {
