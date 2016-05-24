@@ -48,14 +48,17 @@ public class RecruitingPlanController {
 		} else {
 			Map<Long, Boolean> isApply = new HashMap<Long, Boolean>();
 			plans = recruitingPlanService.findByStatus(CommonUtils.PLAN_RECRUITING);
+			boolean applied = false;
 			for (RecruitingPlan plan : plans) {
 				List<Applicant> applicants = applicantService.findByApplicantAndPlanForApplicant(curUser.getUser(), plan);
 				if (applicants != null && applicants.size() > 0) {
 					isApply.put(plan.getPlanId(), true);
+					applied = true;
 				} else {
 					isApply.put(plan.getPlanId(), false);
 				}
 			}
+			model.addAttribute("applied", applied);
 			model.addAttribute("isApply", isApply);
 		}
 		

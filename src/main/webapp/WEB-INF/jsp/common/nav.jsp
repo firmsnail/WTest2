@@ -60,7 +60,7 @@
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="/user/profile?userId=${currentUser.user.personId}"><i class="fa fa-user fa-fw"></i> User Profile</a>
                 </li>
-                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>	<!-- TODO direct ot setting page -->
                 </li>
                 <li class="divider"></li>
                 <li>
@@ -84,35 +84,35 @@
                     <a href="/index"><i class="fa fa-dashboard fa-fw"></i> News</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId < 1 or currentUser.user.role.roleId > 3 }">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId < 1 or currentUser.user.role.roleId > 3 or currentUser.user.status != 2}">class="hidden"</c:if> >
                     <a href="/department/showDepartments"><i class="fa fa-home fa-fw"></i> Departments</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId < 1 or currentUser.user.role.roleId > 3 }">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId < 1 or currentUser.user.role.roleId > 3 or currentUser.user.status != 2}">class="hidden"</c:if> >
                     <a href="/user/showEmployees"><i class="fa fa-users fa-fw"></i> Employees</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4)}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4)}">class="hidden"</c:if> >
                     <a href="/requirement/showStaffRequirements"><i class="fa fa-users fa-fw"></i> Staffing Requirements</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 2}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 2}">class="hidden"</c:if> >
                     <a href="/recruiter/showAnalyzeRequirments"><i class="fa fa-users fa-fw"></i> Analyze Requirements</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 5)}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 5) or ((currentUser.user.role.roleId == 1 or currentUser.user.role.roleId == 2) and currentUser.user.status != 2)}">class="hidden"</c:if> >
                     <a href="/plan/showRecruitingPlans"><i class="fa fa-users fa-fw"></i> Recruiting Plans</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4 and currentUser.user.role.roleId != 5)}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4 and currentUser.user.role.roleId != 5) or ((currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 4) and currentUser.user.status != 2)}">class="hidden"</c:if> >
                     <a href="/interview/showInterviews"><i class="fa fa-users fa-fw"></i> Interviews</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4)}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or (currentUser.user.role.roleId != 1 and currentUser.user.role.roleId != 2 and currentUser.user.role.roleId != 4)}">class="hidden"</c:if> >
                     <a href="/hire/showHires"><i class="fa fa-users fa-fw"></i> Hires</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId == 1 or currentUser.user.role.roleId == 3}">class="hidden"</c:if>>
+                <li <c:if test="${currentUser == null or currentUser.user.role.roleId == 1 or currentUser.user.role.roleId == 3 or ((currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 4) and currentUser.user.status != 2)}">class="hidden"</c:if>>
                 	<a href="/applicant/showApplicants"><i class="fa fa-users fa-fw"></i>
                 		<c:choose>
                 			<c:when test="${currentUser.user.role.roleId == 5 }">
@@ -125,27 +125,27 @@
                 	</a>
                 </li>
                
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId == 2}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId == 2}">class="hidden"</c:if> >
                     <a href="/dismission/showDismissions"><i class="fa fa-users fa-fw"></i> Dismissions</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 1}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 1}">class="hidden"</c:if> >
                     <a href="/leave/showLeaves"><i class="fa fa-users fa-fw"></i> Leaves</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 1}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 1}">class="hidden"</c:if> >
                     <a href="/hr-manager/analyzeEmployeeStructure"><i class="fa fa-users fa-fw"></i> Analyze Employee Structure</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 1}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 1}">class="hidden"</c:if> >
                     <a href="/hr-manager/analyzePayrollStructure"><i class="fa fa-users fa-fw"></i> Analyze Payroll Structure</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >
                 	<a href="#"><i class="fa fa-users fa-fw"></i> Payrolls</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >
                 	<a href="/attendance/showAttendances"><i class="fa fa-users fa-fw"></i> Attendances</a>
                 </li>
                 <li>

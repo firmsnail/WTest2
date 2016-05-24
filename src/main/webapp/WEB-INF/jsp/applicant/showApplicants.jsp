@@ -100,7 +100,7 @@
 																<c:when test="${applicant.status == 2}">		<!-- APPLY_PASS_FILTER -->
 																	<span class="label label-primary">Filter Passed</span>
 																</c:when>
-																<c:when test="${applicant.status == 3}">		<!-- APPLY_CHOOSED -->
+																<c:when test="${applicant.status == 4}">		<!-- APPLY_CHOOSED -->
 																	<span class="label label-success">Choosed</span>
 																</c:when>
 																<c:otherwise>
