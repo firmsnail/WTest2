@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -140,6 +141,9 @@ public class CommonUtils {
 	final static public Integer AGE_6thRANGE_MIN = 51;
 	final static public Integer AGE_6thRANGE_MAX = 60;
 	
+	final static public Pattern ContentRegex = Pattern.compile("<script>*</script>");
+	final static public Pattern FieldRegex = Pattern.compile("/w");
+	final static public Pattern PhoneRegex = Pattern.compile("1([\\d]{10})|((\\+[0-9]{2,4})?\\(?[0-9]+\\)?-?)?[0-9]{7,8}");
 	static public PasswordEncoder passwordEncoder() {
 		PasswordEncoder encoder = (PasswordEncoder) new BCryptPasswordEncoder();
 		return encoder;

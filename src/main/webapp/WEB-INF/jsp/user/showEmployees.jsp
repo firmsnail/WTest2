@@ -32,11 +32,12 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
+                	
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             All Employees
                         </div>
-                        <!-- /.panel-heading -->
+						
                         <div class="panel-body">
                         	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 1 }">hidden="hidden"</c:if>>
                         		<a href="/hr-manager/addUser">
@@ -44,7 +45,9 @@
 								</a>
                         	</div>
                         	<br>
+                        	
                             <div class="dataTable_wrapper">
+
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>

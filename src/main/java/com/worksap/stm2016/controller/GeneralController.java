@@ -33,6 +33,7 @@ import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.utils.EmailUtils;
 import com.worksap.stm2016.validator.UserCreateFormValidator;
 
 @Controller
@@ -98,7 +99,6 @@ public class GeneralController {
 	
 	@RequestMapping(value={"/", "/index"}, method = RequestMethod.GET)
 	public String index() {
-		
 		return "index";
 	}
 	

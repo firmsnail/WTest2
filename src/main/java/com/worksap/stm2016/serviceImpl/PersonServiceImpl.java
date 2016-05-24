@@ -129,7 +129,7 @@ public class PersonServiceImpl implements PersonService{
 				dept = deptRepository.findOne(dept.getDepartmentId());
 			}
 		}
-		EmailUtils.notifyAddingEmployeeByEmail(form.getUserName(), form.getPassword(), form.getEmail());
+		EmailUtils.notifyAddingEmployeeByEmail(form.getUserName(), form.getPassword(), form.getEmail(), person.getRole());
 		person.setStatus(CommonUtils.EMPLOYEE_WORKING);
 		person = personRepository.findOne(person.getPersonId());
 		return person;

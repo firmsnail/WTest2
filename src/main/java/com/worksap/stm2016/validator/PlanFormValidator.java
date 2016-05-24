@@ -43,8 +43,17 @@ public class PlanFormValidator implements Validator {
     	if (form.getExpectDate() != null && form.getInvalidDate() != null) {
     		validateDate(errors, form);
     	}
+    	if (form.getReason() != null && form.getReason().length() > 0) {
+    		validateReason(errors, form);
+    	}
     }
 
+    private void validateReason(Errors errors, PlanForm form) {
+		if (!CommonUtils.ContentRegex.matcher(form.getReason()).matches()) {
+			errors.rejectValue("reason", "reason", "Your behavior is dangerous, please don't attempt to attack the system.");
+		}
+	}
+    
 	private void validateDate(Errors errors, PlanForm form) {
 		Date expectDate = form.getExpectDate(), invalidDate = form.getInvalidDate();
 		expectDate = CommonUtils.OneWeekAfter(expectDate);

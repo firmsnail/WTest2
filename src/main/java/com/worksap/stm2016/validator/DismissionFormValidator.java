@@ -38,7 +38,16 @@ public class DismissionFormValidator implements Validator {
     	if (form.getExpectDate() != null) {
     		validateExpectDate(errors, form);
     	}
+    	if (form.getComment() != null && form.getComment().length() > 0) {
+    		validateComment(errors, form);
+    	}
     }
+
+	private void validateComment(Errors errors, DismissionForm form) {
+		if (!CommonUtils.ContentRegex.matcher(form.getComment()).matches()) {
+			errors.rejectValue("comment", "comment", "Your behavior is dangerous, please don't attempt to attack the system.");
+		}
+	}
 
 	private void validateExpectDate(Errors errors, DismissionForm form) {
 		Date expectDate = form.getExpectDate();

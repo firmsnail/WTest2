@@ -11,6 +11,7 @@ import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Component
 public class DepartmentFormValidator implements Validator {
@@ -35,7 +36,16 @@ public class DepartmentFormValidator implements Validator {
         if (form.getManagerId() != null) {
         	validateManager(errors, form);
         }
+        if (form.getDescription() != null && form.getDescription().length() > 0) {
+        	validateDescription(errors, form);
+        }
     }
+
+	private void validateDescription(Errors errors, DepartmentForm form) {
+		if (!CommonUtils.ContentRegex.matcher(form.getDescription()).matches()) {
+			errors.rejectValue("description", "description", "Your behavior is dangerous, please don't attempt to attack the system.");
+		}
+	}
 
 	private void validateManager(Errors errors, DepartmentForm form) {
 		Person manager = personService.findById(form.getManagerId());
@@ -51,6 +61,8 @@ public class DepartmentFormValidator implements Validator {
 		Department dept = deptService.findByDepartmentName(form.getDepartmentName());
 		if (dept != null) {
 			errors.rejectValue("departmentName", "departmentName", "The department already existed!");
+		} else if (!CommonUtils.FieldRegex.matcher(form.getDepartmentName()).matches()){
+			errors.rejectValue("departmentName", "departmentName", "You can only enter numbers, letters and _!");
 		}
 	}
     

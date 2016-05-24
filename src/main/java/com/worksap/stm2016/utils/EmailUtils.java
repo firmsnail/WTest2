@@ -10,6 +10,8 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import com.worksap.stm2016.model.Role;
+
 //import *.SystemUtil;
 
 public class EmailUtils{
@@ -40,7 +42,7 @@ public class EmailUtils{
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelp = new MimeMessageHelper(message,
 					true, "UTF-8");
-			messageHelp.setFrom(from,"blabla");
+			messageHelp.setFrom(from,"SEMS");
 			int totalAdm = 10;//Integer.parseInt(SystemUtil.getAppConfig("mail.total"));
 			for (int i = 0; i < totalAdm; ++i) {
 				String curToKey = "mail.to"+i;
@@ -75,10 +77,11 @@ public class EmailUtils{
 	 */
 	static public Boolean sendMail(String to, String subject, String content) {
 		try {
+			System.out.println("@sending!");
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelp = new MimeMessageHelper(message,
 					true, "UTF-8");
-			messageHelp.setFrom(from,"from");
+			messageHelp.setFrom(from,"STEMS");
 			messageHelp.setTo(to);
 			messageHelp.setSubject(subject);
 			StringBuffer body = new StringBuffer();
@@ -130,8 +133,21 @@ public class EmailUtils{
 		}
 	}
 	
-	static public boolean notifyAddingEmployeeByEmail(String username, String password, String email) {
-		return true;
+	static public boolean notifyAddingEmployeeByEmail(String username, String password, String email, Role role) {
+		StringBuffer sb = new StringBuffer();
+		String title = "Appointment from ETEMS";
+		sb.append("You have been apppointed as a ");
+		sb.append(role.getRoleName());
+		sb.append(" in the ETEMS.<br>");
+		sb.append("This is your account information in ETEMS:<br>");
+		sb.append("<strong>Username: ");
+		sb.append(username);
+		sb.append("</strong><br>");
+		sb.append("<strong>Password: ");
+		sb.append(password);
+		sb.append("</strong><br><br>ETEMS<br>");
+		return sendMail(email, title, sb.toString());
+		//return true;
 	}
 
 //	public static void main(String[] args) {

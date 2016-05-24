@@ -31,7 +31,44 @@ public class UserAddFormValidator implements Validator {
         if (form.getDepartmentId() != null) {
         	validateDepartment(errors, form);
         }
+        validateUserName(errors, form);
+        validatePassword(errors, form);
+        validateFirstName(errors, form);
+        validateLastName(errors, form);
+        
     }
+
+	private void validateLastName(Errors errors, UserCreateForm form) {
+		if (!CommonUtils.ContentRegex.matcher(form.getLastName()).matches()) {
+			errors.rejectValue("lastName", "lastName", "Your behavior is dangerous, please don't attempt to attack the system.");
+		} else if (!CommonUtils.FieldRegex.matcher(form.getLastName()).matches()) {
+			errors.rejectValue("lastName", "lastName", "You can only enter numbers, letters and _.");
+		}
+	}
+
+	private void validateFirstName(Errors errors, UserCreateForm form) {
+		if (!CommonUtils.ContentRegex.matcher(form.getFirstName()).matches()) {
+			errors.rejectValue("firstName", "firstName", "Your behavior is dangerous, please don't attempt to attack the system.");
+		} else if (!CommonUtils.FieldRegex.matcher(form.getFirstName()).matches()) {
+			errors.rejectValue("firstName", "firstName", "You can only enter numbers, letters and _.");
+		}
+	}
+
+	private void validatePassword(Errors errors, UserCreateForm form) {
+		if (!CommonUtils.ContentRegex.matcher(form.getPassword()).matches()) {
+			errors.rejectValue("password", "password", "Your behavior is dangerous, please don't attempt to attack the system.");
+		} else if (!CommonUtils.FieldRegex.matcher(form.getPassword()).matches()) {
+			errors.rejectValue("password", "password", "You can only enter numbers, letters and _.");
+		}
+	}
+
+	private void validateUserName(Errors errors, UserCreateForm form) {
+		if (!CommonUtils.ContentRegex.matcher(form.getUserName()).matches()) {
+			errors.rejectValue("userName", "userName", "Your behavior is dangerous, please don't attempt to attack the system.");
+		} else if (!CommonUtils.FieldRegex.matcher(form.getUserName()).matches()) {
+			errors.rejectValue("userName", "userName", "You can only enter numbers, letters and _.");
+		}
+	}
 
 	private void validateDepartment(Errors errors, UserCreateForm form) {
 		Department dept = deptService.findOne(form.getDepartmentId());

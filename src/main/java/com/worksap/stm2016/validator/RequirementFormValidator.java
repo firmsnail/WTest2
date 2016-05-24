@@ -12,6 +12,7 @@ import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.modelForm.RequirementForm;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.SkillService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Component
 public class RequirementFormValidator implements Validator {
@@ -35,7 +36,16 @@ public class RequirementFormValidator implements Validator {
     	if (form.getDepartmentId() != null && form.getDepartmentId() >= 0) {
     		validateDepartment(errors, form);
     	}
+    	if (form.getReason() != null && form.getReason().length() > 0) {
+    		validateReason(errors, form);
+    	}
     }
+    
+    private void validateReason(Errors errors, RequirementForm form) {
+		if (!CommonUtils.ContentRegex.matcher(form.getReason()).matches()) {
+			errors.rejectValue("reason", "reason", "Your behavior is dangerous, please don't attempt to attack the system.");
+		}
+	}
 
 	private void validateDepartment(Errors errors, RequirementForm form) {
 		Department dept = departmentService.findOne(form.getDepartmentId());
