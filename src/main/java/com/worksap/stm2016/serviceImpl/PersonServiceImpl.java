@@ -130,7 +130,8 @@ public class PersonServiceImpl implements PersonService{
 			}
 		}
 		EmailUtils.notifyAddingEmployeeByEmail(form.getUserName(), form.getPassword(), form.getEmail(), person.getRole());
-		person.setStatus(CommonUtils.EMPLOYEE_WORKING);
+		if (person.getDepartment() != null) person.setStatus(CommonUtils.EMPLOYEE_WORKING);
+		else person.setStatus(CommonUtils.EMPLOYEE_CANDIDATE);
 		person = personRepository.findOne(person.getPersonId());
 		return person;
 	}
