@@ -90,8 +90,6 @@ public class TeamManagerController {
 			System.out.println("Adding requirement occurs error!");
 			List<Skill> skills = skillService.findAll();
 			model.addAttribute("chooseSkills", skills);
-			RequirementForm rq = new RequirementForm();
-			model.addAttribute("requirement", rq);
 			return "team-manager/addRequirement";
 		}
 		try {
@@ -115,8 +113,6 @@ public class TeamManagerController {
         } catch (DataIntegrityViolationException e) {
         	List<Skill> skills = skillService.findAll();
 			model.addAttribute("chooseSkills", skills);
-			RequirementForm rq = new RequirementForm();
-			model.addAttribute("requirement", rq);
             return "team-manager/addRequirement";
         }
 		return "redirect:/requirement/showStaffRequirements";

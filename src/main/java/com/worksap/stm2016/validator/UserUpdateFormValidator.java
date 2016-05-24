@@ -43,7 +43,7 @@ public class UserUpdateFormValidator implements Validator {
 	}
 
 	private void validateAddress(Errors errors, UserUpdateForm form) {
-		if (!CommonUtils.ContentRegex.matcher(form.getAddress()).matches()) {
+		if (CommonUtils.ContentRegex.matcher(form.getAddress()).matches()) {
 			errors.rejectValue("address", "address", "Your behavior is dangerous, please don't attempt to attack the system.");
 		}
 	}
@@ -55,13 +55,13 @@ public class UserUpdateFormValidator implements Validator {
 			if (!CommonUtils.ContentRegex.matcher(form.getPassword()).matches()) {
     			errors.rejectValue("password", "password", "Your behavior is dangerous, please don't attempt to attack the system.");
     		} else if (!CommonUtils.FieldRegex.matcher(form.getPassword()).matches()) {
-    			errors.rejectValue("password", "password", "You can only enter numbers, letters and _.");
+    			errors.rejectValue("password", "password", "You can only enter numbers and letters.");
     		}
         	
         	if (!CommonUtils.ContentRegex.matcher(form.getConfirmPassword()).matches()) {
     			errors.rejectValue("confirmPassword", "confirmPassword", "Your behavior is dangerous, please don't attempt to attack the system.");
     		} else if (!CommonUtils.FieldRegex.matcher(form.getConfirmPassword()).matches()) {
-    			errors.rejectValue("confirmPassword", "confirmPassword", "You can only enter numbers, letters and _.");
+    			errors.rejectValue("confirmPassword", "confirmPassword", "You can only enter numbers and letters.");
     		}
 		}
 	}

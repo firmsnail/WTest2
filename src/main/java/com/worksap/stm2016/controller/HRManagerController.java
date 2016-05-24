@@ -664,16 +664,22 @@ public class HRManagerController {
 		return "hr-manager/addDepartment";
 	}
 	@RequestMapping(value = "/addDept",  method = RequestMethod.POST)
-	public String addDepartment(@ModelAttribute("department") @Valid DepartmentForm department, BindingResult bindingResult) {
-		
-		departmentFormValidator.validate(department, bindingResult);
+	public String addDepartment(@ModelAttribute("department") @Valid DepartmentForm department, BindingResult bindingResult, Model model) {
+		if (!bindingResult.hasErrors()) {
+			departmentFormValidator.validate(department, bindingResult);
+		}
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding department occurs error!");
+			List<Person> managers = personService.findProperManager();
+			model.addAttribute("managers", managers);
 			return "hr-manager/addDepartment";
 		}
 		try {
 			departmentService.create(department);
         } catch (DataIntegrityViolationException e) {
+        	System.out.println("DataIntegrityViolationException Errors!");
+			List<Person> managers = personService.findProperManager();
+			model.addAttribute("managers", managers);
             return "hr-manager/addDepartment";
         }
 		return "redirect:/department/showDepartments";
@@ -687,17 +693,24 @@ public class HRManagerController {
 		return "hr-manager/addUser";
 	}
 	@RequestMapping(value={"/addUser"},  method = RequestMethod.POST)
-	public String addUser(@ModelAttribute("user") @Valid UserCreateForm user, BindingResult bindingResult) {
-		
-		userCreateFormValidator.validate(user, bindingResult);
-		userAddFormValidator.validate(user, bindingResult);
+	public String addUser(@ModelAttribute("user") @Valid UserCreateForm user, BindingResult bindingResult, Model model) {
+		if (!bindingResult.hasErrors()) {
+			userCreateFormValidator.validate(user, bindingResult);
+		}
+		if (!bindingResult.hasErrors()) {
+			userAddFormValidator.validate(user, bindingResult);
+		}
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding user occurs error!");
+			List<Department> departments = departmentService.findAll();
+			model.addAttribute("departments", departments);
 			return "hr-manager/addUser";
 		}
 		try {
 			personService.add(user);
         } catch (DataIntegrityViolationException e) {
+    		List<Department> departments = departmentService.findAll();
+    		model.addAttribute("departments", departments);
             return "hr-manager/addUser";
         }
 		return "redirect:/user/showEmployees";

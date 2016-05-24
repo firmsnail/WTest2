@@ -17,9 +17,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +30,6 @@ import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
-import com.worksap.stm2016.utils.EmailUtils;
 import com.worksap.stm2016.validator.UserCreateFormValidator;
 
 @Controller
@@ -43,12 +39,12 @@ public class GeneralController {
 	private PersonService personService;
 	@Autowired
 	private UserCreateFormValidator  userCreateFormValidator;
-	
+	/*
 	@InitBinder("user")
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userCreateFormValidator);
     }
-	
+	*/
 	@RequestMapping("/showPerson")
 	@ResponseBody
 	public Page<Person> ShowPerson(Model model) {
@@ -99,6 +95,17 @@ public class GeneralController {
 	
 	@RequestMapping(value={"/", "/index"}, method = RequestMethod.GET)
 	public String index() {
+		/*Person hrManager = new Person();
+		hrManager.setUserName("admin");
+		hrManager.setPassword(CommonUtils.passwordEncoder().encode("admin"));
+		hrManager.setFirstName("Xuanzhi");
+		hrManager.setLastName("Gu");
+		hrManager.setEmail("ascorpior@gmail.com");
+		Role hrmRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+		hrManager.setRole(hrmRole);
+		hrManager.setStatus(CommonUtils.EMPLOYEE_WORKING);
+		hrManager = personService.save(hrManager);*/
+		//Pattern ContentRegex = Pattern.compile("*<script>*</script>*");
 		return "index";
 	}
 	
@@ -121,9 +128,10 @@ public class GeneralController {
 	}
 	
 	@RequestMapping(value={"/login"})
-	public String login(@RequestParam(value = "error", required = false) String error) {
+	public String login(@RequestParam(value = "error", required = false) String error, Model model) {
 		if (error != null) {
 			System.out.println("Invalid username and password!");
+			model.addAttribute("loginerr", true);
 		}
 		
 		return "login";
@@ -137,11 +145,11 @@ public class GeneralController {
 	
 	@RequestMapping(value={"/registerAct"})
 	public String registerAct(@ModelAttribute("user") @Valid UserCreateForm user, BindingResult bindingResult) {
+		if (!bindingResult.hasErrors()) {
+			userCreateFormValidator.validate(user, bindingResult);
+		}
 		if (bindingResult.hasErrors()) {
 			System.out.println("register has error!");
-			for (ObjectError obj : bindingResult.getAllErrors()) {
-				System.out.println("error: " + obj);
-			}
 			return "register";
 		}
 		try {

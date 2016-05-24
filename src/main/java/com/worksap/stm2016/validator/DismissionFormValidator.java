@@ -44,7 +44,7 @@ public class DismissionFormValidator implements Validator {
     }
 
 	private void validateComment(Errors errors, DismissionForm form) {
-		if (!CommonUtils.ContentRegex.matcher(form.getComment()).matches()) {
+		if (CommonUtils.ContentRegex.matcher(form.getComment()).matches()) {
 			errors.rejectValue("comment", "comment", "Your behavior is dangerous, please don't attempt to attack the system.");
 		}
 	}

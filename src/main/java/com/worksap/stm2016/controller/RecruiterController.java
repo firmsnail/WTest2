@@ -252,14 +252,17 @@ public class RecruiterController {
 			CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
 			List<StaffRequirement> requirements = staffRequirementService.findByRecruiterAndStatus(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
 			model.addAttribute("chooseRequirements", requirements);
-			PlanForm pl = new PlanForm();
-			model.addAttribute("plan", pl);
 			
 			return "recruiter/addPlan";
 		}
 		try {
 			recruitingPlanService.add(plan);
         } catch (DataIntegrityViolationException e) {
+        	List<Skill> skills = skillService.findAll();
+			model.addAttribute("chooseSkills", skills);
+			CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+			List<StaffRequirement> requirements = staffRequirementService.findByRecruiterAndStatus(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
+			model.addAttribute("chooseRequirements", requirements);
             return "recruiter/addPlan";
         }
 		return "redirect:/plan/showRecruitingPlans";

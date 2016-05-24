@@ -68,8 +68,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(CommonUtils.passwordEncoder());
+	public void configureGlobal(AuthenticationManagerBuilder auth)  {
+		try {
+			auth.userDetailsService(userDetailsService).passwordEncoder(CommonUtils.passwordEncoder());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			System.out.println("Exception");
+		}
 	}
 	/*
 	@Bean

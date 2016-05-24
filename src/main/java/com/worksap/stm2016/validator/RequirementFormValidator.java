@@ -42,7 +42,7 @@ public class RequirementFormValidator implements Validator {
     }
     
     private void validateReason(Errors errors, RequirementForm form) {
-		if (!CommonUtils.ContentRegex.matcher(form.getReason()).matches()) {
+		if (CommonUtils.ContentRegex.matcher(form.getReason()).matches()) {
 			errors.rejectValue("reason", "reason", "Your behavior is dangerous, please don't attempt to attack the system.");
 		}
 	}

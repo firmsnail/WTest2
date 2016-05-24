@@ -39,34 +39,34 @@ public class UserAddFormValidator implements Validator {
     }
 
 	private void validateLastName(Errors errors, UserCreateForm form) {
-		if (!CommonUtils.ContentRegex.matcher(form.getLastName()).matches()) {
+		if (CommonUtils.ContentRegex.matcher(form.getLastName()).matches()) {
 			errors.rejectValue("lastName", "lastName", "Your behavior is dangerous, please don't attempt to attack the system.");
 		} else if (!CommonUtils.FieldRegex.matcher(form.getLastName()).matches()) {
-			errors.rejectValue("lastName", "lastName", "You can only enter numbers, letters and _.");
+			errors.rejectValue("lastName", "lastName", "You can only enter numbers and letters.");
 		}
 	}
 
 	private void validateFirstName(Errors errors, UserCreateForm form) {
-		if (!CommonUtils.ContentRegex.matcher(form.getFirstName()).matches()) {
+		if (CommonUtils.ContentRegex.matcher(form.getFirstName()).matches()) {
 			errors.rejectValue("firstName", "firstName", "Your behavior is dangerous, please don't attempt to attack the system.");
 		} else if (!CommonUtils.FieldRegex.matcher(form.getFirstName()).matches()) {
-			errors.rejectValue("firstName", "firstName", "You can only enter numbers, letters and _.");
+			errors.rejectValue("firstName", "firstName", "You can only enter numbers and letters.");
 		}
 	}
 
 	private void validatePassword(Errors errors, UserCreateForm form) {
-		if (!CommonUtils.ContentRegex.matcher(form.getPassword()).matches()) {
+		if (CommonUtils.ContentRegex.matcher(form.getPassword()).matches()) {
 			errors.rejectValue("password", "password", "Your behavior is dangerous, please don't attempt to attack the system.");
 		} else if (!CommonUtils.FieldRegex.matcher(form.getPassword()).matches()) {
-			errors.rejectValue("password", "password", "You can only enter numbers, letters and _.");
+			errors.rejectValue("password", "password", "You can only enter numbers and letters.");
 		}
 	}
 
 	private void validateUserName(Errors errors, UserCreateForm form) {
-		if (!CommonUtils.ContentRegex.matcher(form.getUserName()).matches()) {
+		if (CommonUtils.ContentRegex.matcher(form.getUserName()).matches()) {
 			errors.rejectValue("userName", "userName", "Your behavior is dangerous, please don't attempt to attack the system.");
 		} else if (!CommonUtils.FieldRegex.matcher(form.getUserName()).matches()) {
-			errors.rejectValue("userName", "userName", "You can only enter numbers, letters and _.");
+			errors.rejectValue("userName", "userName", "You can only enter numbers and letters.");
 		}
 	}
 

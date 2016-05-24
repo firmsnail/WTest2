@@ -19,7 +19,7 @@ import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.utils.CommonUtils;
 
 @Controller
-@PreAuthorize("hasAuthority('RECRUITER')")
+@PreAuthorize("hasAuthority('C&B-SPECIALIST')")
 @RequestMapping(value = "/cb-specialist")
 public class CBSpecialistController {
 	

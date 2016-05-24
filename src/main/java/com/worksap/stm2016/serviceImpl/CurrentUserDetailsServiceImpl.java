@@ -25,8 +25,12 @@ public class CurrentUserDetailsServiceImpl implements CurrentUserDetailsService{
     @Override
     public CurrentUser loadUserByUsername(String username) throws UsernameNotFoundException {
         Person user = userService.findByUserName(username);
-        System.out.println("user: " + user.getUserName() + " " + user.getPassword() + " " + user.getRole().getRoleName());
-        return new CurrentUser(user);
+        if (user != null) {
+        	System.out.println("user: " + user.getUserName() + " " + user.getPassword() + " " + user.getRole().getRoleName());
+        	return new CurrentUser(user);
+        } else {
+        	return null;
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +30,10 @@
 	              </div>
 	
 	              <div class="widget-content">
+	              		<div class="alert alert-danger alert-dismissable" <c:if test="${loginerr != true}">hidden="hidden"</c:if> >
+		                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		                    Username or password is incorrect, please check it!
+		                </div>
 		                <div class="padd">
 		                  <!-- Login form -->
 		                  <form class="loginForm form-horizontal" action="/login" method='POST'>

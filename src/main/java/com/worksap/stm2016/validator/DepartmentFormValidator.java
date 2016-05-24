@@ -33,27 +33,29 @@ public class DepartmentFormValidator implements Validator {
     	if (form.getDepartmentName() != null && form.getDepartmentName().length() > 0) {
     		validateDepartmentName(errors, form);
     	}
-        if (form.getManagerId() != null) {
-        	validateManager(errors, form);
-        }
+        validateManager(errors, form);
         if (form.getDescription() != null && form.getDescription().length() > 0) {
         	validateDescription(errors, form);
         }
     }
 
 	private void validateDescription(Errors errors, DepartmentForm form) {
-		if (!CommonUtils.ContentRegex.matcher(form.getDescription()).matches()) {
+		if (CommonUtils.ContentRegex.matcher(form.getDescription()).matches()) {
 			errors.rejectValue("description", "description", "Your behavior is dangerous, please don't attempt to attack the system.");
 		}
 	}
 
 	private void validateManager(Errors errors, DepartmentForm form) {
+		if (form.getManagerId() == null) {
+			errors.rejectValue("managerId", "managerId", "You must choose a manager!");
+			return;
+		}
 		Person manager = personService.findById(form.getManagerId());
 		if (manager == null) {
-			errors.rejectValue("manager", "manager", "The manager doesn't exist!");
+			errors.rejectValue("managerId", "managerId", "The manager doesn't exist!");
 		}
 		if (manager.getDepartment() != null) {
-			errors.rejectValue("manager", "manager", "The manager already belong to other department!");
+			errors.rejectValue("managerId", "managerId", "The manager already belong to other department!");
 		}
 	}
 
@@ -62,7 +64,7 @@ public class DepartmentFormValidator implements Validator {
 		if (dept != null) {
 			errors.rejectValue("departmentName", "departmentName", "The department already existed!");
 		} else if (!CommonUtils.FieldRegex.matcher(form.getDepartmentName()).matches()){
-			errors.rejectValue("departmentName", "departmentName", "You can only enter numbers, letters and _!");
+			errors.rejectValue("departmentName", "departmentName", "You can only enter numbers and letters!");
 		}
 	}
     
