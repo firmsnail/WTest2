@@ -34,8 +34,6 @@ import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.PlanForm;
-import com.worksap.stm2016.repository.PersonRepository;
-import com.worksap.stm2016.repository.RoleRepository;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.HireService;

@@ -30,12 +30,6 @@
                 <!-- /.col-lg-12 -->
             </div>
             
-            <div class="row" <c:if test="${currentUser.user.status != 2 or currentUser.user.role.roleId != 5}">hidden="hidden"</c:if>>
-            	<div class="col-lg-4">
-            		<a href="/short-term-employee/sign"><button type="button" class="btn btn-success">Sign</button></a>
-            	</div>
-            </div>
-            <br>
             <div class="row">
                 <div class="col-lg-4">
                     <div class="panel panel-default">

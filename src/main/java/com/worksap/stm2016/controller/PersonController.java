@@ -154,7 +154,6 @@ public class PersonController {
 	@RequestMapping(value = "/ajaxNotify")
 	@ResponseBody
 	public Integer ajaxNotify() {
-		System.out.println("@ajaxNotify start!");
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return notificationService.findUnreadByOwner(curUser.getUser()).size();
 	}

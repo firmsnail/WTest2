@@ -19,6 +19,20 @@
 	    function formSubmit() {
 	        document.getElementById("logoutForm").submit();
 	    }
+	    function sign() {
+	        var url = "/short-term-employee/sign";
+	        $.get(url, function (data) {
+	        	switch(data){
+	    			case 'success':
+	    				window.location.reload(true); 
+	    				//top.document.location.reload();
+	    			break;
+	    			default:
+	    				alert('Sign failed!');
+	    			break;
+	    		}
+	        });
+	    }
 		$(document).ready(function() {
 	    	
 			function myrefresh() {
@@ -41,6 +55,9 @@
 	</script>
     <ul class="nav navbar-top-links navbar-right">
         
+        <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 5 or currentUser.user.status != 2}">class="hidden"</c:if>>
+        	<a href="javascript:sign()"><button type="button" class="btn btn-success">Sign</button></a>
+        </li>
         <!-- /.dropdown -->
         <li <c:if test="${currentUser == null}">class="hidden"</c:if> >
             <a href="/user/profile?userId=${currentUser.user.personId }" id="notifyA">
@@ -60,8 +77,9 @@
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="/user/profile?userId=${currentUser.user.personId}"><i class="fa fa-user fa-fw"></i> User Profile</a>
                 </li>
-                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>	<!-- TODO direct ot setting page -->
+                <!-- <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a> TODO direct ot setting page
                 </li>
+                -->
                 <li class="divider"></li>
                 <li>
                 	<a href="javascript:formSubmit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -141,8 +159,15 @@
                     <a href="/hr-manager/analyzePayrollStructure"><i class="fa fa-users fa-fw"></i> Analyze Payroll Structure</a>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >
-                	<a href="#"><i class="fa fa-users fa-fw"></i> Payrolls</a>
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 4}">class="hidden"</c:if> >
+                	<c:choose>
+               			<c:when test="${currentUser.user.role.roleId == 5 }">
+               				<a href="/payroll/showPayrollsByPerson"><i class="fa fa-users fa-fw"></i> Payrolls</a>
+               			</c:when>
+               			<c:otherwise>
+               				<a href="/payroll/showPayrolls"><i class="fa fa-users fa-fw"></i> Payrolls</a>
+               			</c:otherwise>
+               		</c:choose>
                 </li>
                 
                 <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >

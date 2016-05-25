@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.Attendance;
@@ -183,6 +184,7 @@ public class ShortTermEmployeeController {
 	}
 	
 	@RequestMapping(value = "/sign")
+	@ResponseBody
 	public String sign() {
 		Date today = new Date();
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -210,7 +212,6 @@ public class ShortTermEmployeeController {
 			todayAttendance.setAttendanceDate(today);
 			attendanceService.save(todayAttendance);
 		}
-
-		return "redirect:/index";
+		return "success";
 	}
 }
