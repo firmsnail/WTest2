@@ -49,7 +49,7 @@
 	        	});
 	        	
 	        }
-	        setInterval(myrefresh, 5000); //指定时间刷新一次 
+	        setInterval(myrefresh, 2000); //指定时间刷新一次 
 	        
 	    });
 	</script>
