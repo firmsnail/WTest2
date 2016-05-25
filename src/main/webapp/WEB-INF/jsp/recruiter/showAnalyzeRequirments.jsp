@@ -80,8 +80,9 @@
 										<div class="col-xs-2">
 											<label class="control-label">Department:</label>
 											<select class="form-control select2" name="departmentId">
+												<option selected="selected"></option>
 												<c:forEach var="department" items="${allDepts}" varStatus="status">
-													<option value="${department.departmentId}" <c:if test="${curDept != null && department.departmentId == curDept.departmentId}">selected="selected"</c:if>>
+													<option value="${department.departmentId}" <c:if test="${curDept != null and department.departmentId == curDept.departmentId}">selected="selected"</c:if>>
 														${department.departmentName}
 													</option>
 												</c:forEach>

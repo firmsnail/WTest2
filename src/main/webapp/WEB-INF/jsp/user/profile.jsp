@@ -252,6 +252,9 @@
 				                	  		<li>
 				                	  			<c:set var="showColor" value="bg-blue" />
 				                	  			<c:choose>
+				                	  				<c:when test="${isRead[notification.notificationId] == true}">
+				                	  					<c:set var="showColor" value="bg-default" />
+				                	  				</c:when>
 				                	  				<c:when test="${notification.urgency == 1 }">
 				                	  					<c:set var="showColor" value="bg-blue" />
 				                	  				</c:when>
@@ -295,7 +298,7 @@
 			                	  				</c:choose>
 				                	  			
 				                	  			<div class="timeline-item">
-				                	  				<span class="time"><i class="fa fa-clock-o"></i> <fmt:formatDate value="${notification.issueTime}" pattern="yyyy-MM-dd hh:ss"/></span>
+				                	  				<span class="time"><i class="fa fa-clock-o"></i> <fmt:formatDate value="${notification.issueTime}" pattern="yyyy-MM-dd hh:mm"/></span>
 				                	  				<h3 class="timeline-header">
 				                	  					<c:choose>
 					                	  					<c:when test="${notification.type == 1}">

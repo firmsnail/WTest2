@@ -119,6 +119,9 @@
 																<c:when test="${requirement.status == 5}">		<!-- REQUIREMENTS_FINISH -->
 																	<span class="label label-success">Finished</span>
 																</c:when>
+																<c:when test="${requirement.status == 4}">		<!-- REQUIREMENTS_RECRUITING -->
+																	<span class="label label-primary">Recruiting</span>
+																</c:when>
 																<c:otherwise>				<!-- Pending -->
 																	<span class="label label-primary">Processing</span>
 																</c:otherwise>

@@ -19,6 +19,7 @@ import com.worksap.stm2016.service.CurrentUserService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
 import com.worksap.stm2016.service.LeaveService;
+import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -39,9 +40,12 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 	LeaveService leaveService;
 	@Autowired
 	ApplicantService applicantService;
+	@Autowired
+	PersonService personService;
 	
 	@Override
 	public boolean canAccessUser(CurrentUser currentUser, Long userId) {
+		if (currentUser == null) return false;
 		if (currentUser == null || !currentUser.getId().equals(userId)) return false;
 		return true;
 	}
@@ -138,7 +142,7 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 		if (currentUser == null) return false;
 		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
 		if (requirement == null) return false;
-		if (currentUser.getRole().getRoleId() == CommonUtils.ROLE_HR_MANAGER) {
+		if (currentUser.getRole().getRoleId() == CommonUtils.ROLE_TEAM_MANAGER) {
 			return requirement.getStfrqDepartment().getDepartmentId().equals(currentUser.getUser().getDepartment().getDepartmentId());
 		} else {
 			return false;
@@ -231,6 +235,15 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 				return false;
 			}
 		}
+	}
+
+	@Override
+	public boolean isHiredEmployee(CurrentUser currentUser) {
+		if (currentUser == null) return false;
+		if (currentUser.getRole().getRoleId() == CommonUtils.ROLE_SHORT_TERM_EMPLOYEE && currentUser.getUser().getStatus() == CommonUtils.EMPLOYEE_WORKING) {
+			return true;
+		}
+		return false;
 	}
 
 }

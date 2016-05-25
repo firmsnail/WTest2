@@ -26,6 +26,7 @@ public class RequirementForm {
 	@NotEmpty
 	private List<Long> skills = new ArrayList<Long>();
 	
+	@NotNull
 	@Min(1)
 	@Max(1000)
 	private Integer requireNum;

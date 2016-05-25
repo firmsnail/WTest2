@@ -2,7 +2,11 @@ package com.worksap.stm2016.controller;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -69,7 +73,7 @@ public class PersonController {
 		return "redirect:/user/profile?userId="+personId;
 	}
 	
-	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessUser(principal, #personId)")
+	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST', 'TEAM-MANAGER') or @currentUserServiceImpl.canAccessUser(principal, #userId)")
 	@RequestMapping(value={"/profile"}, method = RequestMethod.GET)
 	public String profile(Long userId, Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -96,12 +100,28 @@ public class PersonController {
 		model.addAttribute("userForm", userForm);
 		
 		List<Notification> notifications = notificationService.findByOwner(user);
+		Map<Long, Boolean> isRead = new HashMap<Long, Boolean>();
 		if (userId == curUser.getId()) {
 			for (Notification notification : notifications) {
+				if (notification.getStatus().equals(CommonUtils.NOTIFICATION_STATUS_READ)) {
+					isRead.put(notification.getNotificationId(), true);
+				} else {
+					isRead.put(notification.getNotificationId(), false);
+				}
 				notification.setStatus(CommonUtils.NOTIFICATION_STATUS_READ);
 				notification = notificationService.findOne(notification.getNotificationId());
 			}
 			notifications = notificationService.findByOwner(user);
+		}
+		model.addAttribute("isRead", isRead);
+		if (notifications != null) {
+			Collections.sort(notifications, new Comparator<Notification>() {
+				public int compare(Notification noti0, Notification noti1) {
+					if (noti0.getIssueTime().after(noti1.getIssueTime())) return -1;
+					else if (noti0.getIssueTime().before(noti1.getIssueTime())) return 1;
+					else return 0;
+				}
+			});
 		}
 		model.addAttribute("notifications", notifications);
 		

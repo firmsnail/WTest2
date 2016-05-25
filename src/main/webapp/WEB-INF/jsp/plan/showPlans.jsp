@@ -52,7 +52,9 @@
                                             <th>Expect Date</th>
                                             <th>Submit Date</th>
                                             <th>Invalid Date</th>
-                                            <th>Department</th>
+                                            <c:if test="${currentUser != null and currentUser.user.role.roleId == 1 }">
+                                            	<th>Plan Maker</th>
+                                            </c:if>
                                             <th>Total requirement</th>
                                             <th>Detail</th>
                                             <th>Status</th>
@@ -65,7 +67,9 @@
 												<td><fmt:formatDate value="${plan.expectDate}" pattern="yyyy-MM-dd"/></td>
 												<td><fmt:formatDate value="${plan.submitDate}" pattern="yyyy-MM-dd"/></td>
 												<td><fmt:formatDate value="${plan.invalidDate}" pattern="yyyy-MM-dd"/></td>
-												<td><a href="/user/showOneEmployee?personId=${plan.planMaker.personId}">${plan.planMaker.firstName} ${plan.planMaker.lastName}</a></td>
+												<c:if test="${currentUser != null and currentUser.user.role.roleId == 1 }">
+													<td><a href="/user/showOneEmployee?personId=${plan.planMaker.personId}">${plan.planMaker.firstName} ${plan.planMaker.lastName}</a></td>
+												</c:if>
 												<td>${plan.planNum}</td>
 												<td><a href="/plan/showOneRecruitingPlan?planId=${plan.planId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>
 												<td>
@@ -140,10 +144,10 @@
 															</c:choose>
 															<c:choose>
 																<c:when test="${plan.status == 2}">		<!-- PLAN_VERIFIED -->
-																	<a href="/recruiter/postOnePlan?planId=${plan.planId }"><button type="button" class="btn btn-danger">Post</button></a>
+																	<a href="/recruiter/postOnePlan?planId=${plan.planId }"><button type="button" class="btn btn-success">Post</button></a>
 																</c:when>
 																<c:otherwise>
-																	<button type="button" class="btn btn-danger disabled">Post</button>
+																	<button type="button" class="btn btn-success disabled">Post</button>
 																</c:otherwise>
 															</c:choose>
 														</c:when>

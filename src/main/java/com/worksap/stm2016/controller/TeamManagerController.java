@@ -81,6 +81,8 @@ public class TeamManagerController {
 		model.addAttribute("requirement", requirement);
 		return "team-manager/addRequirement";
 	}
+	
+	@PreAuthorize("@currentUserServiceImpl.canAddRequirement(principal)")
 	@RequestMapping(value = "/addRequirement",  method = RequestMethod.POST)
 	public String addRequirement(@ModelAttribute("requirement") @Valid RequirementForm requirement, BindingResult bindingResult, Model model) {
 		System.out.println("@addDepartment start!");
@@ -122,6 +124,7 @@ public class TeamManagerController {
 	@ResponseBody
 	@RequestMapping(value = "/delRequirement",  method = RequestMethod.POST)
 	public String delDepartment(Long requirementId) {
+		System.out.println("@delDepartment start!");
 		staffRequirementService.delete(requirementId);
 		return "success";
 	}
@@ -285,9 +288,7 @@ public class TeamManagerController {
 			
 			
 			Notification notification = new Notification();
-			Role hrRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
-			Person hrManager = personService.findByRole(hrRole).get(0);
-			notification.setOwner(hrManager);
+			notification.setOwner(interview.getPlanForInterview().getPlanMaker());
 			notification.setContent("You have a hire to verify!");
 			notification.setIssueTime(new Date());
 			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);

@@ -12,6 +12,7 @@
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/bootstrap-datetimepicker.min.js"></script>
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/bootstrap-datetimepicker.min.css" rel="stylesheet"  media="screen">
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
 	<script>
 	    $(document).ready(function() {
 	        $('#dataTables-example').DataTable({
@@ -52,13 +53,22 @@
 	        	  modal.find('.modal-body input#interview').val(curId);
 	        });
 	        
+	        $('#hireForm').validate({
+	        	rules: {
+	        		salary: {
+	        			required: true,
+	        			min: 1,
+	        			max: 1000
+	        		}
+	        	}
+	        });
+	        
 	        
 	    });
     </script>
 </head>
 
 <body>
-
 
 	<div class="modal fade" id="interviewModal" tabindex="-1" role="dialog" aria-labelledby="interviewModalLabel">
 		<div class="modal-dialog" role="document">
@@ -105,13 +115,13 @@
 					<h4 class="modal-title" id="hireModalLabel">Hire</h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" action="/team-manager/passOneInterview" method="POST">
+					<form role="form" id="hireForm" action="/team-manager/passOneInterview" method="POST">
 						<div class="form-group">
 							<input type="text" class="hidden" id="interview" name="interviewId" value=""></input>
 						</div>
 	                    <div class="form-group">
 	                    	<label for="salary" class="control-label">Salary:</label>
-	                        <input type="text" class="form-control" name="salary" placeholder="0">
+	                        <input type="text" class="form-control" id="salary" name="salary" >
 	                    </div>
 	                    <div class="form-group">
 	                    	<label for="period" class="control-label">Period:</label>

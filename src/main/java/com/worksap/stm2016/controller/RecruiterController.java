@@ -41,7 +41,9 @@ import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.HireService;
 import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.NotificationService;
+import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.service.RecruitingPlanService;
+import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.service.StaffRequirementService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -67,9 +69,9 @@ public class RecruiterController {
 	@Autowired
 	private HireService hireService;
 	@Autowired
-	private RoleRepository roleRepository;
+	private RoleService roleService;
 	@Autowired
-	private PersonRepository personRepository;
+	private PersonService personService;
 	@Autowired
 	private NotificationService notificationService;
 
@@ -257,6 +259,19 @@ public class RecruiterController {
 		}
 		try {
 			recruitingPlanService.add(plan);
+			
+			Notification notification = new Notification();
+			Role hrmRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+			List<Person> pers = personService.findByRole(hrmRole);
+			Person hrManager = pers.get(0);
+			notification.setOwner(hrManager);
+			notification.setContent("You have a recruiting plan to process!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_PLAN);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
+			notification.setUrl("/plan/showRecruitingPlans");
+			notification = notificationService.save(notification);
         } catch (DataIntegrityViolationException e) {
         	List<Skill> skills = skillService.findAll();
 			model.addAttribute("chooseSkills", skills);
@@ -279,6 +294,17 @@ public class RecruiterController {
 		List<StaffRequirement> requirements = plan.getRequirements();
 		for (StaffRequirement requirement : requirements) {
 			requirement.setStatus(CommonUtils.REQUIREMENTS_RECRUITING);
+			
+			Notification notification = new Notification();
+			notification.setOwner(requirement.getStfrqDepartment().getManager());
+			notification.setContent("Your staffing requirement is being recruiting!");
+			notification.setIssueTime(new Date());
+			notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+			notification.setType(CommonUtils.NOTIFICATION_TYPE_REQUIREMENT);
+			notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_MIDDLE);
+			notification.setUrl("/requirement/showStaffRequirements");
+			notification = notificationService.save(notification);
+			
 			staffRequirementService.findOne(requirement.getStaffRequirementId());
 		}
 		return "redirect:/plan/showRecruitingPlans";
@@ -362,8 +388,8 @@ public class RecruiterController {
 		//CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (hire != null) {
 			hire.setStatus(CommonUtils.HIRE_HR_MANAGER_PROCESSING);
-			Role hrManagerRole = roleRepository.findOne(CommonUtils.ROLE_HR_MANAGER);
-			Person hrManager = personRepository.findByRole(hrManagerRole).get(0);
+			Role hrManagerRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+			Person hrManager = personService.findByRole(hrManagerRole).get(0);
 			hire.setHireHRManager(hrManager);
 			hire = hireService.findOne(hireId);
 			

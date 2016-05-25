@@ -19,7 +19,7 @@ import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.utils.CommonUtils;
 
 @Controller
-@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'C&B-SPECIALIST', 'TEAM-MANAGER')")
+@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'C&B-SPECIALIST', 'TEAM-MANAGER') or @currentUserServiceImpl.isHiredEmployee(principal)")
 @RequestMapping(value = "/dismission")
 public class DismissionController {
 	
