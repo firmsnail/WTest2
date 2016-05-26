@@ -15,6 +15,7 @@
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
+	        $('[data-toggle="tooltip"]').tooltip(); 
 	    });
     </script>
 </head>
@@ -39,6 +40,11 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+                        	<div>
+                        		<a href="#" data-toggle="tooltip" title="Import attendance records from paper. It is not implemented.">
+									<button type="button" class="btn btn-success disabled">Import Attendance Records</button>
+								</a>
+                        	</div>
                         	<br>
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">

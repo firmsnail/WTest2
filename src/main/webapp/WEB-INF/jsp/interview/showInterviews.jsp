@@ -19,6 +19,8 @@
 	                responsive: false
 	        });
 	        
+	        $('[data-toggle="tooltip"]').tooltip(); 
+	        
 	        $('.interviewTime').datetimepicker({
 	            //language:  'fr',
 	            format: 'yyyy-mm-dd hh:ii',
@@ -260,10 +262,16 @@
 															<c:when test="${currentUser.user.role.roleId == 2}">
 																<c:choose>
 																	<c:when test="${interview.status == 1}">		<!-- APPLY_PENDING_FILTER -->
-																		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#interviewModal" data-interviewid="${interview.interviewId }">Schedule Interview</button>
+																		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#interviewModal" data-interviewid="${interview.interviewId }">Schedule</button>
+																		<a href="#" data-toggle="tooltip" title="Automatically schedule interviews. It is not implemented.">
+																			<button type="button" class="btn btn-success disabled">Auto Schedule</button>
+																		</a>
 																	</c:when>
 																	<c:otherwise>
-																		<button type="button" class="btn btn-success disabled">Schedule Interview</button>
+																		<button type="button" class="btn btn-success disabled">Schedule</button>
+																		<a href="#" data-toggle="tooltip" title="Automatically schedule interviews. It is not implemented.">
+																			<button type="button" class="btn btn-success disabled">Auto Schedule</button>
+																		</a>
 																	</c:otherwise>
 																</c:choose>
 															</c:when>

@@ -15,6 +15,7 @@
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
+	        $('[data-toggle="tooltip"]').tooltip(); 
 	    });
     </script>
 </head>
@@ -41,7 +42,10 @@
                         <div class="panel-body">
                         	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 2 }">hidden="hidden"</c:if>>
                         		<a href="/recruiter/addPlan">
-									<button type="button" class="btn btn-success btn-lg">Make Recruiting Plans</button>
+									<button type="button" class="btn btn-success ">Make Recruiting Plan</button>
+								</a>
+								<a href="#" data-toggle="tooltip" title="Recommend recruiting plans to recruiters. It is not implemented.">
+									<button type="button" class="btn btn-success disabled">Generate Recruiting Plan</button>
 								</a>
                         	</div>
                         	<br>

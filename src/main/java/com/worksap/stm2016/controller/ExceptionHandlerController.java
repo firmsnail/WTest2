@@ -19,12 +19,13 @@ public class ExceptionHandlerController {
     public String exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex) {
         //If exception has a ResponseStatus annotation then use its response code
         ResponseStatus responseStatusAnnotation = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
-
+        System.out.println("@exceptionHandler here!");
         return buildModelAndViewErrorPage(request, response, ex, responseStatusAnnotation != null ? responseStatusAnnotation.value() : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @RequestMapping("*")
     public String fallbackHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	System.out.println("@fallbackHandler start!");
         return buildModelAndViewErrorPage(request, response, null, HttpStatus.NOT_FOUND);
     }
 

@@ -17,6 +17,7 @@
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
+	        $('[data-toggle="tooltip"]').tooltip(); 
 	    });
     </script>
 </head>
@@ -32,6 +33,13 @@
                     <h1 class="page-header">Analyzing the Structure of Short-term Employees</h1>
                 </div>
                 <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+            	<div class="col-lg-12">
+            		<a href="#" data-toggle="tooltip" title="Recommend strategies about the structure of payrolls, which could improve the profits for the company. It is not implemented.">
+						<button type="button" class="btn btn-success disabled">Recommend Strategies</button>
+					</a>
+            	</div>
             </div>
             <!-- /.row -->
             <div class="row">

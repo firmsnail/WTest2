@@ -12,7 +12,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Short-term Employee Management System</a>
+        <a class="navbar-brand" href="/">Short-term Employee Management System</a>
     </div>
 
 	<script>
