@@ -5,16 +5,16 @@ function addSkill(tokName, tokValue) {
     var params = {skillName:skillName, description:description};
     $.post(url, params, function (data) {
     	switch(data){
-			case 'success':
-				alert('Add skill success!');
-				window.location.reload(true); 
-			break;
-			case 'empty':
+			case -2:
 				alert('Both of skill name and description can not be empty!');
 			break;
-			case 'exist':
+			case -1:
 				alert('Skill already existed!');
 			break;
+			default:
+				var opt = new Option(skillName, data);
+				$('select[name="skills"]')[0].options.add(opt);
+				alert('Add skill success!');
 		}
     });
     //window.parent.location.reload();

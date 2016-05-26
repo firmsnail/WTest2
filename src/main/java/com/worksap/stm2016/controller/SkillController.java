@@ -21,7 +21,7 @@ public class SkillController {
 
 	@ResponseBody
     @RequestMapping(value = "/addSkill", method = RequestMethod.POST)
-    public String addSkill(String skillName, String description) {
+    public Long addSkill(String skillName, String description) {
 		//System.out.println("@addSkill start!");
 		if (skillName != null) {
 			skillName = skillName.trim();
@@ -30,17 +30,17 @@ public class SkillController {
 			description = description.trim();
 		}
 		if (skillName == null || description == null || skillName.isEmpty() || description.isEmpty()) {
-			return "empty";
+			return (long) -2;
 		}
 		Skill skill = skillService.findBySkillName(skillName);
 		if (skill != null) {
-			return "exist";
+			return (long) -1;
 		}
 		skill = new Skill();
 		skill.setSkillName(skillName);
 		skill.setDescription(description);
-		skillService.save(skill);
-		return "success";
+		skill = skillService.save(skill);
+		return skill.getSkillId();
     }
 	
 	
