@@ -77,9 +77,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		try {
 			auth.userDetailsService(userDetailsService).passwordEncoder(CommonUtils.passwordEncoder());
 		} catch (Exception e) {
+			System.out.println("here");
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
-			System.out.println("Exception");
+			//System.out.println("Exception");
 		}
 	}
 	/*

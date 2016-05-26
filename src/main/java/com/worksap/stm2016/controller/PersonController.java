@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +131,7 @@ public class PersonController {
 	
 	@PreAuthorize("@currentUserServiceImpl.hasLogIn(principal)")
 	@RequestMapping(value = "/edit",  method = RequestMethod.POST)
-	public String edit(@ModelAttribute("userForm") @Valid UserUpdateForm userForm, BindingResult bindingResult, Model model) {
+	public String edit(@ModelAttribute("userForm") @Valid UserUpdateForm userForm, BindingResult bindingResult, Model model, HttpServletRequest request) {
 		System.out.println("@edit start!");
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		model.addAttribute("curUserId", curUser.getId());
@@ -139,12 +140,109 @@ public class PersonController {
 		}
 		
 		if (bindingResult.hasErrors()) {
-			System.out.println("Editing user occurs error!");
+			//model.addAttribute("isSet", true);
+			Long userId = curUser.getId();
+			Person user = null;
+			if (userId == null) user = userService.findById(curUser.getId());
+			else user = userService.findById(userId);
+			List<Skill> curSkillsOb = user.getUserSkillList();
+			if (curSkillsOb != null && curSkillsOb.size() > 0) {
+				List<Long> curSkills = new ArrayList<Long>();
+				for (Skill oneSkill : curSkillsOb) {
+					curSkills.add(oneSkill.getSkillId());
+				}
+				model.addAttribute("curSkillsOb", curSkillsOb);
+				model.addAttribute("curSkills", curSkills);
+			}
+			if (userId != null) {
+				model.addAttribute("curUserId", userId);
+			}
+			model.addAttribute("user", user);
+			List<Skill> allSkills = skillService.findAll();
+			model.addAttribute("allSkills", allSkills);
+			
+			List<Notification> notifications = notificationService.findByOwner(user);
+			Map<Long, Boolean> isRead = new HashMap<Long, Boolean>();
+			if (userId == curUser.getId()) {
+				for (Notification notification : notifications) {
+					if (notification.getStatus().equals(CommonUtils.NOTIFICATION_STATUS_READ)) {
+						isRead.put(notification.getNotificationId(), true);
+					} else {
+						isRead.put(notification.getNotificationId(), false);
+					}
+					notification.setStatus(CommonUtils.NOTIFICATION_STATUS_READ);
+					notification = notificationService.findOne(notification.getNotificationId());
+				}
+				notifications = notificationService.findByOwner(user);
+			}
+			model.addAttribute("isRead", isRead);
+			if (notifications != null) {
+				Collections.sort(notifications, new Comparator<Notification>() {
+					public int compare(Notification noti0, Notification noti1) {
+						if (noti0.getIssueTime().after(noti1.getIssueTime())) return -1;
+						else if (noti0.getIssueTime().before(noti1.getIssueTime())) return 1;
+						else return 0;
+					}
+				});
+			}
+			model.addAttribute("notifications", notifications);
+			model.addAttribute("isSet", true);
+			
+			
 			return "user/profile";
 		}
 		try {
 			userService.update(userForm);
         } catch (DataIntegrityViolationException e) {
+        	
+        	Long userId = curUser.getId();
+			Person user = null;
+			if (userId == null) user = userService.findById(curUser.getId());
+			else user = userService.findById(userId);
+			List<Skill> curSkillsOb = user.getUserSkillList();
+			if (curSkillsOb != null && curSkillsOb.size() > 0) {
+				List<Long> curSkills = new ArrayList<Long>();
+				for (Skill oneSkill : curSkillsOb) {
+					curSkills.add(oneSkill.getSkillId());
+				}
+				model.addAttribute("curSkillsOb", curSkillsOb);
+				model.addAttribute("curSkills", curSkills);
+			}
+			if (userId != null) {
+				model.addAttribute("curUserId", userId);
+			}
+			model.addAttribute("user", user);
+			List<Skill> allSkills = skillService.findAll();
+			model.addAttribute("allSkills", allSkills);
+			
+			List<Notification> notifications = notificationService.findByOwner(user);
+			Map<Long, Boolean> isRead = new HashMap<Long, Boolean>();
+			if (userId == curUser.getId()) {
+				for (Notification notification : notifications) {
+					if (notification.getStatus().equals(CommonUtils.NOTIFICATION_STATUS_READ)) {
+						isRead.put(notification.getNotificationId(), true);
+					} else {
+						isRead.put(notification.getNotificationId(), false);
+					}
+					notification.setStatus(CommonUtils.NOTIFICATION_STATUS_READ);
+					notification = notificationService.findOne(notification.getNotificationId());
+				}
+				notifications = notificationService.findByOwner(user);
+			}
+			model.addAttribute("isRead", isRead);
+			if (notifications != null) {
+				Collections.sort(notifications, new Comparator<Notification>() {
+					public int compare(Notification noti0, Notification noti1) {
+						if (noti0.getIssueTime().after(noti1.getIssueTime())) return -1;
+						else if (noti0.getIssueTime().before(noti1.getIssueTime())) return 1;
+						else return 0;
+					}
+				});
+			}
+			model.addAttribute("notifications", notifications);
+			model.addAttribute("isSet", true);
+        	
+        	
             return "user/profile";
         }
 		return "redirect:/user/profile?userId="+curUser.getId();

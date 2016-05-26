@@ -10,6 +10,10 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
 	private static final long serialVersionUID = 1L;
 	private Person user;
 	
+	public CurrentUser() {
+		super(null, null, null);
+	}
+	
 	public CurrentUser(Person user) {
 		super(user.getUserName(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getRole().getRoleName()));
         

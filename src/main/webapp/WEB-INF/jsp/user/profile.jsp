@@ -26,10 +26,29 @@
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
-	        
-
+	       	/*var url = document.location.toString();
+	       	if (url.match('#')) {
+	       		var tabName = url.split('#')[1];
+	       		if (tabName == "settings") {
+	       			$('#li-timeline').removeClass('active');
+	       			$('#timeline').removeClass('active');
+	       			$('#li-settings').addClass('active');
+	       			$('#settings').addClass('active');
+	       		} else {
+	       			$('#li-settings').removeClass('active');
+	       			$('#settings').removeClass('active');
+	       			$('#li-timeline').addClass('actvie');
+	       			$('#timeline').addClass('active');
+	       		}
+	       	}*/
+	       	var isSetting = $('#isSet').val();
+	       	if (isSetting == "true") {
+	       		$('#li-timeline').removeClass('active');
+       			$('#timeline').removeClass('active');
+       			$('#li-settings').addClass('active');
+       			$('#settings').addClass('active');
+	       	}
 	    });
-	    
 	    
     </script>
 </head>
@@ -236,9 +255,13 @@
 				<!-- /.col -->
 		        <div class="col-md-9" <c:if test="${currentUser.user.personId != curUserId}">hidden="hidden"</c:if>>
 		          <div class="nav-tabs-custom">
+		          	<div hidden="hidden">
+		          		<input type="text" name="isSet" id="isSet" value="${isSet}"></input>
+		          	</div>
+		          	
 		            <ul class="nav nav-tabs">
-		              <li class="active"><a href="#timeline" data-toggle="tab">Notification</a></li>
-		              <li><a href="#settings" data-toggle="tab">Settings</a></li>
+		              <li class="active" id="li-timeline"><a href="#timeline" data-toggle="tab">Notification</a></li>
+		              <li id="li-settings"><a href="#settings" data-toggle="tab">Settings</a></li>
 		            </ul>
 		            <div class="tab-content">
 			              <div class="active tab-pane" id="timeline">
