@@ -2,7 +2,7 @@ $(function() {
 	
 	//analyzeEmployeeByPeriod
 	$.ajax({
-		url: "/hr-manager/analyzePayrollByPeriod",
+		url: "/hr-manager/ajaxAnalyzePayrollByPeriod",
 		dataType: 'json',
 		success: function(data) {
 			$('#analyzePayrollByPeriod').highcharts({
@@ -29,6 +29,9 @@ $(function() {
 		                }
 		            }
 		        },
+		        credits: {
+		            enabled:false
+		        },
 		        series: [{
 		        	type: 'pie',
 		            name: 'Distribution By Period',
@@ -40,7 +43,7 @@ $(function() {
 	
 	//analyzeEmployeeBySkill
 	$.ajax({
-		url: "/hr-manager/analyzePayrollBySkill",
+		url: "/hr-manager/ajaxAnalyzePayrollBySkill",
 		dataType: 'json',
 		success: function(data) {
 			$('#analyzePayrollBySkill').highcharts({
@@ -67,6 +70,9 @@ $(function() {
 		                }
 		            }
 		        },
+		        credits: {
+		            enabled:false
+		        },
 		        series: [{
 		        	type: 'pie',
 		            name: 'Distribution By Skill',
@@ -78,7 +84,7 @@ $(function() {
 	
 	//analyzeEmployeeByGender
 	$.ajax({
-		url: "/hr-manager/analyzePayrollByGender",
+		url: "/hr-manager/ajaxAnalyzePayrollByGender",
 		dataType: 'json',
 		success: function(data) {
 			$('#analyzePayrollByGender').highcharts({
@@ -105,6 +111,9 @@ $(function() {
 		                }
 		            }
 		        },
+		        credits: {
+		            enabled:false
+		        },
 		        series: [{
 		        	type: 'pie',
 		            name: 'Distribution By Gender',
@@ -116,7 +125,7 @@ $(function() {
 	
 	//analyzeEmployeeByAge
 	$.ajax({
-		url: "/hr-manager/analyzePayrollByAge",
+		url: "/hr-manager/ajaxAnalyzePayrollByAge",
 		dataType: 'json',
 		success: function(data) {
 			$('#analyzePayrollByAge').highcharts({
@@ -143,6 +152,9 @@ $(function() {
 		                }
 		            }
 		        },
+		        credits: {
+		            enabled:false
+		        },
 		        series: [{
 		        	type: 'pie',
 		            name: 'Distribution By Age',
@@ -154,7 +166,7 @@ $(function() {
 	
 	//analyzeEmployeeByDepartment
 	$.ajax({
-		url: "/hr-manager/analyzePayrollByDepartment",
+		url: "/hr-manager/ajaxAnalyzePayrollByDepartment",
 		dataType: 'json',
 		success: function(data) {
 			$('#analyzePayrollByDepartment').highcharts({
@@ -180,6 +192,9 @@ $(function() {
 		                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
 		                }
 		            }
+		        },
+		        credits: {
+		            enabled:false
 		        },
 		        series: [{
 		        	type: 'pie',

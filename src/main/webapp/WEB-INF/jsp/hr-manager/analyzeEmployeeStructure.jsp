@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/AdminLTE.min.css" rel="stylesheet">
 	<jsp:include page="../common/header.jsp" />
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/jquery.dataTables.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/dataTables.bootstrap.min.js"></script>
@@ -12,6 +13,7 @@
 	<script src="//cdn.bootcss.com/highcharts/4.2.5/modules/exporting.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/static/js/employee/analyzeEmployee.js"></script>
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
+	
 	<script>
 	    $(document).ready(function() {
 	        $('#dataTables-example').DataTable({
@@ -41,40 +43,191 @@
 					</a>
             	</div>
             </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-6">
-            		<div id="analyzeEmployeeByPeriod"></div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div id="analyzeEmployeeBySkill"></div>
-                </div>
-                <!-- /.col-lg-6 -->
-            </div>
-            
-            <!-- /.row -->
-            <br>
             <br>
             <div class="row">
-                <div class="col-lg-6">
-                    <div id="analyzeEmployeeByGender" style="min-width:700px;height:400px"></div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                    <div id="analyzeEmployeeByAge" style="min-width:700px;height:400px"></div>
-                </div>
-                <!-- /.col-lg-6 -->
+            	<div class="col-lg-12">
+            		<div class="nav-tabs-custom">
+            			<ul class="nav nav-tabs">
+							<li class="active"><a href="#charts" data-toggle="tab">By Charts</a></li>
+							<li><a href="#tables" data-toggle="tab">By Tables</a></li>
+			            </ul>
+			            <div class="tab-content">
+			            	<div class="active tab-pane" id="charts">
+			            		<!-- /.row -->
+					            <div class="row">
+					                <div class="col-lg-6">
+					            		<div id="analyzeEmployeeByPeriod"></div>
+					                </div>
+					
+					                <div class="col-lg-6">
+					                    <div id="analyzeEmployeeBySkill"></div>
+					                </div>
+					                <!-- /.col-lg-6 -->
+					            </div>
+					            
+					            <br>
+					            <br>
+					            <div class="row">
+					                <div class="col-lg-6">
+					                    <div id="analyzeEmployeeByGender" style="min-width:700px;height:400px"></div>
+					                </div>
+					                <!-- /.col-lg-6 -->
+					                <div class="col-lg-6">
+					                    <div id="analyzeEmployeeByAge" style="min-width:700px;height:400px"></div>
+					                </div>
+					                <!-- /.col-lg-6 -->
+					            </div>
+					            <!-- /.row -->
+					            <br>
+					            <br>
+					            <div class="row">
+					                <div class="col-lg-6">
+					                    <div id="analyzeEmployeeByDepartment" style="min-width:700px;height:400px"></div>
+					                </div>
+					            </div>
+			            	</div>
+			            	<div class="tab-pane" id="tables">
+			            		<div class="row">
+			            			<div class="col-lg-6">
+			            				<div class="box">
+							            <div class="box-header">
+							              <h3 class="box-title">Distribution By Period</h3>
+							            </div>
+							            <!-- /.box-header -->
+							            <div class="box-body table-responsive no-padding">
+							              <table class="table table-hover">
+												<tr>
+												  <th>Category</th>
+												  <th>Number</th>
+												  <th>Ratio</th>
+												</tr>
+												<c:forEach var="kind" items="${periodKinds }" varStatus="status">
+													<tr>
+												 	<td>${kind }</td>
+												 	<td>${periodNumbers[status.index]}</td>
+												 	<td>${periodRatios[status.index]}</td>
+												 <tr>
+												</c:forEach>
+							              </table>
+							            </div>
+							            <!-- /.box-body -->
+							          </div>
+							          <!-- /.box -->
+			            			</div>
+			            			<div class="col-lg-6">
+			            				<div class="box">
+							            <div class="box-header">
+							              <h3 class="box-title">Distribution By Skill</h3>
+							            </div>
+							            <!-- /.box-header -->
+							            <div class="box-body table-responsive no-padding">
+							              <table class="table table-hover">
+							                	<tr>
+												  <th>Category</th>
+												  <th>Number</th>
+												  <th>Ratio</th>
+												</tr>
+												<c:forEach var="kind" items="${skillKinds }" varStatus="status">
+													<tr>
+													 	<td>${kind }</td>
+													 	<td>${skillNumbers[status.index]}</td>
+													 	<td>${skillRatios[status.index]}</td>
+													 <tr>
+												</c:forEach>
+							              </table>
+							            </div>
+							            <!-- /.box-body -->
+							          </div>
+							          <!-- /.box -->
+			            			</div>
+			            		</div>
+			            		<div class="row">
+			            			<div class="col-lg-6">
+			            				<div class="box">
+							            <div class="box-header">
+							              <h3 class="box-title">Distribution By Gender</h3>
+							            </div>
+							            <!-- /.box-header -->
+							            <div class="box-body table-responsive no-padding">
+							              <table class="table table-hover">
+							                	<tr>
+												  <th>Category</th>
+												  <th>Number</th>
+												  <th>Ratio</th>
+												</tr>
+												<c:forEach var="kind" items="${genderKinds }" varStatus="status">
+													<tr>
+													 	<td>${kind }</td>
+													 	<td>${genderNumbers[status.index]}</td>
+													 	<td>${genderRatios[status.index]}</td>
+													 <tr>
+												</c:forEach>
+							              </table>
+							            </div>
+							            <!-- /.box-body -->
+							          </div>
+							          <!-- /.box -->
+			            			</div>
+			            			<div class="col-lg-6">
+			            				<div class="box">
+							            <div class="box-header">
+							              <h3 class="box-title">Distribution By Age</h3>
+							            </div>
+							            <!-- /.box-header -->
+							            <div class="box-body table-responsive no-padding">
+							              <table class="table table-hover">
+							                	<tr>
+												  <th>Category</th>
+												  <th>Number</th>
+												  <th>Ratio</th>
+												</tr>
+												<c:forEach var="kind" items="${ageKinds }" varStatus="status">
+													<tr>
+													 	<td>${kind }</td>
+													 	<td>${ageNumbers[status.index]}</td>
+													 	<td>${ageRatios[status.index]}</td>
+													 <tr>
+												</c:forEach>
+							              </table>
+							            </div>
+							            <!-- /.box-body -->
+							          </div>
+							          <!-- /.box -->
+			            			</div>
+			            		</div>
+			            		<div class="row">
+			            			<div class="col-lg-6">
+			            				<div class="box">
+							            <div class="box-header">
+							              <h3 class="box-title">Distribution By Department</h3>
+							            </div>
+							            <!-- /.box-header -->
+							            <div class="box-body table-responsive no-padding">
+							              <table class="table table-hover">
+							                	<tr>
+												  <th>Category</th>
+												  <th>Number</th>
+												  <th>Ratio</th>
+												</tr>
+												<c:forEach var="kind" items="${departmentKinds }" varStatus="status">
+													<tr>
+													 	<td>${kind }</td>
+													 	<td>${departmentNumbers[status.index]}</td>
+													 	<td>${departmentRatios[status.index]}</td>
+													 <tr>
+												</c:forEach>
+							              </table>
+							            </div>
+							            <!-- /.box-body -->
+							          </div>
+							          <!-- /.box -->
+			            			</div>
+			            		</div>
+			            	</div>
+			            </div>
+            		</div>
+            	</div>
             </div>
-            <!-- /.row -->
-            <br>
-            <br>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div id="analyzeEmployeeByDepartment" style="min-width:700px;height:400px"></div>
-                </div>
-            </div>
-            
         </div>
         <!-- /#page-wrapper -->
     </div>

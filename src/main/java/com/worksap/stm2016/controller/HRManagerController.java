@@ -83,31 +83,443 @@ public class HRManagerController {
 	
 	@RequestMapping(value = "/analyzeEmployeeStructure",  method = RequestMethod.GET)
 	public String analyzeEmployeeStructure(Model model) {
-		/*
 		analyzeEmployeeByDepartment(model);
 		analyzeEmployeeByAge(model);
 		analyzeEmployeeByGender(model);
 		analyzeEmployeeBySkill(model);
 		analyzeEmployeeByPeriod(model);
-		*/
 		return "hr-manager/analyzeEmployeeStructure";
 	}
 	
 	@RequestMapping(value = "/analyzePayrollStructure",  method = RequestMethod.GET)
 	public String analyzePayrollStructure(Model model) {
-		/*
-		analyzeEmployeeByDepartment(model);
-		analyzeEmployeeByAge(model);
-		analyzeEmployeeByGender(model);
-		analyzeEmployeeBySkill(model);
-		analyzeEmployeeByPeriod(model);
-		*/
+		
+		analyzePayrollByDepartment(model);
+		analyzePayrollByAge(model);
+		analyzePayrollByGender(model);
+		analyzePayrollBySkill(model);
+		analyzePayrollByPeriod(model);
 		return "hr-manager/analyzePayrollStructure";
 	}
 	
-	@RequestMapping(value={"/analyzeEmployeeByPeriod"}, method = RequestMethod.GET)
+	private void analyzePayrollByPeriod(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Double> amounts = new ArrayList<Double>();
+		List<Double> ratios = new ArrayList<Double>();
+		Double total = 0.0;
+		List<Integer> keyList = CommonUtils.getKeysByPeriod();
+		//model.addAttribute("periodKeys", keyList);
+		List<List<Payroll> > payrollByPeriod = new ArrayList<List<Payroll> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			payrollByPeriod.add(payrollService.findByPayrollEmployeePeriod(keyList.get(i)));
+		}
+		for (int i = 0; i < keyList.size(); ++i) {
+			String kind = "";
+			if (keyList.get(i) == 1) {
+				kind = "OneMonth";
+			} else if (keyList.get(i) == 2) {
+				kind = "TwoMonths";
+			} else if (keyList.get(i) == 3) {
+				kind = "ThreeMonths";
+			} else if (keyList.get(i) == 4) {
+				kind = "FourMonths";
+			} else if (keyList.get(i) == 5) {
+				kind = "FiveMonths";
+			} else if (keyList.get(i) == 6) {
+				kind = "SixMonths";
+			} else {
+				kind = "Unknown";
+			}
+			Double amount = 0.0;
+			for (Payroll payroll : payrollByPeriod.get(i)) {
+				amount += payroll.getAmount();
+			}
+			kinds.add(kind);
+			amounts.add(amount);
+			total += amount;
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0.0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add(amounts.get(i)/total);
+			}
+		}
+
+		model.addAttribute("periodKinds", kinds);
+		model.addAttribute("periodAmounts", amounts);
+		model.addAttribute("periodRatios", ratios);
+	}
+
+	private void analyzePayrollBySkill(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Double> amounts = new ArrayList<Double>();
+		List<Double> ratios = new ArrayList<Double>();
+		Double total = 0.0;
+
+		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
+		if (keyList != null) {
+			//model.addAttribute("skillKeys", keyList);
+			//List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
+			List<List<Payroll> > payrollBySkill = new ArrayList<List<Payroll> >();
+			for (int i = 0; i < keyList.size(); ++i) {
+				//employeesBySkill.add(personService.findBySkill(keyList.get(i)));
+				payrollBySkill.add(payrollService.findByEmployeeSkill(keyList.get(i))); 
+				
+				kinds.add(keyList.get(i).getSkillName());
+				Double amount = 0.0;
+				for (Payroll payroll : payrollBySkill.get(i)) {
+					amount += payroll.getAmount();
+				}
+				amounts.add(amount);
+				total += amount;
+			}
+			
+			kinds.add("Unknown");
+			Double amount = 0.0;
+			for (Payroll payroll : payrollService.findByEmployeeSkill(null)) {
+				amount += payroll.getAmount();
+			}
+			amounts.add(amount);
+			total += amount;
+			
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0.0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add(amounts.get(i)/total);
+			}
+		}
+
+		model.addAttribute("skillKinds", kinds);
+		model.addAttribute("skillAmounts", amounts);
+		model.addAttribute("skillRatios", ratios);
+	}
+
+	private void analyzePayrollByGender(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Double> amounts = new ArrayList<Double>();
+		List<Double> ratios = new ArrayList<Double>();
+		Double total = 0.0;
+		
+		Role role = roleService.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+
+		List<Integer> keyList = CommonUtils.getKeysByGender();
+
+		List<List<Payroll> > payrollsByGender = new ArrayList<List<Payroll> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			payrollsByGender.add(payrollService.findByPayrollEmployeeGenderAndPayrollEmployeeRole(keyList.get(i), role));
+			
+			String kind = "";
+			if (keyList.get(i) == CommonUtils.GENDER_FEMALE) {
+				kind = "Female";
+			} else if (keyList.get(i) == CommonUtils.GENDER_MALE) {
+				kind = "Male";
+			} else {
+				kind = "Unknown";
+			}
+			Double amount = 0.0;
+			for (Payroll payroll : payrollsByGender.get(i)) {
+				amount += payroll.getAmount();
+			}
+			kinds.add(kind);
+			amounts.add(amount);
+			total += amount;
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0.0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add(amounts.get(i)/total);
+			}
+		}
+
+		model.addAttribute("genderKinds", kinds);
+		model.addAttribute("genderAmounts", amounts);
+		model.addAttribute("genderRatios", ratios);
+	}
+
+	private void analyzePayrollByAge(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Double> amounts = new ArrayList<Double>();
+		List<Double> ratios = new ArrayList<Double>();
+		Double total = 0.0;
+		
+		List<Integer> keyList = CommonUtils.getKeysByAge();
+
+		List<List<Payroll> > payrollsByAge = new ArrayList<List<Payroll> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			payrollsByAge.add(payrollService.findByPayrollEmployeeAgeRange(keyList.get(i)));
+			
+			String kind = "";
+
+			if (keyList.get(i) == CommonUtils.AGE_1stRANGE) {
+				kind = CommonUtils.AGE_1stRANGE_MIN+"~"+CommonUtils.AGE_1stRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_2ndRANGE) {
+				kind = CommonUtils.AGE_2ndRANGE_MIN+"~"+CommonUtils.AGE_2ndRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_3rdRANGE) {
+				kind = CommonUtils.AGE_3rdRANGE_MIN+"~"+CommonUtils.AGE_3rdRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_4thRANGE) {
+				kind = CommonUtils.AGE_4thRANGE_MIN+"~"+CommonUtils.AGE_4thRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_5thRANGE) {
+				kind = CommonUtils.AGE_5thRANGE_MIN+"~"+CommonUtils.AGE_5thRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_6thRANGE) {
+				kind = CommonUtils.AGE_6thRANGE_MIN+"~"+CommonUtils.AGE_6thRANGE_MAX;
+			} else {
+				kind = "Unknown";
+			}
+			
+			Double amount = 0.0;
+			for (Payroll payroll : payrollsByAge.get(i)) {
+				amount += payroll.getAmount();
+			}
+			
+			kinds.add(kind);
+			amounts.add(amount);
+			total += amount;
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0.0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add(amounts.get(i)/total);
+			}
+		}
+
+		model.addAttribute("ageKinds", kinds);
+		model.addAttribute("ageAmounts", amounts);
+		model.addAttribute("ageRatios", ratios);
+	}
+
+	private void analyzePayrollByDepartment(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Double> amounts = new ArrayList<Double>();
+		List<Double> ratios = new ArrayList<Double>();
+		Double total = 0.0;
+
+
+		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService, roleService, personService);
+		List<List<Payroll> > payrollsByDepartment = new ArrayList<List<Payroll> >();
+		if (keyList != null) {
+			for (int i = 0; i < keyList.size(); ++i) {
+				payrollsByDepartment.add(payrollService.findByPayrollEmployeeDepartment(keyList.get(i)));
+				
+				kinds.add(keyList.get(i).getDepartmentName());
+				Double amount = 0.0;
+				for (Payroll payroll : payrollsByDepartment.get(i)) {
+					amount += payroll.getAmount();
+				}
+				
+				amounts.add(amount);
+				total += amount;
+			}
+			
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0.0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add(amounts.get(i)/total);
+			}
+		}
+
+		model.addAttribute("departmentKinds", kinds);
+		model.addAttribute("departmentAmounts", amounts);
+		model.addAttribute("departmentRatios", ratios);
+	}
+
+	private void analyzeEmployeeByPeriod(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Integer> numbers = new ArrayList<Integer>();
+		List<Double> ratios = new ArrayList<Double>();
+		List<Integer> keyList = CommonUtils.getKeysByPeriod();
+		//model.addAttribute("periodKeys", keyList);
+		List<List<Person> > employeesByPeriod = new ArrayList<List<Person> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			employeesByPeriod.add(personService.findByPeriod(keyList.get(i)));
+		}
+		Integer total = 0;
+		for (int i = 0; i < keyList.size(); ++i) {
+			String kind = "";
+			if (keyList.get(i) == 1) {
+				kind = "OneMonth";
+			} else if (keyList.get(i) == 2) {
+				kind = "TwoMonths";
+			} else if (keyList.get(i) == 3) {
+				kind = "ThreeMonths";
+			} else if (keyList.get(i) == 4) {
+				kind = "FourMonths";
+			} else if (keyList.get(i) == 5) {
+				kind = "FiveMonths";
+			} else if (keyList.get(i) == 6) {
+				kind = "SixMonths";
+			} else {
+				kind = "Unknown";
+			}
+			kinds.add(kind);
+			numbers.add(employeesByPeriod.get(i).size());
+			total += employeesByPeriod.get(i).size();
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add((numbers.get(i)+0.0)/total);
+			}
+		}
+
+		model.addAttribute("periodKinds", kinds);
+		model.addAttribute("periodNumbers", numbers);
+		model.addAttribute("periodRatios", ratios);
+	}
+
+	private void analyzeEmployeeBySkill(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Integer> numbers = new ArrayList<Integer>();
+		List<Double> ratios = new ArrayList<Double>();
+		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
+		Integer total = 0;
+		if (keyList != null) {
+			//model.addAttribute("skillKeys", keyList);
+			List<List<Person> > employeesBySkill = new ArrayList<List<Person> >();
+			for (int i = 0; i < keyList.size(); ++i) {
+				employeesBySkill.add(personService.findBySkill(keyList.get(i)));
+				
+				kinds.add(keyList.get(i).getSkillName());
+				numbers.add(employeesBySkill.get(i).size());
+				total += numbers.get(i);
+			}
+			kinds.add("Unknown");
+			numbers.add(personService.findBySkill(null).size());
+			total += personService.findBySkill(null).size();
+		}
+		
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add((numbers.get(i)+0.0)/total);
+			}
+		}
+
+		model.addAttribute("skillKinds", kinds);
+		model.addAttribute("skillNumbers", numbers);
+		model.addAttribute("skillRatios", ratios);
+	}
+
+	private void analyzeEmployeeByGender(Model model) {
+		Role role = roleService.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
+		
+		List<String> kinds = new ArrayList<String>();
+		List<Integer> numbers = new ArrayList<Integer>();
+		List<Double> ratios = new ArrayList<Double>();
+		Integer total = 0;
+		List<Integer> keyList = CommonUtils.getKeysByGender();
+		//model.addAttribute("genderKeys", keyList);
+		List<List<Person> > employeesByGender = new ArrayList<List<Person> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			employeesByGender.add(personService.findByGenderAndRole(keyList.get(i), role));
+			String kind = "";
+			if (keyList.get(i) == CommonUtils.GENDER_FEMALE) {
+				kind = "Female";
+			} else if (keyList.get(i) == CommonUtils.GENDER_MALE) {
+				kind = "Male";
+			} else {
+				kind = "Unknown";
+			}
+			kinds.add(kind);
+			numbers.add(employeesByGender.get(i).size());
+			total += numbers.get(i);
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add((numbers.get(i)+0.0)/total);
+			}
+		}
+
+		model.addAttribute("genderKinds", kinds);
+		model.addAttribute("genderNumbers", numbers);
+		model.addAttribute("genderRatios", ratios);
+	}
+
+	private void analyzeEmployeeByAge(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Integer> numbers = new ArrayList<Integer>();
+		List<Double> ratios = new ArrayList<Double>();
+		Integer total = 0;
+		List<Integer> keyList = CommonUtils.getKeysByAge();
+		//model.addAttribute("ageKeys", keyList);
+		List<List<Person> > employeesByAge = new ArrayList<List<Person> >();
+		for (int i = 0; i < keyList.size(); ++i) {
+			employeesByAge.add(personService.findByAgeRange(keyList.get(i)));
+			String kind = "";
+			if (keyList.get(i) == CommonUtils.AGE_1stRANGE) {
+				kind = CommonUtils.AGE_1stRANGE_MIN+"~"+CommonUtils.AGE_1stRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_2ndRANGE) {
+				kind = CommonUtils.AGE_2ndRANGE_MIN+"~"+CommonUtils.AGE_2ndRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_3rdRANGE) {
+				kind = CommonUtils.AGE_3rdRANGE_MIN+"~"+CommonUtils.AGE_3rdRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_4thRANGE) {
+				kind = CommonUtils.AGE_4thRANGE_MIN+"~"+CommonUtils.AGE_4thRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_5thRANGE) {
+				kind = CommonUtils.AGE_5thRANGE_MIN+"~"+CommonUtils.AGE_5thRANGE_MAX;
+			} else if (keyList.get(i) == CommonUtils.AGE_6thRANGE) {
+				kind = CommonUtils.AGE_6thRANGE_MIN+"~"+CommonUtils.AGE_6thRANGE_MAX;
+			} else {
+				kind = "Unknown";
+			}
+			kinds.add(kind);
+			numbers.add(employeesByAge.get(i).size());
+			total += numbers.get(i);
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add((numbers.get(i)+0.0)/total);
+			}
+		}
+
+		model.addAttribute("ageKinds", kinds);
+		model.addAttribute("ageNumbers", numbers);
+		model.addAttribute("ageRatios", ratios);
+	}
+
+	private void analyzeEmployeeByDepartment(Model model) {
+		List<String> kinds = new ArrayList<String>();
+		List<Integer> numbers = new ArrayList<Integer>();
+		List<Double> ratios = new ArrayList<Double>();
+		Integer total = 0;
+		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService, roleService, personService);
+		List<List<Person> > employeesByDepartment = new ArrayList<List<Person> >();
+		if (keyList != null) {
+			for (int i = 0; i < keyList.size(); ++i) {
+				employeesByDepartment.add(personService.findByDepartmentAndRole(keyList.get(i)));
+				
+				kinds.add(keyList.get(i).getDepartmentName());
+				numbers.add(employeesByDepartment.get(i).size());
+				total += numbers.get(i);
+			}
+		}
+		for (int i = 0; i < kinds.size(); ++i) {
+			if (total == 0) {
+				ratios.add(0.0);
+			} else {
+				ratios.add((numbers.get(i)+0.0)/total);
+			}
+		}
+
+		model.addAttribute("departmentKinds", kinds);
+		model.addAttribute("departmentNumbers", numbers);
+		model.addAttribute("departmentRatios", ratios);
+	}
+
+	@RequestMapping(value={"/ajaxAnalyzeEmployeeByPeriod"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzeEmployeeByPeriod(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzeEmployeeByPeriod(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByPeriod();
 		//model.addAttribute("periodKeys", keyList);
@@ -142,9 +554,9 @@ public class HRManagerController {
 		return json;
 	}
 
-	@RequestMapping(value={"/analyzeEmployeeBySkill"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzeEmployeeBySkill"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzeEmployeeBySkill(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzeEmployeeBySkill(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
 		if (keyList != null) {
@@ -170,9 +582,9 @@ public class HRManagerController {
 		return json;
 	}
 
-	@RequestMapping(value={"/analyzeEmployeeByGender"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzeEmployeeByGender"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzeEmployeeByGender(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzeEmployeeByGender(Model model) throws JsonProcessingException {
 		Role role = roleService.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByGender();
@@ -198,9 +610,9 @@ public class HRManagerController {
 		return json;
 	}
 
-	@RequestMapping(value={"/analyzeEmployeeByAge"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzeEmployeeByAge"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzeEmployeeByAge(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzeEmployeeByAge(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByAge();
 		//model.addAttribute("ageKeys", keyList);
@@ -234,9 +646,9 @@ public class HRManagerController {
 		return json;
 	}
 
-	@RequestMapping(value={"/analyzeEmployeeByDepartment"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzeEmployeeByDepartment"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzeEmployeeByDepartment(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzeEmployeeByDepartment(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService, roleService, personService);
 		List<List<Person> > employeesByDepartment = new ArrayList<List<Person> >();
@@ -259,9 +671,9 @@ public class HRManagerController {
 		return json;
 	}
 	
-	@RequestMapping(value={"/analyzePayrollByPeriod"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzePayrollByPeriod"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzePayrollByPeriod(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzePayrollByPeriod(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByPeriod();
 		//model.addAttribute("periodKeys", keyList);
@@ -301,9 +713,9 @@ public class HRManagerController {
 		return json;
 	}
 
-	@RequestMapping(value={"/analyzePayrollBySkill"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzePayrollBySkill"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzePayrollBySkill(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzePayrollBySkill(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Skill> keyList = CommonUtils.getKeysBySkill(skillService);
 		if (keyList != null) {
@@ -326,7 +738,11 @@ public class HRManagerController {
 			
 			PieData oneData = new PieData();
 			oneData.setName("Unknown");
-			oneData.setY(payrollService.findByEmployeeSkill(null).size()+0.0);
+			Double total = 0.0;
+			for (Payroll payroll : payrollService.findByEmployeeSkill(null)) {
+				total += payroll.getAmount();
+			}
+			oneData.setY(total);
 			data.add(oneData);
 			
 			//model.addAttribute("employeesBySkill", employeesBySkill);
@@ -337,9 +753,9 @@ public class HRManagerController {
 		return json;
 	}
 
-	@RequestMapping(value={"/analyzePayrollByGender"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzePayrollByGender"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzePayrollByGender(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzePayrollByGender(Model model) throws JsonProcessingException {
 		Role role = roleService.findOne(CommonUtils.ROLE_SHORT_TERM_EMPLOYEE);
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByGender();
@@ -371,9 +787,9 @@ public class HRManagerController {
 		return json;
 	}
 
-	@RequestMapping(value={"/analyzePayrollByAge"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzePayrollByAge"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzePayrollByAge(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzePayrollByAge(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Integer> keyList = CommonUtils.getKeysByAge();
 		//model.addAttribute("ageKeys", keyList);
@@ -414,9 +830,9 @@ public class HRManagerController {
 		return json;
 	}
 
-	@RequestMapping(value={"/analyzePayrollByDepartment"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/ajaxAnalyzePayrollByDepartment"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String analyzePayrollByDepartment(Model model) throws JsonProcessingException {
+	public String ajaxAnalyzePayrollByDepartment(Model model) throws JsonProcessingException {
 		List<PieData> data = new ArrayList<PieData>();
 		List<Department> keyList = CommonUtils.getKeysByDepartment(departmentService, roleService, personService);
 		List<List<Payroll> > payrollsByDepartment = new ArrayList<List<Payroll> >();
