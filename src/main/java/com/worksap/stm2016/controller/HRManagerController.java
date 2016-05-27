@@ -146,6 +146,8 @@ public class HRManagerController {
 			}
 		}
 
+		model.addAttribute("total", total);
+		
 		model.addAttribute("periodKinds", kinds);
 		model.addAttribute("periodAmounts", amounts);
 		model.addAttribute("periodRatios", ratios);
@@ -368,7 +370,8 @@ public class HRManagerController {
 				ratios.add((numbers.get(i)+0.0)/total);
 			}
 		}
-
+		
+		model.addAttribute("total", total);
 		model.addAttribute("periodKinds", kinds);
 		model.addAttribute("periodNumbers", numbers);
 		model.addAttribute("periodRatios", ratios);

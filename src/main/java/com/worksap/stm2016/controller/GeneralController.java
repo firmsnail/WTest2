@@ -1,8 +1,15 @@
 package com.worksap.stm2016.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -32,6 +39,14 @@ import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.validator.UserCreateFormValidator;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @Controller
 public class GeneralController {
@@ -94,6 +109,70 @@ public class GeneralController {
 		return "help";
 	}
 	
+	private void testExcel(){
+		XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Payroll Report");
+         
+        
+        
+        
+        Object[][] bookData = {
+                {"Head First Java", "Kathy Serria", 79},
+                {"Effective Java", "Joshua Bloch", 36},
+                {"Clean Code", "Robert martin", 42},
+                {"Thinking in Java", "Bruce Eckel", 35},
+        };
+ 
+        CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+        XSSFFont font = sheet.getWorkbook().createFont();
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 32);
+        cellStyle.setFont(font);
+        
+        Row rowH = sheet.createRow(0);
+        Cell cellTitle = rowH.createCell(1);
+     
+        cellTitle.setCellStyle(cellStyle);
+        cellTitle.setCellValue("Title");
+     
+        Cell cellAuthor = rowH.createCell(2);
+        cellAuthor.setCellStyle(cellStyle);
+        cellAuthor.setCellValue("Author");
+     
+        Cell cellPrice = rowH.createCell(3);
+        cellPrice.setCellStyle(cellStyle);
+        cellPrice.setCellValue("Price");
+        
+        int rowCount = 1;
+         
+        for (Object[] aBook : bookData) {
+            Row row = sheet.createRow(++rowCount);
+             
+            int columnCount = 0;
+             
+            for (Object field : aBook) {
+                Cell cell = row.createCell(++columnCount);
+                if (field instanceof String) {
+                    cell.setCellValue((String) field);
+                } else if (field instanceof Integer) {
+                    cell.setCellValue((Integer) field);
+                }
+            }
+             
+        }
+         
+        try (FileOutputStream outputStream = new FileOutputStream("./files/Payroll Report.xlsx")) {
+            workbook.write(outputStream);
+        } catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+	}
+	
 	@RequestMapping(value={"/", "/index"}, method = RequestMethod.GET)
 	public String index() {
 		/*Person hrManager = new Person();
@@ -107,6 +186,7 @@ public class GeneralController {
 		hrManager.setStatus(CommonUtils.EMPLOYEE_WORKING);
 		hrManager = personService.save(hrManager);*/
 		//Pattern ContentRegex = Pattern.compile("*<script>*</script>*");
+		testExcel();
 		return "index";
 	}
 	

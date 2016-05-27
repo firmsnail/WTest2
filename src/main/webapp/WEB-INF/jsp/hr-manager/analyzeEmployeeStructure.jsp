@@ -46,6 +46,12 @@
             <br>
             <div class="row">
             	<div class="col-lg-12">
+            		<strong>Total: </strong>${total }
+            	</div>
+            </div>
+            <br>
+            <div class="row">
+            	<div class="col-lg-12">
             		<div class="nav-tabs-custom">
             			<ul class="nav nav-tabs">
 							<li class="active"><a href="#charts" data-toggle="tab">By Charts</a></li>
@@ -103,10 +109,10 @@
 												</tr>
 												<c:forEach var="kind" items="${periodKinds }" varStatus="status">
 													<tr>
-												 	<td>${kind }</td>
-												 	<td>${periodNumbers[status.index]}</td>
-												 	<td>${periodRatios[status.index]}</td>
-												 <tr>
+													 	<td>${kind }</td>
+													 	<td>${periodNumbers[status.index]}</td>
+													 	<td>${periodRatios[status.index]}</td>
+													 <tr>
 												</c:forEach>
 							              </table>
 							            </div>

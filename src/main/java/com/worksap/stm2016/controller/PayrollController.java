@@ -1,13 +1,31 @@
 package com.worksap.stm2016.controller;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,7 +61,7 @@ public class PayrollController {
 	
 	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'C&B-SPECIALIST')")
 	@RequestMapping(value={"/showPayrolls"},  method = RequestMethod.GET)
-	public String showPayrolls(Long departmentId, Long employeeId, String strStartDate, String strEndDate, Model model) throws ParseException {
+	public String showPayrolls(Long departmentId, Long employeeId, String strStartDate, String strEndDate, Model model, HttpServletRequest request, HttpServletResponse  response) throws ParseException {
 		
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
 		Date startDate = null, endDate = null;
@@ -98,6 +116,7 @@ public class PayrollController {
 		}
 		if (payrolls != null) {
 			model.addAttribute("payrolls", payrolls);
+			genPayrollsReport(payrolls, request, response);
 		}
 		List<Department> allDepts = departmentService.findAll();
 		model.addAttribute("allDepts", allDepts);
@@ -117,6 +136,95 @@ public class PayrollController {
 		return "payroll/showPayrolls";
 	}
 	
+	
+	@RequestMapping(value={"/downloadPayrolls"},  method = RequestMethod.GET)
+	public void downloadPayrolls(HttpServletRequest request, HttpServletResponse response) {
+		String CPath = request.getSession().getServletContext().getRealPath("");
+		String fileName = CPath+ "/WEB-INF/files/Payroll Report.xlsx";
+        response.setContentType("multipart/form-data");  
+        response.setHeader("Content-Disposition", "attachment;fileName="  
+                + new String("Payroll Report.xlsx")); 
+        InputStream in;
+		try {
+			in = new FileInputStream(fileName);
+			OutputStream os;
+			os = response.getOutputStream();
+			byte[] b = new byte[1024 * 1024];  
+	        int length;  
+	        while ((length = in.read(b)) > 0) {  
+	            os.write(b, 0, length);  
+	        }  
+	        in.close();  
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
+	private void genPayrollsReport(List<Payroll> payrolls, HttpServletRequest request, HttpServletResponse response) {
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet("Payroll Report");
+
+        CellStyle titleStyle = workbook.createCellStyle();
+        XSSFFont titleFont = workbook.createFont();
+        titleFont.setBold(true);
+        titleFont.setFontName("IMPACT");
+        titleFont.setItalic(true);
+        titleFont.setFontHeightInPoints((short) 30);
+        
+        titleStyle.setFont(titleFont);
+        
+        Row rowH = sheet.createRow(0);					//File title
+        Cell cellTile = rowH.createCell(1);
+        cellTile.setCellStyle(titleStyle);
+        cellTile.setCellValue("Payrolls Report");
+        
+        CellStyle divStyle = workbook.createCellStyle();
+        XSSFFont divFont = workbook.createFont();
+        divFont.setBold(true);
+        divFont.setFontHeightInPoints((short) 16);			//Divided title
+        divStyle.setFont(divFont);
+        rowH = sheet.createRow(1);
+        Cell cellDiv = rowH.createCell(1);
+        cellDiv.setCellStyle(divStyle);
+        cellDiv.setCellValue("Divided By Payroll.");
+        
+        CellStyle headStyle = workbook.createCellStyle();
+        XSSFFont headFont = sheet.getWorkbook().createFont();		//Table (head)
+        headFont.setBold(true);;
+        headStyle.setFont(headFont);
+        rowH = sheet.createRow(2);
+        Cell headName = rowH.createCell(1);
+        headName.setCellStyle(headStyle);
+        headName.setCellValue("Employee Name");
+        Cell headID = rowH.createCell(2);
+        headID.setCellStyle(headStyle);
+        headID.setCellValue("Employee ID");
+        Cell headValue = rowH.createCell(3);
+        headValue.setCellStyle(headStyle);
+        headValue.setCellValue("Amount(USD)");;
+        
+        int rowCount = 3;
+        for (Payroll payroll : payrolls) {
+        	Row row = sheet.createRow(++rowCount);
+        	Cell employeeName = row.createCell(1);
+        	employeeName.setCellValue(payroll.getPayrollEmployee().getFirstName() + " " + payroll.getPayrollEmployee().getLastName());
+        	Cell employeeID = row.createCell(2);
+        	employeeID.setCellValue(payroll.getPayrollEmployee().getPersonId());
+        	Cell amount = row.createCell(3);
+        	amount.setCellValue(payroll.getAmount());
+        }
+        String CPath = request.getSession().getServletContext().getRealPath("");
+        System.out.printf("contextPath: " + CPath);
+        try (FileOutputStream outputStream = new FileOutputStream(CPath+ "/WEB-INF/files/Payroll Report.xlsx")) {
+            workbook.write(outputStream);
+        } catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+  
+	}
+
 	@PreAuthorize("hasAnyAuthority('SHORT-TERM-EMPLOYEE')")
 	@RequestMapping(value={"/showPayrollsByPerson"},  method = RequestMethod.GET)
 	public String showPayrollsByPerson(String strStartDate, String strEndDate, Model model) throws ParseException {
