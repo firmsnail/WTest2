@@ -20,6 +20,16 @@
             <!-- Main content -->
 		    <section class="content">
 		      <div class="error-page">
+		        <!-- 
+		        <c:choose>
+		        	<c:when test="${currentUser == null }">
+		        		is null
+		        	</c:when>
+		        	<c:otherwise>
+		        		is not null
+		        	</c:otherwise>
+		        </c:choose>
+		        -->
 		        
 		        <div class="error-content">
 		          <h1 class="headline text-red"> Oops!</h1>

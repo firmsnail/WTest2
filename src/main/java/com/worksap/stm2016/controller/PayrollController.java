@@ -1,7 +1,5 @@
 package com.worksap.stm2016.controller;
 
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,17 +9,16 @@ import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -138,12 +135,14 @@ public class PayrollController {
 	
 	
 	@RequestMapping(value={"/downloadPayrolls"},  method = RequestMethod.GET)
+	
 	public void downloadPayrolls(HttpServletRequest request, HttpServletResponse response) {
 		String CPath = request.getSession().getServletContext().getRealPath("");
 		String fileName = CPath+ "/WEB-INF/files/Payroll Report.xlsx";
         response.setContentType("multipart/form-data");  
         response.setHeader("Content-Disposition", "attachment;fileName="  
                 + new String("Payroll Report.xlsx")); 
+        System.out.println("@downloadPayrolls here");
         InputStream in;
 		try {
 			in = new FileInputStream(fileName);
@@ -158,7 +157,8 @@ public class PayrollController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  
+		}
+		System.out.println("@downloadPayrolls end");
 	}
 	private void genPayrollsReport(List<Payroll> payrolls, HttpServletRequest request, HttpServletResponse response) {
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -167,9 +167,7 @@ public class PayrollController {
         CellStyle titleStyle = workbook.createCellStyle();
         XSSFFont titleFont = workbook.createFont();
         titleFont.setBold(true);
-        titleFont.setFontName("IMPACT");
-        titleFont.setItalic(true);
-        titleFont.setFontHeightInPoints((short) 30);
+        titleFont.setFontHeightInPoints((short) 32);
         
         titleStyle.setFont(titleFont);
         
@@ -201,10 +199,31 @@ public class PayrollController {
         headID.setCellValue("Employee ID");
         Cell headValue = rowH.createCell(3);
         headValue.setCellStyle(headStyle);
-        headValue.setCellValue("Amount(USD)");;
+        headValue.setCellValue("Amount(USD)");
+        Cell headDate = rowH.createCell(4);
+        headDate.setCellStyle(headStyle);
+        headDate.setCellValue("Issue Date");
         
-        int rowCount = 3;
+        Map<Long, Integer> personTimes = new LinkedHashMap<Long, Integer>();
+        Map<Long, Double> personAmount = new HashMap<Long, Double>();
+        Map<Long, Integer> deptTimes = new LinkedHashMap<Long, Integer>();
+        Map<Long, Double> deptAmount = new HashMap<Long, Double>();
+        int rowCount = 2;
         for (Payroll payroll : payrolls) {
+        	Long employeeId = payroll.getPayrollEmployee().getPersonId();
+        	Long deptId = payroll.getPayrollDepartment().getDepartmentId();
+        	if (!personTimes.containsKey(employeeId)) {
+        		personTimes.put(employeeId, 0);
+        		personAmount.put(employeeId, 0.0);
+        	}
+        	if (!deptTimes.containsKey(deptId)) {
+        		deptTimes.put(deptId, 0);
+        		deptAmount.put(deptId, 0.0);
+        	}
+        	personTimes.put(employeeId, personTimes.get(employeeId)+1);
+        	personAmount.put(employeeId, personAmount.get(employeeId)+payroll.getAmount());
+        	deptTimes.put(deptId, deptTimes.get(deptId)+1);
+        	deptAmount.put(deptId, deptAmount.get(deptId)+deptAmount.get(deptId));
         	Row row = sheet.createRow(++rowCount);
         	Cell employeeName = row.createCell(1);
         	employeeName.setCellValue(payroll.getPayrollEmployee().getFirstName() + " " + payroll.getPayrollEmployee().getLastName());
@@ -212,7 +231,65 @@ public class PayrollController {
         	employeeID.setCellValue(payroll.getPayrollEmployee().getPersonId());
         	Cell amount = row.createCell(3);
         	amount.setCellValue(payroll.getAmount());
+        	Cell issueDate = row.createCell(4);
+        	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        	issueDate.setCellValue(df.format(payroll.getIssueDate()));
         }
+        
+        Cell headEmpName = rowH.createCell(7);
+        headEmpName.setCellStyle(headStyle);
+        headEmpName.setCellValue("Employee Name");
+        Cell headEmpID = rowH.createCell(8);
+        headEmpID.setCellStyle(headStyle);
+        headEmpID.setCellValue("Employee ID");
+        Cell headEmpValue = rowH.createCell(9);
+        headEmpValue.setCellStyle(headStyle);
+        headEmpValue.setCellValue("Amount(USD)");
+        Cell headTimes = rowH.createCell(10);
+        headTimes.setCellStyle(headStyle);
+        headTimes.setCellValue("Issued Times");
+        
+        rowCount = 2;
+        for (Long key : personTimes.keySet()) {
+        	Person employee = personService.findById(key);
+        	Row row = sheet.getRow(++rowCount);
+        	Cell employeeName = row.createCell(7);
+        	employeeName.setCellValue(employee.getFirstName() + " " + employee.getLastName());
+        	Cell employeeID = row.createCell(8);
+        	employeeID.setCellValue(key);
+        	Cell amount = row.createCell(9);
+        	amount.setCellValue(personAmount.get(key));
+        	Cell issueTimes = row.createCell(10);
+        	issueTimes.setCellValue(personTimes.get(key));
+        }
+        
+        Cell headDeptName = rowH.createCell(13);
+        headDeptName.setCellStyle(headStyle);
+        headDeptName.setCellValue("Department Name");
+        Cell headDeptID = rowH.createCell(14);
+        headDeptID.setCellStyle(headStyle);
+        headDeptID.setCellValue("Department ID");
+        Cell headDeptValue = rowH.createCell(15);
+        headDeptValue.setCellStyle(headStyle);
+        headDeptValue.setCellValue("Amount(USD)");
+        Cell headDeptTimes = rowH.createCell(16);
+        headDeptTimes.setCellStyle(headStyle);
+        headDeptTimes.setCellValue("Issued Times");
+        
+        rowCount = 2;
+        for (Long key : deptTimes.keySet()) {
+        	Department dept = departmentService.findOne(key);
+        	Row row = sheet.getRow(++rowCount);
+        	Cell deptName = row.createCell(13);
+        	deptName.setCellValue(dept.getDepartmentName());;
+        	Cell deptID = row.createCell(14);
+        	deptID.setCellValue(key);
+        	Cell amount = row.createCell(15);
+        	amount.setCellValue(deptAmount.get(key));
+        	Cell issueTimes = row.createCell(16);
+        	issueTimes.setCellValue(deptTimes.get(key));
+        }
+        
         String CPath = request.getSession().getServletContext().getRealPath("");
         System.out.printf("contextPath: " + CPath);
         try (FileOutputStream outputStream = new FileOutputStream(CPath+ "/WEB-INF/files/Payroll Report.xlsx")) {

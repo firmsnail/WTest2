@@ -42,6 +42,16 @@
 	        });
 	        
 	    });
+	    function downloadReport() {
+	    	$.ajax({
+	    		type: 'GET',
+	    		url: "/payroll/downloadPayrolls",
+	    		dataType: 'json',
+	    		success: function(data) {
+	    			alert("download success.");
+	    		}
+	    	});
+	    }
     </script>
 </head>
 
@@ -65,6 +75,10 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+                        	<a href="/payroll/downloadPayrolls">
+								<button type="button" class="btn btn-success">Generate/Download Payrolls Report</button>
+							</a>
+							<br>
                         	<form name="payrollsForm" method="GET"  <c:choose><c:when test="${currentUser.user.role.roleId == 5 }">action="/payroll/showPayrollsByPerson"</c:when><c:otherwise>action="/payroll/showPayrolls"</c:otherwise></c:choose>  >
 								<div class="form-group-sm">
 									<div class="row">
@@ -125,7 +139,7 @@
 											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd"</c:when><c:otherwise>class="even"</c:otherwise></c:choose>>
 												<td><fmt:formatDate value="${payroll.issueDate}" pattern="yyyy-MM-dd"/></td>
 												<td><a href="/department/showOneDepartment?departmentId=${payroll.payrollDepartment.departmentId}">${payroll.payrollDepartment.departmentName}</a></td>
-												<td><a href="/user/showOneEmployee?personId=${payrolll.payrollEmployee.personId}">${payrolll.payrollEmployee.firstName} ${payrolll.payrollEmployee.lastName}</a></td>
+												<td><a href="/user/showOneEmployee?personId=${payroll.payrollEmployee.personId}">${payroll.payrollEmployee.firstName} ${payroll.payrollEmployee.lastName}</a></td>
 												<td>${payroll.amount}USD</td>
 											</tr>
                                     	</c:forEach>

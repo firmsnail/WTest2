@@ -186,7 +186,7 @@ public class GeneralController {
 		hrManager.setStatus(CommonUtils.EMPLOYEE_WORKING);
 		hrManager = personService.save(hrManager);*/
 		//Pattern ContentRegex = Pattern.compile("*<script>*</script>*");
-		testExcel();
+		//testExcel();
 		return "index";
 	}
 	
