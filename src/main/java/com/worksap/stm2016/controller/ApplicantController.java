@@ -2,6 +2,8 @@ package com.worksap.stm2016.controller;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -86,6 +88,21 @@ public class ApplicantController {
 			
 			//hires = cUser.getDepartment().getHireList();//curUser.getUser().getDepartment().getHireList();
 		}
+		if (applicants != null) {
+			Collections.sort(applicants, new Comparator<Applicant>(){
+				@Override
+				public int compare(Applicant p0, Applicant p1) {
+					if (p0.getStatus() > p1.getStatus()) return -1;
+					else if (p0.getStatus() < p1.getStatus()) return 1;
+					else if (p0.getApplyDate().after(p1.getApplyDate())) {
+						return -1;
+					} else {
+						return 1;
+					}
+				}
+			});
+		}
+		
 		model.addAttribute("applicants", applicants);
 		return "applicant/showApplicants";
 	}

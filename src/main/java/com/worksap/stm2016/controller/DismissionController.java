@@ -1,6 +1,8 @@
 package com.worksap.stm2016.controller;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -46,6 +48,19 @@ public class DismissionController {
 			//dismissions = cUser.getDepartment().getDismissionList();//curUser.getUser().getDepartment().getDismissionList();
 		} else {
 			dismissions = dismissionService.findByDismissionPerson(curUser.getUser());
+		}
+		if (dismissions != null) {
+			Collections.sort(dismissions, new Comparator<Dismission>() {
+
+				@Override
+				public int compare(Dismission o1, Dismission o2) {
+					if (o1.getExpectDate().before(o2.getExpectDate())) return -1;
+					else if (o1.getExpectDate().after(o2.getExpectDate())) return 1;
+					else if (o1.getSubmitDate().before(o2.getSubmitDate())) return -1;
+					else return 1;
+				}
+				
+			});
 		}
 		model.addAttribute("dismissions", dismissions);
 		return "dismission/showDismissions";

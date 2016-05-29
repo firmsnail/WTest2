@@ -1,6 +1,8 @@
 package com.worksap.stm2016.controller;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +80,14 @@ public class AttendanceController {
 			}
 		}
 		if (attendances != null) {
+			Collections.sort(attendances, new Comparator<Attendance>(){
+				@Override
+				public int compare(Attendance o1, Attendance o2) {
+					if (o1.getAttendanceDate().after(o2.getAttendanceDate())) return -1;
+					return 1;
+				}
+				
+			});
 			model.addAttribute("attendances", attendances);
 		}
 		return "attendance/showAttendances";
@@ -97,7 +107,18 @@ public class AttendanceController {
 		} else {
 			attendances = attendanceService.findByPerson(curUser.getUser());
 		}
-		model.addAttribute("attendances", attendances);
+		if (attendances != null) {
+			Collections.sort(attendances, new Comparator<Attendance>(){
+				@Override
+				public int compare(Attendance o1, Attendance o2) {
+					if (o1.getAttendanceDate().after(o2.getAttendanceDate())) return -1;
+					return 1;
+				}
+				
+			});
+			model.addAttribute("attendances", attendances);
+		}
+		
 		return "attendance/showAttendances";
 	}
 	

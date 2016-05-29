@@ -1,6 +1,8 @@
 package com.worksap.stm2016.controller;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -39,6 +41,17 @@ public class LeaveController {
 			leaves = leaveService.findByLeavePerson(curUser.getUser());
 		} else if (curUser.getUser().getDepartment() != null){
 			leaves = leaveService.findByLeaveDepartment(curUser.getUser().getDepartment());
+		}
+		if (leaves != null) {
+			Collections.sort(leaves, new Comparator<Leave>(){
+
+				@Override
+				public int compare(Leave o1, Leave o2) {
+					if (o1.getStartDate().before(o2.getStartDate())) return -1;
+					return 1;
+				}
+				
+			});
 		}
 		model.addAttribute("leaves", leaves);
 		return "leave/showLeaves";

@@ -1,5 +1,7 @@
 package com.worksap.stm2016.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,19 @@ public class StaffRequirementController {
 			requirements = cUser.getRequirementsForRecruiter();
 		} else if (cUser.getDepartment() != null){
 			requirements = staffRequirementService.findByDepartment(cUser.getDepartment());
+		}
+		if (requirements != null) {
+			Collections.sort(requirements, new Comparator<StaffRequirement>() {
+
+				@Override
+				public int compare(StaffRequirement o1, StaffRequirement o2) {
+					if (o1.getExpectDate().before(o2.getExpectDate())) return -1;
+					else if (o1.getExpectDate().after(o2.getExpectDate())) return 1;
+					else if (o1.getSubmitDate().before(o2.getSubmitDate())) return -1;
+					else return 1;
+				}
+				
+			});
 		}
 		model.addAttribute("requirements", requirements);
 		return "requirement/showStaffRequirements";

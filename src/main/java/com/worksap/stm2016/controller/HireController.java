@@ -1,6 +1,8 @@
 package com.worksap.stm2016.controller;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -43,6 +45,17 @@ public class HireController {
 		} else if (curUser.getUser().getDepartment() != null){
 			hires = hireService.findByHireDepartment(cUser.getDepartment());
 			//hires = cUser.getDepartment().getHireList();//curUser.getUser().getDepartment().getHireList();
+		}
+		if (hires != null) {
+			Collections.sort(hires, new Comparator<Hire>(){
+
+				@Override
+				public int compare(Hire o1, Hire o2) {
+					if (o1.getSubmitDate().before(o2.getSubmitDate())) return -1;
+					else return 1;
+				}
+				
+			});
 		}
 		model.addAttribute("hires", hires);
 		return "hire/showHires";
