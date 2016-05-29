@@ -15,7 +15,7 @@ import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.service.DepartmentService;
 
 @Controller
-@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST', 'TEAM-MANAGER')")
+//@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST', 'TEAM-MANAGER')")
 @RequestMapping(value = "/department")
 public class DepartmentController {
 	
@@ -30,7 +30,8 @@ public class DepartmentController {
 		return "department/showDepartments";
 	}
 	
-	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessDepartment(principal, #departmentId)")
+	//@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessDepartment(principal, #departmentId)")
+	@PreAuthorize("@currentUserServiceImpl.canAccessDepartment(principal, #departmentId)")
 	@RequestMapping(value = "/showOneDepartment")
 	public String showOneDepartment(Long departmentId, Model model) {
 		Department department = departmentService.findOne(departmentId);

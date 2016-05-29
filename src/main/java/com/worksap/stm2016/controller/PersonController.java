@@ -66,7 +66,8 @@ public class PersonController {
 		return "user/showEmployees";
 	}
 	
-	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessUser(principal, #personId)")
+	//@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST') or @currentUserServiceImpl.canAccessUser(principal, #personId)")
+	@PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #personId)")
 	@RequestMapping(value = "/showOneEmployee")
 	public String showOneEmployee(Long personId, Model model) {
 		//Person employee = userService.findById(personId);
@@ -74,7 +75,8 @@ public class PersonController {
 		return "redirect:/user/profile?userId="+personId;
 	}
 	
-	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST', 'TEAM-MANAGER') or @currentUserServiceImpl.canAccessUser(principal, #userId)")
+	//@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST', 'TEAM-MANAGER') or @currentUserServiceImpl.canAccessUser(principal, #userId)")
+	@PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #personId)")
 	@RequestMapping(value={"/profile"}, method = RequestMethod.GET)
 	public String profile(Long userId, Model model) {
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

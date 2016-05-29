@@ -45,19 +45,21 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 	
 	@Override
 	public boolean canAccessUser(CurrentUser currentUser, Long userId) {
-		if (currentUser == null) return false;
-		if (currentUser == null || !currentUser.getId().equals(userId)) return false;
-		return true;
+		return currentUser != null;
+		//if (currentUser == null) return false;
+		//return currentUser.getUser().getStatus() == CommonUtils.EMPLOYEE_WORKING;
+		//if (currentUser.getUser().getStatus() == C)
 	}
 
 	@Override
 	public boolean canAccessDepartment(CurrentUser currentUser, Long departmentId) {
-		if (currentUser == null) return false;
+		/*if (currentUser == null) return false;
 		Department belongDept = currentUser.getUser().getDepartment();
 		if (belongDept == null) return false;
 		Person depManager = belongDept.getManager();
 		if (depManager == null || !depManager.getPersonId().equals(currentUser.getId())) return false;
-		return true;
+		return true;*/
+		return currentUser != null;
 	}
 	
 	@Override
