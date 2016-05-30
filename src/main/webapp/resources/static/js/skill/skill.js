@@ -8,6 +8,12 @@ function addSkill(tokName, tokValue) {
 			case -2:
 				alert('Both of skill name and description can not be empty!');
 			break;
+			case -3:
+    			alert('Your behavior is dangerous, please do not attempt to attack the system.');
+    		break;
+    		case -4:
+    			alert('The length of skill name should be less than 256');
+    		break;
 			case -1:
 				alert('Skill already existed!');
 			break;

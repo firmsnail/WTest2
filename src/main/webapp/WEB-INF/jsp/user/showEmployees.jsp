@@ -155,7 +155,7 @@
 													</c:choose>
 												</td>
 												<td>
-													<a href="#" data-toggle="tooltip" title="Predict whether the employee will resign recently. It is not implemented.">
+													<a href="#" data-toggle="tooltip" title="Predict whether the employee will resign recently, which can reduce the loss of human resources. It is not implemented.">
 														<span class="label label-success disabled">Resign Tendency</span>
 													</a>
 												</td>

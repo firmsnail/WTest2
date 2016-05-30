@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.service.SkillService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Controller
 @PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'TEAM-MANAGER')")
@@ -28,6 +29,14 @@ public class SkillController {
 		}
 		if (description != null) {
 			description = description.trim();
+		}
+		
+		if (CommonUtils.ContentRegex.matcher(skillName).matches() || CommonUtils.ContentRegex.matcher(description).matches()) {
+			System.out.println("here");
+			return (long) -3;
+		}
+		if (skillName.length() > 255) {
+			return (long) -4;
 		}
 		if (skillName == null || description == null || skillName.isEmpty() || description.isEmpty()) {
 			return (long) -2;

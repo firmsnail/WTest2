@@ -137,7 +137,7 @@ public class PayrollController {
 	@RequestMapping(value={"/downloadPayrolls"},  method = RequestMethod.GET)
 	
 	public void downloadPayrolls(HttpServletRequest request, HttpServletResponse response) {
-		String CPath = request.getSession().getServletContext().getRealPath("");
+		String CPath = "./src/main/webapp";//request.getContextPath();//request.getSession().getServletContext().getRealPath("/");
 		String fileName = CPath+ "/WEB-INF/files/Payroll Report.xlsx";
         response.setContentType("multipart/form-data");  
         response.setHeader("Content-Disposition", "attachment;fileName="  
@@ -290,8 +290,8 @@ public class PayrollController {
         	issueTimes.setCellValue(deptTimes.get(key));
         }
         
-        String CPath = request.getSession().getServletContext().getRealPath("");
-        System.out.printf("contextPath: " + CPath);
+        String CPath = "./src/main/webapp";//request.getSession().getServletContext().getRealPath("/");
+        System.out.println("contextPath: " + CPath);
         try (FileOutputStream outputStream = new FileOutputStream(CPath+ "/WEB-INF/files/Payroll Report.xlsx")) {
             workbook.write(outputStream);
         } catch (FileNotFoundException e) {
