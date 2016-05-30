@@ -27,11 +27,13 @@ import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.modelForm.UserUpdateForm;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.service.SkillService;
 import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.validator.UserUpdateFormValidator;
@@ -47,6 +49,8 @@ public class PersonController {
 	SkillService skillService;
 	@Autowired
 	NotificationService notificationService;
+	@Autowired
+	RoleService roleService;
 	
 	
 	@Autowired
@@ -62,6 +66,11 @@ public class PersonController {
 			Department dept = deptService.findOne(departmentId);
 			employeeList = userService.findByDepartment(dept);
 		}
+		Role hrmRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+		List<Person> pers = userService.findByRole(hrmRole);
+		Person HRM = pers.get(0);
+		List<Department> depts = deptService.findByManagerIsNot(HRM);
+		model.addAttribute("departments", depts);
 		model.addAttribute("employees", employeeList);
 		return "user/showEmployees";
 	}
@@ -127,6 +136,7 @@ public class PersonController {
 			});
 		}
 		model.addAttribute("notifications", notifications);
+		
 		
 		return "user/profile";
 	}

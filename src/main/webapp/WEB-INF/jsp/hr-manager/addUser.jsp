@@ -50,7 +50,7 @@
 						                             <div>
 						                               		<springForm:select path="role" class="form-control select2" name="role" style="width: 100%;">
 											                	  <option value=2 selected="selected">RECRUITER</option>
-											                	  <option value=3>C&B-SPECIALIST</option>
+											                	  <option value=3>C&amp;B-SPECIALIST</option>
 											                	  <option value=4>TEAM-MANAGER</option>
 											                	  <option value=5>SHORT-TERM-EMPLOYEE</option>
 											                </springForm:select>

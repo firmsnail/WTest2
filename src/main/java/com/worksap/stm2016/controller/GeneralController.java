@@ -1,15 +1,8 @@
 package com.worksap.stm2016.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -39,14 +32,6 @@ import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.validator.UserCreateFormValidator;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @Controller
 public class GeneralController {
@@ -108,7 +93,7 @@ public class GeneralController {
 	public String help() {
 		return "help";
 	}
-	
+	/*
 	private void testExcel(){
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Payroll Report");
@@ -172,6 +157,7 @@ public class GeneralController {
 		}
         
 	}
+	*/
 	
 	@RequestMapping(value={"/", "/index"}, method = RequestMethod.GET)
 	public String index() {

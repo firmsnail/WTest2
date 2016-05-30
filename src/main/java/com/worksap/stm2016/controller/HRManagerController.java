@@ -26,6 +26,7 @@ import com.worksap.stm2016.chartData.PieData;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Hire;
+import com.worksap.stm2016.model.Interview;
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Payroll;
 import com.worksap.stm2016.model.Person;
@@ -36,6 +37,7 @@ import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.DismissionService;
 import com.worksap.stm2016.service.HireService;
+import com.worksap.stm2016.service.InterviewService;
 import com.worksap.stm2016.service.NotificationService;
 import com.worksap.stm2016.service.PayrollService;
 import com.worksap.stm2016.service.PersonService;
@@ -73,6 +75,8 @@ public class HRManagerController {
 	private PayrollService payrollService;
 	@Autowired
 	private NotificationService notificationService;
+	@Autowired
+	private InterviewService interviewService;
 
 	@Autowired
 	private UserCreateFormValidator  userCreateFormValidator;
@@ -864,7 +868,6 @@ public class HRManagerController {
 		return json;
 	}
 	
-
 	@RequestMapping(value = "/aprroveOneRequirement")
 	public String aprroveOneRequirement(Long requirementId, Model model) {
 		StaffRequirement requirement = staffRequirementService.findOne(requirementId);
@@ -1134,6 +1137,52 @@ public class HRManagerController {
         }
 		return "redirect:/user/showEmployees";
 	}
+
+	@RequestMapping(value={"/editOneEmployee"}, method = RequestMethod.POST)
+	public String editOneEmployee(Long employeeId, Long departmentId) {
+		System.out.println("@editOneEmployee employeeId: " + employeeId + " departmentId: " + departmentId);
+		if (employeeId != null && departmentId != null) {
+			Person emp = personService.findById(employeeId);
+			Department dept = departmentService.findOne(departmentId);
+			if (emp != null && emp.getRole().getRoleId() == CommonUtils.ROLE_SHORT_TERM_EMPLOYEE && dept != null) {
+				emp.setDepartment(dept);
+				emp.setStatus(CommonUtils.EMPLOYEE_WORKING);
+				emp = personService.findById(employeeId);
+			}
+		}
+		return "redirect:/user/showEmployees";
+	}
+	
+	@RequestMapping(value={"/editOneDepartment"}, method = RequestMethod.POST)
+	public String editOneDepartment(Long departmentId, Long managerId) {
+		System.out.println("@editOneDepartment departmentId: " + departmentId + " managerId: " + managerId);
+		if (departmentId != null && managerId != null) {
+			Department dept = departmentService.findOne(departmentId);
+			Person oriManager = dept.getManager();
+			Person manager = personService.findById(managerId);
+			if (dept != null && manager != null && manager.getRole().getRoleId() != CommonUtils.ROLE_HR_MANAGER) {
+				if (oriManager != null && oriManager.getRole().getRoleId() != CommonUtils.ROLE_HR_MANAGER && oriManager.getPersonId() != manager.getPersonId()) {
+					oriManager = personService.findById(oriManager.getPersonId());
+					List<Integer> stats = new ArrayList<Integer>();
+					stats.add(CommonUtils.INTERVIEW_INTERVIEWING);
+					stats.add(CommonUtils.INTERVIEW_PENDING_SCHEDULE);
+					List<Interview> interviews = interviewService.findByInterviewerAndStatusIn(oriManager, stats);
+					for (Interview inter : interviews) {
+						inter.setInterviewer(manager);
+						inter = interviewService.findOne(inter.getInterviewId());
+					}
+					oriManager.setStatus(CommonUtils.EMPLOYEE_REGISTERED);
+					oriManager.setDepartment(null);
+					manager.setStatus(CommonUtils.EMPLOYEE_WORKING);
+					manager.setDepartment(dept);
+				}
+				dept.setManager(manager);
+				dept = departmentService.findOne(dept.getDepartmentId());
+			}
+		}
+		return "redirect:/department/showDepartments";
+	}
+	
 	/*
 	@ResponseBody
 	@RequestMapping(value = "/approveRequirement",  method = RequestMethod.POST)

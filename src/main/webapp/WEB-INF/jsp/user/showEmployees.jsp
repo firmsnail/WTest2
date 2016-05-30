@@ -14,13 +14,69 @@
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
-	        $('[data-toggle="tooltip"]').tooltip(); 
+	        $('[data-toggle="tooltip"]').tooltip();
+	        
+	        $('#empModal').on('shown.bs.modal', function (event) {
+	        	//var button = $(event.relatedTarget);
+	        	var pId = $(this).data('pid');
+	        	var pName = $(this).data('pname');
+	        	var depId = $(this).data('depid');
+	        	var modal = $(this);
+	        	modal.find('.modal-body input#employeeId').val(pId);
+	        	modal.find('.modal-body input#employeeName').val(pName);
+	        	modal.find('.modal-body select#depId').val(depId);
+	        });
+	        $(".table-striped").find('tr[data-target]').on('dblclick', function(){
+	            $('#empModal').data('pid',$(this).data('pid'));
+	             $('#empModal').data('pname',$(this).data('pname'));
+	             $('#empModal').data('depid',$(this).data('depid')).modal('show');
+	        });
 	    });
     </script>
 </head>
 
 <body>
-
+	<div class="modal fade" id="empModal" tabindex="-1" role="dialog" aria-labelledby="empModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="empModalLabel">Update</h4>
+				</div>
+				<div class="modal-body">
+					<form role="form" id="empForm" action="/hr-manager/editOneEmployee" method="POST">
+						<div class="form-group">
+							<input type="text" class="hidden" id="employeeId" name="employeeId" value=""></input>
+						</div>
+	                    <div class="form-group">
+	                    	<label for="employeeName" class="control-label">Employee Name: </label>
+	                    	<input type="text" class="form-control" readonly="readonly" id="employeeName" value=""></input>
+	                    </div>
+	                    <div class="form-group">
+	                    	<label for="department" class="control-label">Department:</label>
+	                    	<select class="form-control" name="departmentId" id="depId">
+	                    		<c:forEach var="dept" items="${departments}">
+	                    			<option value="${dept.departmentId }">${dept.departmentName }</option>
+	                    		</c:forEach>
+			                </select>
+	                    </div>
+	                    <div class="form-group">
+	                    	<button type="submit" class="btn btn-success">Update</button>
+	                    </div>
+	                    <br />
+					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                </form>
+				</div>
+				<div class="modal-footer">
+					<!--
+					<button type="button" class="btn btn-success" data-toggle="modal" data-target="interviewModal" data-whatever="@mdo">Schedule</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
     <div id="wrapper">
 
         <jsp:include page="../common/nav.jsp" />
@@ -62,7 +118,7 @@
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="employee" items="${employees}" varStatus="status">
-											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd"</c:when><c:otherwise>class="even"</c:otherwise></c:choose>>
+											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd table-striped"</c:when><c:otherwise>class="even table-striped"</c:otherwise></c:choose> <c:if test="${currentUser.user.role.roleId == 1 and employee.role.roleId == 5 }">data-target="#empModal" data-pid="${employee.personId }" data-pname="${employee.firstName } ${employee.lastName }" <c:choose><c:when test="${employee.department != null}">data-depid="${employee.department.departmentId}"</c:when><c:otherwise>data-depid=""</c:otherwise></c:choose></c:if>>
 												<td><a href="/user/showOneEmployee?personId=${employee.personId}">${employee.firstName} ${employee.lastName}</a></td>
 												<td>${employee.role.roleName}</td>
 												<td>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.service.DepartmentService;
+import com.worksap.stm2016.service.PersonService;
 
 @Controller
 //@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST', 'TEAM-MANAGER')")
@@ -21,12 +22,16 @@ public class DepartmentController {
 	
 	@Autowired
 	DepartmentService departmentService;
+	@Autowired
+	PersonService personService;
 	
 	@PreAuthorize("hasAnyAuthority('HR-MANAGER', 'RECRUITER', 'C&B-SPECIALIST')")
 	@RequestMapping(value = "/showDepartments")
 	public String showDepartments(Model model) {
 		List<Department> departmentList = departmentService.findAll();
 		model.addAttribute("departments", departmentList);
+		List<Person> managers = personService.findProperManager();
+		model.addAttribute("managers", managers);
 		return "department/showDepartments";
 	}
 	

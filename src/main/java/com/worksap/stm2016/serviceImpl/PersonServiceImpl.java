@@ -119,6 +119,11 @@ public class PersonServiceImpl implements PersonService{
 		Department dept = null;
 		if (form.getDepartmentId() != null) {
 			dept = deptRepository.findOne(form.getDepartmentId());
+		} else if (form.getRole() == CommonUtils.ROLE_CB_SPECIALIST || form.getRole() == CommonUtils.ROLE_RECRUITER) {
+			Role hrmRole = roleRepository.findOne(CommonUtils.ROLE_HR_MANAGER);
+			List<Person> pers = personRepository.findByRole(hrmRole);
+			Person HRM = pers.get(0);
+			dept = HRM.getDepartment();
 		}
 		if (dept != null) {
 			person.setDepartment(dept);

@@ -123,7 +123,7 @@
 									                  		<springForm:select path="requirements" class="form-control select2" multiple="multiple" data-placeholder="Select requirements" name="requirements" style="width: 100%;">
 											                	  <c:forEach var="requirement" items="${chooseRequirements}" varStatus="status">
 											                	  		<option value="${requirement.staffRequirementId}">
-											                	  			ID:${requirement.staffRequirementId}
+											                	  			From requirement.stfrqDepartment.departmentName ID:${requirement.staffRequirementId}
 											                	  		</option>
 											                	  </c:forEach>
 											                </springForm:select>

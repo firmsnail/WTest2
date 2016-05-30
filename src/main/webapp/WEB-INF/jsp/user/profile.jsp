@@ -187,11 +187,11 @@
               				<strong><i class="fa fa-money margin-r-5"></i> Salary</strong>
               				<p class="text-muted">
               					<c:choose>
-									<c:when test="${user.salary != null}">
-										${user.salary}
-									</c:when>
+              						<c:when test="${user.salary == null or (currentUser.user.role.roleId == 5 and currentUser.user.personId != user.personId) }">
+              							Unknown
+              						</c:when>
 									<c:otherwise>
-										Unknown
+										${user.salary}
 									</c:otherwise>
 								</c:choose>
               				</p>
@@ -371,6 +371,26 @@
 		              <div class="tab-pane" id="settings">
 							<springForm:form class="form-horizontal" action="/user/edit" modelAttribute="userForm" method="POST">
 								<springForm:errors path="" element="div" />
+								
+								<div class="form-group">
+		                             <label class="control-label col-sm-2" for="firstName">First Name</label>
+		                             <div class="col-sm-10">
+		                               		<springForm:input path="firstName" type="text" class="form-control" id="firstName" name="firstName" value="${user.firstName }"/>
+		                               		<div class="alert-danger">
+		                               			<springForm:errors path="firstName" cssClass="error"/>
+		                               		</div>
+		                             </div>
+	                           </div>
+	                           
+	                           <div class="form-group">
+		                             <label class="control-label col-sm-2" for="lastName">Last Name</label>
+		                             <div class="col-sm-10">
+		                               		<springForm:input path="lastName" type="text" class="form-control" id="lastName" name="lastName" value="${user.lastName }"/>
+		                               		<div class="alert-danger">	
+		                               			<springForm:errors path="lastName" cssClass="error"/>
+		                               		</div>
+		                             </div>
+	                           </div>
 								
 								<!-- text input -->
 								<div class="form-group">

@@ -2,10 +2,12 @@ package com.worksap.stm2016.validator;
 
 import org.springframework.validation.Validator;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
+import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.DepartmentService;
 import com.worksap.stm2016.service.PersonService;
@@ -60,6 +62,11 @@ public class UserCreateFormValidator implements Validator {
 			errors.rejectValue("userName", "userName", "Your behavior is dangerous, please don't attempt to attack the system.");
 		} else if (!CommonUtils.FieldRegex.matcher(form.getUserName()).matches()) {
 			errors.rejectValue("userName", "userName", "You can only enter numbers and letters.");
+		} else {
+			Person per = userService.findByUserName(form.getUserName());
+			if (per != null) {
+				errors.rejectValue("userName", "userName", "Username already exist, please change the username.");
+			}
 		}
 	}
     

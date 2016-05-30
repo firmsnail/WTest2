@@ -75,10 +75,12 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                        	<a href="/payroll/downloadPayrolls">
-								<button type="button" class="btn btn-success">Generate/Download Payrolls Report</button>
-							</a>
-							<br>
+                        	<c:if test="${currentUser.user.role.roleId == 1 or currentUser.user.role.roleId == 3 }">
+	                        	<a href="/payroll/downloadPayrolls">
+									<button type="button" class="btn btn-success">Generate/Download Payrolls Report</button>
+								</a>
+								<br>
+							</c:if>
                         	<form name="payrollsForm" method="GET"  <c:choose><c:when test="${currentUser.user.role.roleId == 5 }">action="/payroll/showPayrollsByPerson"</c:when><c:otherwise>action="/payroll/showPayrolls"</c:otherwise></c:choose>  >
 								<div class="form-group-sm">
 									<div class="row">

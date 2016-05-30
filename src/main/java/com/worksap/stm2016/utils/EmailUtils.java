@@ -39,7 +39,7 @@ public class EmailUtils{
 	
 	static public Boolean sendNotificationToAdmin(String subject, String content) {
 		try {
-			MimeMessage message = mailSender.createMimeMessage();
+			/*MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelp = new MimeMessageHelper(message,
 					true, "UTF-8");
 			messageHelp.setFrom(from,"SEMS");
@@ -53,7 +53,7 @@ public class EmailUtils{
 				body.append(content);
 				messageHelp.setText(body.toString(), true);
 				mailSender.send(message);
-			}
+			}*/
 			return true;
 		} catch (Exception e) {
 			new Exception("[ERROR]邮件发送时出现未知错误", e).printStackTrace();

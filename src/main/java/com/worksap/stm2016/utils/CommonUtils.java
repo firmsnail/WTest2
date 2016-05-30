@@ -141,9 +141,9 @@ public class CommonUtils {
 	final static public Integer AGE_6thRANGE_MIN = 51;
 	final static public Integer AGE_6thRANGE_MAX = 60;
 	
-	final static public Pattern ContentRegex = Pattern.compile("[\\w\\W]*<script>[\\w\\W]*</script>[\\w\\W]*");
+	final static public Pattern ContentRegex = Pattern.compile("[\\w\\W]*<script[\\w\\W]*>[\\w\\W]*</script>[\\w\\W]*");
 	final static public Pattern FieldRegex = Pattern.compile("\\w+");
-	final static public Pattern PhoneRegex = Pattern.compile("1([\\d]{10})|((\\+[0-9]{2,4})?\\(?[0-9]+\\)?-?)?[0-9]{7,8}");
+	final static public Pattern PhoneRegex = Pattern.compile("1([\\d]{10})|((\\+[0-9]{2,4})?\\(?[0-9]+\\)?-?)?[0-9]{7,8}");//Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");//
 	static public PasswordEncoder passwordEncoder() {
 		PasswordEncoder encoder = (PasswordEncoder) new BCryptPasswordEncoder();
 		return encoder;

@@ -7,11 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.worksap.stm2016.model.Applicant;
 import com.worksap.stm2016.model.CurrentUser;
-import com.worksap.stm2016.model.Department;
 import com.worksap.stm2016.model.Dismission;
 import com.worksap.stm2016.model.Hire;
 import com.worksap.stm2016.model.Leave;
-import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.service.ApplicantService;

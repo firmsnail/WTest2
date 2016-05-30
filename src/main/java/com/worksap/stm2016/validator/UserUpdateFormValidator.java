@@ -33,11 +33,30 @@ public class UserUpdateFormValidator implements Validator {
        if (form.getPhone() != null && form.getPhone().length() > 0) {
     	   validatePhone(errors, form);
        }
+       validateFirstName(errors, form);
+       validateLastName(errors, form);
         
     }
 
+    private void validateLastName(Errors errors, UserUpdateForm form) {
+		if (CommonUtils.ContentRegex.matcher(form.getLastName()).matches()) {
+			errors.rejectValue("lastName", "lastName", "Your behavior is dangerous, please don't attempt to attack the system.");
+		} else if (!CommonUtils.FieldRegex.matcher(form.getLastName()).matches()) {
+			errors.rejectValue("lastName", "lastName", "You can only enter numbers and letters.");
+		}
+	}
+
+	private void validateFirstName(Errors errors, UserUpdateForm form) {
+		if (CommonUtils.ContentRegex.matcher(form.getFirstName()).matches()) {
+			errors.rejectValue("firstName", "firstName", "Your behavior is dangerous, please don't attempt to attack the system.");
+		} else if (!CommonUtils.FieldRegex.matcher(form.getFirstName()).matches()) {
+			errors.rejectValue("firstName", "firstName", "You can only enter numbers and letters.");
+		}
+	}
+    
 	private void validatePhone(Errors errors, UserUpdateForm form) {
-		if (form.getPhone() != null && form.getPhone().length() > 0 && !CommonUtils.ContentRegex.matcher(form.getPhone()).matches()) {
+		
+		if (form.getPhone() != null && form.getPhone().length() > 0 && !CommonUtils.PhoneRegex.matcher(form.getPhone()).matches()) {
 			errors.rejectValue("phone", "phone", "Please enter valid phone number.");
 		}
 	}

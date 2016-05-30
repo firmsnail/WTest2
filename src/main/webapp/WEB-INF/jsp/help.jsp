@@ -27,7 +27,7 @@
                 <div>
                 	<p>
                 		This is a powerful management system for HR Dept. people whose company has many "short-term" employees. It is mainly designed to improve the management efficiency for "short-term" employees(we consider the employees whoes work period doesn't longer than 6 months as "short-term" employees), and reduce the costs to manage them.
-The users of the system contains five different roles: <strong>1. HR Manager, 2. Recruiter, 3. C&B Specialist, 4. Staffing Team Manager, 5.Short-term Manager.</strong>
+The users of the system contains five different roles: <strong>1. HR Manager, 2. Recruiter, 3. C&amp;B Specialist, 4. Staffing Team Manager, 5.Short-term Manager.</strong>
                 	</p>
                 	<div>
                 		<strong>For test</strong>, the system provides some accounts to use.
@@ -43,7 +43,7 @@ The users of the system contains five different roles: <strong>1. HR Manager, 2.
 								Password: recruiter<br>
 							</li>
 							<li>
-								<strong>C&B Specialist</strong><br>
+								<strong>C&amp;B Specialist</strong><br>
 								UserName: specialist<br>
 								Password: specialist<br>
 							</li>

@@ -1,13 +1,20 @@
 package com.worksap.stm2016.validator;
 
 import org.springframework.validation.Validator;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
 import com.worksap.stm2016.model.Department;
+import com.worksap.stm2016.model.Person;
+import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.DepartmentService;
+import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.service.RoleService;
 import com.worksap.stm2016.utils.CommonUtils;
 
 @Component
@@ -15,6 +22,10 @@ public class UserAddFormValidator implements Validator {
 
 	@Autowired
     private DepartmentService deptService;
+	@Autowired
+    private RoleService roleService;
+	@Autowired
+    private PersonService personService;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -76,6 +87,30 @@ public class UserAddFormValidator implements Validator {
     		errors.rejectValue("departmentId", "departmentId", "Please choose a correct department.");
     	} else if (dept.getManager() != null && form.getRole() == CommonUtils.ROLE_TEAM_MANAGER) {
     		errors.rejectValue("departmentId", "departmentId", "The department already has a manager!");
+    	} else {
+    		String roleName = "";
+			Role hrmRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+			List<Person> pers = personService.findByRole(hrmRole);
+			Person HRM = pers.get(0);
+    		if (form.getRole() > 3) {
+    			if (form.getRole() == CommonUtils.ROLE_TEAM_MANAGER) {
+    				roleName = "Staffing Team Manager";
+    			} else {
+    				roleName = "Short-term Employee";
+    			}
+    			if (form.getDepartmentId() == HRM.getDepartment().getDepartmentId()) {
+    				errors.rejectValue("departmentId", "departmentId", "The " + roleName + " can not be added to " + HRM.getDepartment().getDepartmentName() + "!");
+    			}
+    		} else {
+    			if (form.getRole() == CommonUtils.ROLE_CB_SPECIALIST) {
+    				roleName = "C&B Specialist";
+    			} else {
+    				roleName = "Recruiter";
+    			}
+    			if (form.getDepartmentId() != HRM.getDepartment().getDepartmentId()) {
+    				errors.rejectValue("departmentId", "departmentId", "The " + roleName + " can not be added to " + dept.getDepartmentName() + "!");
+    			}
+    		}
     	}
 	}
 
