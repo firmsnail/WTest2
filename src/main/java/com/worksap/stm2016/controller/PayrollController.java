@@ -223,7 +223,7 @@ public class PayrollController {
         	personTimes.put(employeeId, personTimes.get(employeeId)+1);
         	personAmount.put(employeeId, personAmount.get(employeeId)+payroll.getAmount());
         	deptTimes.put(deptId, deptTimes.get(deptId)+1);
-        	deptAmount.put(deptId, deptAmount.get(deptId)+deptAmount.get(deptId));
+        	deptAmount.put(deptId, deptAmount.get(deptId)+payroll.getAmount());
         	Row row = sheet.createRow(++rowCount);
         	Cell employeeName = row.createCell(1);
         	employeeName.setCellValue(payroll.getPayrollEmployee().getFirstName() + " " + payroll.getPayrollEmployee().getLastName());
