@@ -31,7 +31,6 @@
             <div class="row">
                 <div class="col-lg-12 h1" style="font-style:italic;color:#0AF" >
 	                		Welcome to the Short-term Employee Management System!
-					
                 </div>
             </div>
             

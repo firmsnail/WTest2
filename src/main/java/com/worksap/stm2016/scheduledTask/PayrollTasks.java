@@ -41,11 +41,16 @@ public class PayrollTasks {
 		for (Person employee : employees) {
 			List<Attendance> attendances = attendanceService.findByPersonAndStartDateAndEndDate(employee, startDate, endDate);
 			Double payment = figurePayrollForOneMonth(employee, attendances);
+			Integer normalAttends = countNormalAttendance(attendances);
+			Integer unNormalAttends = countUnNormalAttendance(attendances);
 			Payroll payroll = new Payroll();
 			payroll.setAmount(payment);
 			payroll.setIssueDate(today);
 			payroll.setPayrollEmployee(employee);
 			payroll.setPayrollDepartment(employee.getDepartment());
+			payroll.setNormalAttends(normalAttends);
+			payroll.setUnNormalAttends(unNormalAttends);
+			payroll.setBaseSalary(employee.getSalary());
 			payrollService.save(payroll);
 		}
 	}
@@ -61,4 +66,25 @@ public class PayrollTasks {
 		}
 		return total;
 	}
+	
+	private Integer countNormalAttendance(List<Attendance> attendances) {
+		Integer days = 0;
+		for (Attendance attend : attendances) {
+			if (attend.getType().equals(CommonUtils.ATTENDANCE_NORMAL)) {
+				++days;
+			}
+		}
+		return days;
+	}
+	
+	private Integer countUnNormalAttendance(List<Attendance> attendances) {
+		Integer days = 0;
+		for (Attendance attend : attendances) {
+			if (!attend.getType().equals(CommonUtils.ATTENDANCE_NORMAL)) {
+				++days;
+			}
+		}
+		return days;
+	}
+	
 }

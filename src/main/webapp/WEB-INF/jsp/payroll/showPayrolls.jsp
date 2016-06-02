@@ -84,16 +84,14 @@
                         	<form name="payrollsForm" method="GET"  <c:choose><c:when test="${currentUser.user.role.roleId == 5 }">action="/payroll/showPayrollsByPerson"</c:when><c:otherwise>action="/payroll/showPayrolls"</c:otherwise></c:choose>  >
 								<div class="form-group-sm">
 									<div class="row">
-										<div class="col-xs-1">
+										<div class="col-xs-2">
 											<label class="control-label"> From:</label>
-											<input type="text" id="from" name="strStartDate" value="${curStartDate}" />
+											<input type="text" class="form-control" id="from" name="strStartDate" value="${curStartDate}" />
 										</div>
-										<div class="col-xs-1"></div>
-										<div class="col-xs-1">
+										<div class="col-xs-2">
 											<label class="control-label"> To:</label>
-											<input type="text" id="to" name="strEndDate" value="${curEndDate}" />
+											<input type="text" class="form-control" id="to" name="strEndDate" value="${curEndDate}" />
 										</div>
-										<div class="col-xs-1"></div>
 										<c:if test="${currentUser.user.role.roleId != 5 }">
 											<div class="col-xs-2">
 												<label class="control-label">Department:</label>

@@ -47,4 +47,13 @@ public class Payroll {
 	@JsonDeserialize(using = DateDeserializer.class)
 	private Date issueDate;
 	
+	@Column(name = "\"baseSalary\"")
+	private Double baseSalary;
+	
+	@Column(name = "\"normalAttends\"")
+	private Integer normalAttends;
+	
+	@Column(name = "\"unNormalAttends\"")
+	private Integer unNormalAttends;
+	
 }

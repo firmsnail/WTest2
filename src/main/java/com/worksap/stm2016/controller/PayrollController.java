@@ -113,7 +113,9 @@ public class PayrollController {
 		}
 		if (payrolls != null) {
 			model.addAttribute("payrolls", payrolls);
-			genPayrollsReport(payrolls, request, response);
+			//System.out.println("strStartDate: " + strStartDate);
+			//System.out.println("strEndDate: " + strEndDate);
+			genPayrollsReport(payrolls, strStartDate, strEndDate, request, response);
 		}
 		List<Department> allDepts = departmentService.findAll();
 		model.addAttribute("allDepts", allDepts);
@@ -135,7 +137,6 @@ public class PayrollController {
 	
 	
 	@RequestMapping(value={"/downloadPayrolls"},  method = RequestMethod.GET)
-	
 	public void downloadPayrolls(HttpServletRequest request, HttpServletResponse response) {
 		String CPath = "./src/main/webapp";//request.getContextPath();//request.getSession().getServletContext().getRealPath("/");
 		String fileName = CPath+ "/WEB-INF/files/Payroll Report.xlsx";
@@ -160,7 +161,7 @@ public class PayrollController {
 		}
 		System.out.println("@downloadPayrolls end");
 	}
-	private void genPayrollsReport(List<Payroll> payrolls, HttpServletRequest request, HttpServletResponse response) {
+	private void genPayrollsReport(List<Payroll> payrolls, String strStartDate, String strEndDate, HttpServletRequest request, HttpServletResponse response) {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("Payroll Report");
 
@@ -181,61 +182,87 @@ public class PayrollController {
         divFont.setBold(true);
         divFont.setFontHeightInPoints((short) 16);			//Divided title
         divStyle.setFont(divFont);
-        rowH = sheet.createRow(1);
+        rowH = sheet.createRow(2);
+        
         Cell cellDiv = rowH.createCell(1);
         cellDiv.setCellStyle(divStyle);
-        cellDiv.setCellValue("Divided By Payroll.");
+        boolean startEmpty = (strStartDate == null || strStartDate.length() <= 0);
+        boolean endEmpty = (strEndDate == null || strEndDate.length() <= 0);
+        String period = "";
+        if (!startEmpty && !endEmpty) {
+        	period = strStartDate + " ~ " + strEndDate;
+        } else if (!startEmpty) {
+        	period = strStartDate + " ~ now";
+        } else if (!endEmpty) {
+        	period = " ~ " + strEndDate;
+        } else {
+        	period = "ALL";
+        }
+        cellDiv.setCellValue("Period: " + period);
         
         CellStyle headStyle = workbook.createCellStyle();
         XSSFFont headFont = sheet.getWorkbook().createFont();		//Table (head)
-        headFont.setBold(true);;
+        headFont.setBold(true);
         headStyle.setFont(headFont);
-        rowH = sheet.createRow(2);
+        rowH = sheet.createRow(4);
         Cell headName = rowH.createCell(1);
         headName.setCellStyle(headStyle);
         headName.setCellValue("Employee Name");
         Cell headID = rowH.createCell(2);
         headID.setCellStyle(headStyle);
         headID.setCellValue("Employee ID");
-        Cell headValue = rowH.createCell(3);
+        Cell headBase = rowH.createCell(3);
+        headBase.setCellStyle(headStyle);
+        headBase.setCellValue("Base Salary(per day, USD)");
+        Cell headNormal = rowH.createCell(4);
+        headNormal.setCellStyle(headStyle);
+        headNormal.setCellValue("Normal Attendance Days");
+        Cell headUnNormal = rowH.createCell(5);
+        headUnNormal.setCellStyle(headStyle);
+        headUnNormal.setCellValue("Un-Normal Attendance Days");
+        Cell headValue = rowH.createCell(6);
         headValue.setCellStyle(headStyle);
         headValue.setCellValue("Amount(USD)");
-        Cell headDate = rowH.createCell(4);
+        Cell headDate = rowH.createCell(7);
         headDate.setCellStyle(headStyle);
         headDate.setCellValue("Issue Date");
         
-        Map<Long, Integer> personTimes = new LinkedHashMap<Long, Integer>();
-        Map<Long, Double> personAmount = new HashMap<Long, Double>();
-        Map<Long, Integer> deptTimes = new LinkedHashMap<Long, Integer>();
-        Map<Long, Double> deptAmount = new HashMap<Long, Double>();
-        int rowCount = 2;
+        //Map<Long, Integer> personTimes = new LinkedHashMap<Long, Integer>();
+        //Map<Long, Double> personAmount = new HashMap<Long, Double>();
+        
+        int rowCount = 4;
         for (Payroll payroll : payrolls) {
-        	Long employeeId = payroll.getPayrollEmployee().getPersonId();
-        	Long deptId = payroll.getPayrollDepartment().getDepartmentId();
+        	/*Long employeeId = payroll.getPayrollEmployee().getPersonId();
+        	
         	if (!personTimes.containsKey(employeeId)) {
         		personTimes.put(employeeId, 0);
         		personAmount.put(employeeId, 0.0);
         	}
-        	if (!deptTimes.containsKey(deptId)) {
-        		deptTimes.put(deptId, 0);
-        		deptAmount.put(deptId, 0.0);
-        	}
         	personTimes.put(employeeId, personTimes.get(employeeId)+1);
         	personAmount.put(employeeId, personAmount.get(employeeId)+payroll.getAmount());
-        	deptTimes.put(deptId, deptTimes.get(deptId)+1);
-        	deptAmount.put(deptId, deptAmount.get(deptId)+payroll.getAmount());
+        	*/
         	Row row = sheet.createRow(++rowCount);
         	Cell employeeName = row.createCell(1);
         	employeeName.setCellValue(payroll.getPayrollEmployee().getFirstName() + " " + payroll.getPayrollEmployee().getLastName());
         	Cell employeeID = row.createCell(2);
         	employeeID.setCellValue(payroll.getPayrollEmployee().getPersonId());
-        	Cell amount = row.createCell(3);
+        	Cell employeeSalary = row.createCell(3);
+        	employeeSalary.setCellValue(payroll.getPayrollEmployee().getSalary());
+        	Cell normalAttends = row.createCell(4);
+        	normalAttends.setCellValue(payroll.getNormalAttends());
+        	Cell unNormalAttends = row.createCell(5);
+        	unNormalAttends.setCellValue(payroll.getUnNormalAttends());
+        	Cell amount = row.createCell(6);
         	amount.setCellValue(payroll.getAmount());
-        	Cell issueDate = row.createCell(4);
+        	Cell issueDate = row.createCell(7);
         	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         	issueDate.setCellValue(df.format(payroll.getIssueDate()));
         }
-        
+        Row hintRow = sheet.createRow(++rowCount);
+        Cell hintCell = hintRow.createCell(1);
+        hintCell.setCellStyle(divStyle);
+        hintCell.setCellValue("Hint: Un-Normal Attendance Days include a person attend later, leav early end etc, in a day.");
+        /*
         Cell headEmpName = rowH.createCell(7);
         headEmpName.setCellStyle(headStyle);
         headEmpName.setCellValue("Employee Name");
@@ -262,34 +289,7 @@ public class PayrollController {
         	Cell issueTimes = row.createCell(10);
         	issueTimes.setCellValue(personTimes.get(key));
         }
-        
-        Cell headDeptName = rowH.createCell(13);
-        headDeptName.setCellStyle(headStyle);
-        headDeptName.setCellValue("Department Name");
-        Cell headDeptID = rowH.createCell(14);
-        headDeptID.setCellStyle(headStyle);
-        headDeptID.setCellValue("Department ID");
-        Cell headDeptValue = rowH.createCell(15);
-        headDeptValue.setCellStyle(headStyle);
-        headDeptValue.setCellValue("Amount(USD)");
-        Cell headDeptTimes = rowH.createCell(16);
-        headDeptTimes.setCellStyle(headStyle);
-        headDeptTimes.setCellValue("Issued Times");
-        
-        rowCount = 2;
-        for (Long key : deptTimes.keySet()) {
-        	Department dept = departmentService.findOne(key);
-        	Row row = sheet.getRow(++rowCount);
-        	Cell deptName = row.createCell(13);
-        	deptName.setCellValue(dept.getDepartmentName());;
-        	Cell deptID = row.createCell(14);
-        	deptID.setCellValue(key);
-        	Cell amount = row.createCell(15);
-        	amount.setCellValue(deptAmount.get(key));
-        	Cell issueTimes = row.createCell(16);
-        	issueTimes.setCellValue(deptTimes.get(key));
-        }
-        
+        */
         String CPath = "./src/main/webapp";//request.getSession().getServletContext().getRealPath("/");
         System.out.println("contextPath: " + CPath);
         try (FileOutputStream outputStream = new FileOutputStream(CPath+ "/WEB-INF/files/Payroll Report.xlsx")) {

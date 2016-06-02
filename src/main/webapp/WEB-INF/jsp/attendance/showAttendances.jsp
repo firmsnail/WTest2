@@ -55,6 +55,7 @@
                                             <th>Leave Time</th>
                                             <th>Attendance Department</th>
                                             <th>Attendance Person</th>
+                                            <th>Type</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -65,8 +66,36 @@
 												<td><fmt:formatDate value="${attendance.leaveTime}" pattern="yyyy-MM-dd hh:mm"/></td>
 												<td><a href="/department/showOneDepartment?departmentId=${attendance.attendanceDepartment.departmentId}">${attendance.attendanceDepartment.departmentName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${attendance.attendancePerson.personId}">${attendance.attendancePerson.firstName} ${attendance.attendancePerson.lastName}</a></td>
-												<!-- <td><a href="/hire/showOneDismission?dismissionId=${dismission.dismissionId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>-->
+												<td>
+													<c:choose>
+														<c:when test="${attendance.type == 1}">
+															<span class="label label-success">Normal</span>
+														</c:when>
+														<c:when test="${attendance.type == 2 }">
+															<span class="label label-warning">Attend Late</span>
+														</c:when>
+														<c:when test="${attendance.type == 3 }">
+															<span class="label label-warning">Leave Early</span>
+														</c:when>
+														<c:when test="${attendance.type == 4 }">
+															<span class="label label-warning">Attendance Not Record</span>
+														</c:when>
+														<c:otherwise>
+															<span class="label label-warning">Leave Not Record</span>
+														</c:otherwise>
+													</c:choose>
+												</td>
 												
+												<!-- 
+													private Integer type;	//1: Normal, 2: AttendanceLate, 3: LeaveEarly, 4: AttendanceNotRecord, 5: LeaveNotRecord
+													final static public Integer ATTENDANCE_NORMAL = 1;
+													final static public Integer ATTENDANCE_ATTEND_LATE = 2;
+													final static public Integer ATTENDANCE_LEAVE_EARLY = 3;
+													final static public Integer ATTENDANCE_ATTEND_NOT_RECORD = 4;
+													final static public Integer ATTENDANCE_LEAVE_NOT_RECORD = 5;
+												 -->
+												
+												<!-- <td><a href="/hire/showOneDismission?dismissionId=${dismission.dismissionId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>-->
 											</tr>
                                     	</c:forEach>
                                     </tbody>
