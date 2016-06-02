@@ -228,8 +228,6 @@ public class RecruiterController {
 	
 	@RequestMapping(value = "/addPlan",  method = RequestMethod.GET)
 	public String addPlan(Model model) {
-		List<Skill> skills = skillService.findAll();
-		model.addAttribute("chooseSkills", skills);
 		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
 		List<StaffRequirement> requirements = staffRequirementService.findByRecruiterAndStatus(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
 		model.addAttribute("chooseRequirements", requirements);
@@ -247,8 +245,6 @@ public class RecruiterController {
 
 			System.out.println("Adding plan occurs error!");
 			
-			List<Skill> skills = skillService.findAll();
-			model.addAttribute("chooseSkills", skills);
 			CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
 			List<StaffRequirement> requirements = staffRequirementService.findByRecruiterAndStatus(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
 			model.addAttribute("chooseRequirements", requirements);
@@ -271,8 +267,6 @@ public class RecruiterController {
 			notification.setUrl("/plan/showRecruitingPlans");
 			notification = notificationService.save(notification);
         } catch (DataIntegrityViolationException e) {
-        	List<Skill> skills = skillService.findAll();
-			model.addAttribute("chooseSkills", skills);
 			CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
 			List<StaffRequirement> requirements = staffRequirementService.findByRecruiterAndStatus(curUser.getUser(), CommonUtils.REQUIREMENTS_PENDING_RECRUITE);
 			model.addAttribute("chooseRequirements", requirements);

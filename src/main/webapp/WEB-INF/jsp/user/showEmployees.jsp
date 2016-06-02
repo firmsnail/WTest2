@@ -17,10 +17,19 @@
 	        $('[data-toggle="tooltip"]').tooltip();
 	        
 	        $('#empModal').on('shown.bs.modal', function (event) {
-	        	//var button = $(event.relatedTarget);
-	        	var pId = $(this).data('pid');
-	        	var pName = $(this).data('pname');
-	        	var depId = $(this).data('depid');
+	        	
+	        	var pId, pName, depId;
+	        	if (typeof(event.relatedTarget) == "undefined") {
+	        		pId = $(this).data('pid');
+	        		pName = $(this).data('pname');
+		        	depId = $(this).data('depid');
+	        	} else {
+	        		var target = $(event.relatedTarget);
+	        		pId = target.data('pid');
+	        		pName = target.data('pname');
+	        		depId = target.data('depid');
+	        	}
+	        	
 	        	var modal = $(this);
 	        	modal.find('.modal-body input#employeeId').val(pId);
 	        	modal.find('.modal-body input#employeeName').val(pName);
@@ -114,6 +123,9 @@
                                             <th>Gender</th>
                                             <th>Department</th>
                                             <th>Resign Tendency</th>
+                                            <c:if test="${currentUser.user.role.roleId == 1}">
+                                            	<th>Operation</th>
+                                            </c:if>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -159,6 +171,13 @@
 														<span class="label label-success disabled">Resign Tendency</span>
 													</a>
 												</td>
+												<c:if test="${currentUser.user.role.roleId == 1}">
+	                                            	<td>
+	                                            		<c:if test="${employee.role.roleId == 5 }">
+	                                            			<i class="fa fa-edit btn-danger" data-toggle="modal" data-target="#empModal" data-pid="${employee.personId }" data-pname="${employee.firstName } ${employee.lastName }" <c:choose><c:when test="${employee.department != null}">data-depid="${employee.department.departmentId}"</c:when><c:otherwise>data-depid=""</c:otherwise></c:choose>></i>
+	                                            		</c:if>
+	                                            	</td>
+	                                            </c:if>
 											</tr>
                                     	</c:forEach>
                                     </tbody>

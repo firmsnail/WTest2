@@ -111,7 +111,7 @@
               				<p class="text-muted">
               					<c:choose>
 									<c:when test="${user.department != null}">
-										<a href="/department/showOneDepartment">
+										<a href="/department/showOneDepartment?departmentId=${user.department.departmentId }">
 											${user.department.departmentName}
 										</a>
 									</c:when>

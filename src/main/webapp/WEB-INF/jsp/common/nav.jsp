@@ -98,8 +98,8 @@
         <div class="sidebar-nav navbar-collapse">
         	<br>
             <ul class="nav" id="side-menu">
-                <li>
-                    <a href="/index"><i class="fa fa-dashboard fa-fw"></i> News</a>
+                <li <c:if test="${currentUser != null}">class="hidden"</c:if>>
+                    <a href="/index"><i class="fa fa-dashboard fa-fw"></i> Welcome</a>
                 </li>
                 
                 <li <c:if test="${currentUser == null or currentUser.user.role.roleId < 1 or currentUser.user.role.roleId > 3 or currentUser.user.status != 2}">class="hidden"</c:if> >

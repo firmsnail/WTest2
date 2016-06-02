@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.worksap.stm2016.chartData.PieData;
+import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
@@ -35,6 +40,8 @@ import com.worksap.stm2016.validator.UserCreateFormValidator;
 
 @Controller
 public class GeneralController {
+	
+	private static Logger Log = Logger.getLogger(GeneralController.class);  
 	
 	@Autowired
 	private PersonService personService;
@@ -173,6 +180,14 @@ public class GeneralController {
 		hrManager = personService.save(hrManager);*/
 		//Pattern ContentRegex = Pattern.compile("*<script>*</script>*");
 		//testExcel();
+		Log.info("@index start!");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			Log.info("@index loged-in!");
+			CurrentUser curUser = (CurrentUser) auth.getPrincipal();
+	        return "redirect:/user/profile?userId="+curUser.getId();
+		}
+		Log.info("@index end!");
 		return "index";
 	}
 	

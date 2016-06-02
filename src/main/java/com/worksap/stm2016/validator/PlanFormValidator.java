@@ -19,8 +19,6 @@ import com.worksap.stm2016.utils.CommonUtils;
 public class PlanFormValidator implements Validator {
 
 	@Autowired
-    private SkillService skillService;
-	@Autowired
     private StaffRequirementService staffRequirementService;
 
     @Override
@@ -34,10 +32,6 @@ public class PlanFormValidator implements Validator {
     	
     	if (form.getRequirements() != null && form.getRequirements().size() > 0) {
     		validateRequirements(errors, form);
-    	}
-    	
-    	if (form.getSkills() != null && form.getSkills().size() > 0) {
-    		validateSkills(errors, form);
     	}
     	
     	if (form.getExpectDate() != null && form.getInvalidDate() != null) {
@@ -72,14 +66,5 @@ public class PlanFormValidator implements Validator {
 		}
 	}
 
-	private void validateSkills(Errors errors, PlanForm form) {
-		List<Long> skills = form.getSkills();
-		for (Long skillId : skills) {
-			if (skillService.findOne(skillId) == null) {
-				errors.rejectValue("skills", "skills", "Please choose correct skills!");
-				return;
-			}
-		}
-	}
     
 }

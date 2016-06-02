@@ -70,6 +70,7 @@
 								              	<springForm:errors path="" element="div" />
 								              	
 								                <!-- text input -->
+								                <!-- 
 								                <div class="form-group">
 									                  <label>Total Requirement</label>
 									                  <div>
@@ -79,6 +80,7 @@
 															</div>
 									                  </div>
 								                </div>
+								                -->
 								                
 								                <div class="form-group">
 									                  <label>Expect Date</label>
@@ -99,7 +101,7 @@
 															</div>
 									                  </div>
 								                </div>
-								                
+								                <!-- 
 								                <div class="form-group">
 								                	  <label>Skills</label>
 									                  <div>
@@ -111,12 +113,11 @@
 											                	  </c:forEach>
 											                </springForm:select>
 						                               		<div class="alert-danger">
-						                               			<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
 						                               			<springForm:errors path="skills" cssClass="error"/>
 						                               		</div>
 									                  </div>
 								                </div>
-								                
+								                -->
 								                <div class="form-group">
 								                	  <label>Staffing Requirements</label>
 									                  <div>

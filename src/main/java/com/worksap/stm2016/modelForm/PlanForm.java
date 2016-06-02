@@ -22,11 +22,10 @@ public class PlanForm {
 	@NotEmpty
 	private List<Long> requirements = new ArrayList<Long>();
 	
-	@NotEmpty
 	private List<Long> skills = new ArrayList<Long>();
 	
-	@Min(1)
-	@Max(1000)
+	//@Min(1)
+	//@Max(1000)
 	private Integer planNum;
 	
 	@Future @NotNull

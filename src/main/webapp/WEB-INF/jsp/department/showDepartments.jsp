@@ -16,12 +16,20 @@
 	        });
 	        
 	        $('#deptModal').on('shown.bs.modal', function (event) {
-	        	//var button = $(event.relatedTarget);
-	        	var deptId = $(this).data('deptid');
-	        	//alert(deptId);
-	        	var deptName = $(this).data('deptname');
-	        	var managerId = $(this).data('managerid');
-	        	var managerName = $(this).data('managername');
+
+	        	var deptId, deptName, managerId, managerName;
+	        	if (typeof(event.relatedTarget) == "undefined") {
+	        		deptId = $(this).data('deptid');
+		        	deptName = $(this).data('deptname');
+		        	managerId = $(this).data('managerid');
+		        	managerName = $(this).data('managername');
+	        	} else {
+	        		var target = $(event.relatedTarget);
+	        		deptId = target.data('deptid');
+		        	deptName = target.data('deptname');
+		        	managerId = target.data('managerid');
+		        	managerName = target.data('managername');
+	        	}
 	        	var modal = $(this);
 	        	modal.find('.modal-body input#deptId').val(deptId);
 	        	modal.find('.modal-body input#deptName').val(deptName);
@@ -34,17 +42,11 @@
 	        	modal.find('.modal-body select#managerId').val(managerId);
 	        });
 	        $(".table-striped").find('tr[data-target]').on('dblclick', function(){
-	        	//alert('here');
-	        	//alert($(this).data('deptid'));
-	        	//alert($(this).data('deptname'));
-	        	//alert($(this).data('managerid'));
-	        	//alert($(this).data('managername'));
 	            $('#deptModal').data('deptid',$(this).data('deptid'));
 	             $('#deptModal').data('deptname',$(this).data('deptname'));
 	             $('#deptModal').data('managerid',$(this).data('managerid'));
 	             $('#deptModal').data('managername',$(this).data('managername')).modal('show');
 	        });
-	        
 	    });
     </script>
 </head>
@@ -123,6 +125,9 @@
                                             <th>Description</th>
                                             <th>Manager</th>
                                             <th>Total Employees</th>
+                                            <c:if test="${currentUser.user.role.roleId == 1}">
+                                            	<th>Operation</th>
+                                            </c:if>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -141,6 +146,13 @@
 													</c:choose>
 												</td>
 												<td>${fn:length(department.employees)}</td>
+												<c:if test="${currentUser.user.role.roleId == 1}">
+	                                            	<td>
+	                                            		<c:if test="${department.manager == null or (department.manager != null and department.manager.personId != currentUser.user.personId) }">
+	                                            			<i class="fa fa-edit btn-danger" data-toggle="modal" data-target="#deptModal" data-deptid="${department.departmentId }" data-deptname="${department.departmentName }" <c:choose><c:when test="${department.manager != null }">data-managerid="${department.manager.personId }" data-managername="${department.manager.firstName } ${department.manager.lastName }"</c:when><c:otherwise>data-managerid="" data-managername=""</c:otherwise></c:choose>></i>
+	                                            		</c:if>
+	                                            	</td>
+	                                            </c:if>
 											</tr>
                                     	</c:forEach>
                                     </tbody>

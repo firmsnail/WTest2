@@ -1,7 +1,9 @@
 package com.worksap.stm2016.serviceImpl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.RecruitingPlan;
 import com.worksap.stm2016.model.Role;
+import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
 import com.worksap.stm2016.modelForm.PlanForm;
 import com.worksap.stm2016.repository.PersonRepository;
@@ -69,15 +72,23 @@ public class RecruitingPlanServiceImpl implements RecruitingPlanService{
 		
 		RecruitingPlan curPlan = new RecruitingPlan();
 		curPlan.setReason(plan.getReason());
-		curPlan.setPlanNum(plan.getPlanNum());
 		curPlan.setExpectDate(plan.getExpectDate());
 		curPlan.setInvalidDate(plan.getInvalidDate());
 		curPlan.setSubmitDate(new Date());
-		
-		for (Long skillId : plan.getSkills()) {
+		Set<Long> skillIds = new HashSet<Long>();
+		Integer total = 0;
+		for (Long requirementId : plan.getRequirements()) {
+			StaffRequirement requirement = staffRequirementRepository.findOne(requirementId);
+			total += requirement.getRequireNum();
+			for (Skill skill : requirement.getStfrqSkillList()) {
+				skillIds.add(skill.getSkillId());
+			}
+		}
+		curPlan.setPlanNum(total);
+		for (Long skillId : skillIds) {
 			curPlan.getPlanSkillList().add(skillRepository.findOne(skillId));
 		}
-		
+		  
 		Role hrManagerRole = roleRepository.findOne(CommonUtils.ROLE_HR_MANAGER);
 		Person hrManager = personRepository.findByRole(hrManagerRole).get(0);
 		curPlan.setPlanHRManager(hrManager);
