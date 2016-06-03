@@ -247,6 +247,7 @@ public class PayrollController {
         	Cell employeeID = row.createCell(2);
         	employeeID.setCellValue(payroll.getPayrollEmployee().getPersonId());
         	Cell employeeSalary = row.createCell(3);
+        	System.out.println("salary: " + payroll.getPayrollEmployee().getSalary());
         	employeeSalary.setCellValue(payroll.getPayrollEmployee().getSalary());
         	Cell normalAttends = row.createCell(4);
         	normalAttends.setCellValue(payroll.getNormalAttends());
@@ -258,6 +259,7 @@ public class PayrollController {
         	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         	issueDate.setCellValue(df.format(payroll.getIssueDate()));
         }
+        ++rowCount;
         Row hintRow = sheet.createRow(++rowCount);
         Cell hintCell = hintRow.createCell(1);
         hintCell.setCellStyle(divStyle);

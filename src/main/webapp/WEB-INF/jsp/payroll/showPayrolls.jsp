@@ -41,6 +41,13 @@
 	        	$("#from").datepicker("setEndDate", ev.date);
 	        });
 	        
+	        if ($("#from").val() != "") {
+	        	$("#to").datepicker("setStartDate", $("#from").datepicker('getDate'));
+	        }
+	        if ($("#to").val() != "") {
+	        	$("#from").datepicker("setEndDate", $("#to").datepicker('getDate'));
+	        }
+	        
 	    });
 	    function downloadReport() {
 	    	$.ajax({
@@ -131,6 +138,9 @@
                                             <th>Issue Date</th>
                                             <th>Department</th>
                                             <th>Employee</th>
+                                            <th>Base Salary(Per day, USD)</th>
+                                            <th>Normal Attendances</th>
+                                            <th>Un-normal Attendances</th>
                                             <th>Amount</th>
                                         </tr>
                                     </thead>
@@ -140,6 +150,27 @@
 												<td><fmt:formatDate value="${payroll.issueDate}" pattern="yyyy-MM-dd"/></td>
 												<td><a href="/department/showOneDepartment?departmentId=${payroll.payrollDepartment.departmentId}">${payroll.payrollDepartment.departmentName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${payroll.payrollEmployee.personId}">${payroll.payrollEmployee.firstName} ${payroll.payrollEmployee.lastName}</a></td>
+												<th>${payroll.baseSalary }</th>
+												<th>
+													<c:choose>
+														<c:when test="${payroll.normalAttends == null }">
+															0
+														</c:when>
+														<c:otherwise>
+															${payroll.normalAttends }
+														</c:otherwise>
+													</c:choose>
+												</th>
+												<th>
+													<c:choose>
+														<c:when test="${payroll.normalAttends == null }">
+															0
+														</c:when>
+														<c:otherwise>
+															${payroll.unNormalAttends }
+														</c:otherwise>
+													</c:choose>
+												</th>
 												<td>${payroll.amount}USD</td>
 											</tr>
                                     	</c:forEach>

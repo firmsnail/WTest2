@@ -10,12 +10,44 @@
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/jquery.dataTables.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/dataTables.bootstrap.min.js"></script>
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/select2.min.css" rel="stylesheet">
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+	<!-- <link href="${pageContext.request.contextPath}/resources/static/css/common/datepicker3.css" rel="stylesheet">-->
+
+	<script src="${pageContext.request.contextPath}/resources/static/js/common/select2.full.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/static/js/common/bootstrap-datepicker.js"></script>
+	
+	
 	<script>
 	    $(document).ready(function() {
+	    	//Initialize Select2 Elements
+		    $(".select2").select2();
+	    	
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
-	        $('[data-toggle="tooltip"]').tooltip(); 
+	        $('[data-toggle="tooltip"]').tooltip();
+	        
+	        $( "#from" ).datepicker({
+		        autoclose: true,
+		        format: "yyyy-mm-dd"
+		    }).on('changeDate', function(ev){
+		    	$("#to").datepicker("setStartDate", ev.date);
+		    });
+	        
+	        $("#to").datepicker({
+	        	autoclose: true,
+	        	format: "yyyy-mm-dd"
+	        }).on('changeDate', function(ev){
+	        	$("#from").datepicker("setEndDate", ev.date);
+	        });
+	        
+	        if ($("#from").val() != "") {
+	        	$("#to").datepicker("setStartDate", $("#from").datepicker('getDate'));
+	        }
+	        if ($("#to").val() != "") {
+	        	$("#from").datepicker("setEndDate", $("#to").datepicker('getDate'));
+	        }
 	    });
     </script>
 </head>
@@ -40,11 +72,56 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                        	<div>
-                        		<a href="#" data-toggle="tooltip" title="Import attendance records from paper. It is not implemented.">
-									<button type="button" class="btn btn-success disabled">Import Attendance Records</button>
-								</a>
-                        	</div>
+                        	<c:if test="${currentUser.user.role.roleId == 3 }">
+	                        	<div>
+	                        		<a href="#" data-toggle="tooltip" title="Import attendance records from paper. It is not implemented.">
+										<button type="button" class="btn btn-success disabled">Import Attendance Records</button>
+									</a>
+	                        	</div>
+	                        	<br>
+	                        </c:if>
+                        	<form name="attendancesForm" method="GET"  <c:choose><c:when test="${currentUser.user.role.roleId == 5 }">action="/attendance/showAttendancesByPerson"</c:when><c:otherwise>action="/attendance/showAttendances"</c:otherwise></c:choose>  >
+								<div class="form-group-sm">
+									<div class="row">
+										<div class="col-xs-2">
+											<label class="control-label"> From:</label>
+											<input type="text" class="form-control" id="from" name="strStartDate" value="${curStartDate}" />
+										</div>
+										<div class="col-xs-2">
+											<label class="control-label"> To:</label>
+											<input type="text" class="form-control" id="to" name="strEndDate" value="${curEndDate}" />
+										</div>
+										<c:if test="${currentUser.user.role.roleId != 5 }">
+											<div class="col-xs-2">
+												<label class="control-label">Department:</label>
+												<select class="form-control select2" name="departmentId">
+													<option selected="selected"></option>
+													<c:forEach var="department" items="${allDepts}" varStatus="status">
+														<option value="${department.departmentId}" <c:if test="${curDept != null and department.departmentId == curDept.departmentId}">selected="selected"</c:if>>
+															${department.departmentName}
+														</option>
+													</c:forEach>
+												</select>
+											</div>
+											<div class="col-xs-3">
+												<label>Employee:</label>
+												<select class="form-control select2" name="personId">
+													<option selected="selected"></option>
+													<c:forEach var="employee" items="${allEmployees}" varStatus="status">
+														<option value="${employee.personId}" <c:if test="${curEmployee != null and employee.personId == curEmployee.personId}">selected="selected"</c:if>>
+															${employee.firstName} ${employee.lastName} ID:${employee.personId }
+														</option>
+													</c:forEach>
+								                </select>
+											</div>
+										</c:if>
+										<br>
+										<div class="col-xs-2">
+											<button type="submit" class="btn btn-success">Query</button>
+										</div>
+									</div>
+								</div>
+							</form>
                         	<br>
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">

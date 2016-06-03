@@ -170,8 +170,16 @@
                		</c:choose>
                 </li>
                 
-                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 3}">class="hidden"</c:if> >
-                	<a href="/attendance/showAttendances"><i class="fa fa-users fa-fw"></i> Attendances</a>
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or (currentUser.user.role.roleId != 3 and currentUser.user.role.roleId != 5)}">class="hidden"</c:if> >
+                	<!--<a href="/attendance/showAttendances"><i class="fa fa-users fa-fw"></i> Attendances</a>-->
+                	<c:choose>
+               			<c:when test="${currentUser.user.role.roleId == 5 }">
+               				<a href="/attendance/showAttendancesByPerson"><i class="fa fa-users fa-fw"></i> Attendances</a>
+               			</c:when>
+               			<c:otherwise>
+               				<a href="/attendance/showAttendances"><i class="fa fa-users fa-fw"></i> Attendances</a>
+               			</c:otherwise>
+               		</c:choose>
                 </li>
                 <li>
                     <a href="/help"><i class="fa fa-question-circle fa-fw"></i> Help</a>
