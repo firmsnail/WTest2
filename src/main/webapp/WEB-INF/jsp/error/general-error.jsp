@@ -15,7 +15,6 @@
     <div id="wrapper">
 
         <jsp:include page="../common/nav.jsp" />
-        
         <div id="page-wrapper">
             <!-- Main content -->
 		    <section class="content">
@@ -34,7 +33,7 @@
 		        <div class="error-content">
 		          <h1 class="headline text-red"> Oops!</h1>
 		          <h1><i class="fa fa-warning text-red"></i> Something went wrong!</h1>
-		
+					<p>${currentUser }</p>
 		          <p>
 		            Something went wrong!
 		            Please check your operation, and you may try reading the <a href="/help">help page</a> to know more.

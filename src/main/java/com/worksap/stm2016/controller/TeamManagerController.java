@@ -123,7 +123,7 @@ public class TeamManagerController {
 	@PreAuthorize("@currentUserServiceImpl.canDeleteStaffRequirement(principal, #requirementId)")
 	@ResponseBody
 	@RequestMapping(value = "/delRequirement",  method = RequestMethod.POST)
-	public String delDepartment(Long requirementId) {
+	public String delRequirement(Long requirementId) {
 		System.out.println("@delDepartment start!");
 		staffRequirementService.delete(requirementId);
 		return "success";

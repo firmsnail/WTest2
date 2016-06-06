@@ -1,5 +1,7 @@
 package com.worksap.stm2016.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1139,13 +1141,21 @@ public class HRManagerController {
 	}
 
 	@RequestMapping(value={"/editOneEmployee"}, method = RequestMethod.POST)
-	public String editOneEmployee(Long employeeId, Long departmentId) {
+	public String editOneEmployee(Long employeeId, Long departmentId, Double salary, String strEndDate) throws ParseException {
 		System.out.println("@editOneEmployee employeeId: " + employeeId + " departmentId: " + departmentId);
+		
 		if (employeeId != null && departmentId != null) {
 			Person emp = personService.findById(employeeId);
 			Department dept = departmentService.findOne(departmentId);
 			if (emp != null && emp.getRole().getRoleId() == CommonUtils.ROLE_SHORT_TERM_EMPLOYEE && dept != null) {
 				emp.setDepartment(dept);
+				emp.setSalary(salary);
+				if (emp.getEndDate() == null) {
+					emp.setStartDate(new Date());
+				}
+				SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+				Date endDate = df.parse(strEndDate);
+				emp.setEndDate(endDate);
 				emp.setStatus(CommonUtils.EMPLOYEE_WORKING);
 				emp = personService.findById(employeeId);
 			}

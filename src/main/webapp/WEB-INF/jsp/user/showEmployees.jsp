@@ -2,15 +2,29 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<jsp:include page="../common/header.jsp" />
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/jquery.dataTables.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/dataTables.bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/static/js/common/select2.full.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/static/js/common/bootstrap-datepicker.js"></script>
 	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/select2.min.css" rel="stylesheet">
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet"   media="screen">
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+	
+	<style>
+		.datepicker.dropdown-menu {
+			z-index: 10002 !important;
+		}
+	</style>
 	<script>
 	    $(document).ready(function() {
+	    	//$(".select2").select2();
+	    	
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
@@ -18,28 +32,65 @@
 	        
 	        $('#empModal').on('shown.bs.modal', function (event) {
 	        	
-	        	var pId, pName, depId;
+	        	var pId, pName, depId, salary, endDate;
 	        	if (typeof(event.relatedTarget) == "undefined") {
 	        		pId = $(this).data('pid');
 	        		pName = $(this).data('pname');
 		        	depId = $(this).data('depid');
+		        	salary = $(this).data('salary');
+		        	endDate = $(this).data('edate');
 	        	} else {
 	        		var target = $(event.relatedTarget);
 	        		pId = target.data('pid');
 	        		pName = target.data('pname');
 	        		depId = target.data('depid');
+	        		salary = target.data('salary');
+	        		endDate = target.data('edate');
 	        	}
-	        	
 	        	var modal = $(this);
 	        	modal.find('.modal-body input#employeeId').val(pId);
 	        	modal.find('.modal-body input#employeeName').val(pName);
 	        	modal.find('.modal-body select#depId').val(depId);
+	        	modal.find('.modal-body input#salary').val(salary);
+	        	modal.find('.modal-body input#strEndDate').val(endDate);
+	        	//alert(modal.find('.modal-body input#strEndDate').val());
+	        	//modal.find('.modal-body input#strEndDate').attr("value", endDate);
 	        });
+	        
 	        $(".table-striped").find('tr[data-target]').on('dblclick', function(){
 	            $('#empModal').data('pid',$(this).data('pid'));
-	             $('#empModal').data('pname',$(this).data('pname'));
-	             $('#empModal').data('depid',$(this).data('depid')).modal('show');
+	            $('#empModal').data('pname',$(this).data('pname'));
+	            $('#empModal').data('depid',$(this).data('depid'));//.modal('show');
+	            $('#empModal').data('salary', $(this).data('salary'));
+	            $('#empModal').data('edate', $(this).data('edate')).modal('show');
 	        });
+	        $('#empForm').validate({
+	        	rules: {
+	        		salary: {
+	        			required: true,
+	        			min: 1,
+	        			max: 1000
+	        		},
+		    		strEndDate: {
+		    			required: true
+		    		}
+	        	}
+	        });
+	        
+	        $("#strEndDate").datepicker({
+		    	startDate: new Date(),
+		        //defaultDate: "+1w",
+		        //changeMonth: true,
+		        //numberOfMonths: 1,
+		        
+		        //todayHighlight: true,
+		        autoclose: true,
+		        format: "yyyy-mm-dd"
+		    }).on('show', function(e) {
+		    	var cur = $(this).val();
+		    	$("#strEndDate").datepicker('update', cur);
+		    });
+	        
 	    });
     </script>
 </head>
@@ -68,6 +119,14 @@
 	                    			<option value="${dept.departmentId }">${dept.departmentName }</option>
 	                    		</c:forEach>
 			                </select>
+	                    </div>
+	                    <div class="form-group">
+	                    	<label for="salary" class="control-label">Salary:</label>
+	                        <input type="text" class="form-control" id="salary" name="salary" />
+	                    </div>
+	                    <div class="form-group">
+	                    	<label for="strEndDate" class="control-label">End Date:</label>
+	                    	<input type="text" class="form-control" id="strEndDate" name="strEndDate" />
 	                    </div>
 	                    <div class="form-group">
 	                    	<button type="submit" class="btn btn-success">Update</button>
@@ -130,7 +189,7 @@
                                     </thead>
                                     <tbody>
                                     	<c:forEach var="employee" items="${employees}" varStatus="status">
-											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd table-striped"</c:when><c:otherwise>class="even table-striped"</c:otherwise></c:choose> <c:if test="${currentUser.user.role.roleId == 1 and employee.role.roleId == 5 }">data-target="#empModal" data-pid="${employee.personId }" data-pname="${employee.firstName } ${employee.lastName }" <c:choose><c:when test="${employee.department != null}">data-depid="${employee.department.departmentId}"</c:when><c:otherwise>data-depid=""</c:otherwise></c:choose></c:if>>
+											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd table-striped"</c:when><c:otherwise>class="even table-striped"</c:otherwise></c:choose> <c:if test="${currentUser.user.role.roleId == 1 and employee.role.roleId == 5 }">data-target="#empModal" data-pid="${employee.personId }" data-pname="${employee.firstName } ${employee.lastName }" <c:choose><c:when test="${employee.department != null}">data-depid="${employee.department.departmentId}" data-salary="${employee.salary }" data-edate="${employee.endDate}"</c:when><c:otherwise>data-depid="" data-salary="" data-edate=""</c:otherwise></c:choose></c:if>>
 												<td><a href="/user/showOneEmployee?personId=${employee.personId}">${employee.firstName} ${employee.lastName}</a></td>
 												<td>${employee.role.roleName}</td>
 												<td>
@@ -174,7 +233,7 @@
 												<c:if test="${currentUser.user.role.roleId == 1}">
 	                                            	<td>
 	                                            		<c:if test="${employee.role.roleId == 5 }">
-	                                            			<i class="fa fa-edit btn-danger" data-toggle="modal" data-target="#empModal" data-pid="${employee.personId }" data-pname="${employee.firstName } ${employee.lastName }" <c:choose><c:when test="${employee.department != null}">data-depid="${employee.department.departmentId}"</c:when><c:otherwise>data-depid=""</c:otherwise></c:choose>></i>
+	                                            			<i class="fa fa-edit btn-danger" data-toggle="modal" data-target="#empModal" data-pid="${employee.personId }" data-pname="${employee.firstName } ${employee.lastName }" <c:choose><c:when test="${employee.department != null}">data-depid="${employee.department.departmentId}" data-salary="${employee.salary }" data-edate="${employee.endDate}"</c:when><c:otherwise>data-depid="" data-salary="" data-edate=""</c:otherwise></c:choose>></i>
 	                                            		</c:if>
 	                                            	</td>
 	                                            </c:if>

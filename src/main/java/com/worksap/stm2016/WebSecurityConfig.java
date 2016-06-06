@@ -21,7 +21,7 @@ import com.worksap.stm2016.service.CurrentUserDetailsService;
 import com.worksap.stm2016.utils.CommonUtils;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

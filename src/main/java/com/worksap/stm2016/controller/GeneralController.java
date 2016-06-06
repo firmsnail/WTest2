@@ -186,6 +186,8 @@ public class GeneralController {
 			Log.info("@index loged-in!");
 			CurrentUser curUser = (CurrentUser) auth.getPrincipal();
 	        return "redirect:/user/profile?userId="+curUser.getId();
+		} else {
+			System.out.println("index hehe : " + auth.getName());
 		}
 		Log.info("@index end!");
 		return "index";
@@ -208,6 +210,7 @@ public class GeneralController {
 		System.out.println("json: " + json);
 		return json;
 	}
+	
 	@PreAuthorize("@currentUserServiceImpl.canAddRequirement(principal)")
 	@RequestMapping(value={"/testAuth"}, method = RequestMethod.GET)
 	@ResponseBody
