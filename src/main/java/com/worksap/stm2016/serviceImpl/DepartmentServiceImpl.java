@@ -14,6 +14,7 @@ import com.worksap.stm2016.modelForm.DepartmentForm;
 import com.worksap.stm2016.repository.DepartmentRepository;
 import com.worksap.stm2016.repository.PersonRepository;
 import com.worksap.stm2016.service.DepartmentService;
+import com.worksap.stm2016.utils.CommonUtils;
 
 @Service
 @Transactional
@@ -71,6 +72,8 @@ public class DepartmentServiceImpl implements DepartmentService{
 			Person manager = personRepository.findOne(department.getManagerId());
 			if (manager != null) {
 				manager.setDepartment(dept);
+				manager.setStatus(CommonUtils.EMPLOYEE_WORKING);
+				manager = personRepository.findOne(department.getManagerId());
 			}
 		}
 		return dept;

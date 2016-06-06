@@ -49,10 +49,10 @@
 						                             <label>Role</label>
 						                             <div>
 						                               		<springForm:select path="role" class="form-control select2" name="role" style="width: 100%;">
-											                	  <option value=2 selected="selected">RECRUITER</option>
-											                	  <option value=3>C&amp;B-SPECIALIST</option>
-											                	  <option value=4>TEAM-MANAGER</option>
-											                	  <option value=5>SHORT-TERM-EMPLOYEE</option>
+											                	  <option value=2 <c:if test="${user.role == 2}">selected="selected"</c:if>>RECRUITER</option>
+											                	  <option value=3 <c:if test="${user.role == 3}">selected="selected"</c:if>>C&amp;B-SPECIALIST</option>
+											                	  <option value=4 <c:if test="${user.role == 4}">selected="selected"</c:if>>TEAM-MANAGER</option>
+											                	  <option value=5 <c:if test="${user.role == 5}">selected="selected"</c:if>>SHORT-TERM-EMPLOYEE</option>
 											                </springForm:select>
 						                               		<div class="alert-danger">
 						                               			<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->

@@ -1185,7 +1185,11 @@ public class HRManagerController {
 					oriManager.setDepartment(null);
 					manager.setStatus(CommonUtils.EMPLOYEE_WORKING);
 					manager.setDepartment(dept);
+				} else if (oriManager == null) {
+					manager.setStatus(CommonUtils.EMPLOYEE_WORKING);
+					manager.setDepartment(dept);
 				}
+				manager = personService.findById(managerId);
 				dept.setManager(manager);
 				dept = departmentService.findOne(dept.getDepartmentId());
 			}

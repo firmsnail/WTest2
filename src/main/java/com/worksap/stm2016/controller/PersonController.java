@@ -137,7 +137,6 @@ public class PersonController {
 		}
 		model.addAttribute("notifications", notifications);
 		
-		
 		return "user/profile";
 	}
 	
