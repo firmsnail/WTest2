@@ -48,7 +48,14 @@
                         	-->
                         	<div class="col-lg-3 row">
                         		<div>
-                        			<strong>Recruiting Plan Maker</strong>: <a href="/user/profile?userId=${plan.planMaker.personId }">${plan.planMaker.firstName } ${plan.planMaker.lastName }</a>
+                        			<c:choose>
+                        				<c:when test="${currentUser == null or currentUser.user.role.roleId == 5 }">
+                        					<strong>Recruiting Plan Maker</strong>: ${plan.planMaker.firstName } ${plan.planMaker.lastName }
+                        				</c:when>
+                        				<c:otherwise>
+                        					<strong>Recruiting Plan Maker</strong>: <a href="/user/profile?userId=${plan.planMaker.personId }">${plan.planMaker.firstName } ${plan.planMaker.lastName }</a>
+                        				</c:otherwise>
+                        			</c:choose>
                         		</div>
                         		<div>
                         			<strong>Reason</strong>: ${plan.reason }

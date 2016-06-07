@@ -68,16 +68,14 @@
                         	<form name="analyzeRequirementsForm" method="GET" action="/recruiter/showAnalyzeRequirments">
 								<div class="form-group-sm">
 									<div class="row">
-										<div class="col-xs-1">
+										<div class="col-xs-2">
 											<label class="control-label"> From:</label>
-											<input type="text" id="from" name="strStartDate" value="${curStartDate}" />
+											<input class="form-control" type="text" id="from" name="strStartDate" value="${curStartDate}" />
 										</div>
-										<div class="col-xs-1"></div>
-										<div class="col-xs-1">
+										<div class="col-xs-2">
 											<label class="control-label"> To:</label>
-											<input type="text" id="to" name="strEndDate" value="${curEndDate}" />
+											<input class="form-control" type="text" id="to" name="strEndDate" value="${curEndDate}" />
 										</div>
-										<div class="col-xs-1"></div>
 										<div class="col-xs-2">
 											<label class="control-label">Department:</label>
 											<select class="form-control select2" name="departmentId">

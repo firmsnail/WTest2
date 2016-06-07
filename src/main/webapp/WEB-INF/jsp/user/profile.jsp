@@ -111,9 +111,16 @@
               				<p class="text-muted">
               					<c:choose>
 									<c:when test="${user.department != null}">
-										<a href="/department/showOneDepartment?departmentId=${user.department.departmentId }">
-											${user.department.departmentName}
-										</a>
+										<c:choose>
+											<c:when test="${currentUser == null or currentUser.user.role.roleId == 5 }">
+												${user.department.departmentName}
+											</c:when>
+											<c:otherwise>
+												<a href="/department/showOneDepartment?departmentId=${user.department.departmentId }">
+													${user.department.departmentName}
+												</a>
+											</c:otherwise>
+										</c:choose>
 									</c:when>
 									<c:otherwise>
 										Unknown
@@ -214,7 +221,6 @@
 												Dismiss
 											</c:otherwise>
 										</c:choose>
-										${currentUser.user.salary}
 									</c:when>
 									<c:otherwise>
 										Unknown
