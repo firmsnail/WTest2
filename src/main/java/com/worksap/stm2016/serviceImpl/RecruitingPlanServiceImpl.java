@@ -121,5 +121,10 @@ public class RecruitingPlanServiceImpl implements RecruitingPlanService{
 	public List<RecruitingPlan> findByPlanMaker(Person user) {
 		return recruitingPlanRepository.findByPlanMaker(user);
 	}
+
+	@Override
+	public List<RecruitingPlan> findByStatusIsNot(Integer status) {
+		return recruitingPlanRepository.findByStatusIsNot(status);
+	}
 	
 }

@@ -19,4 +19,5 @@ public interface RecruitingPlanService {
 	public void delete(Long planId);
 	public List<RecruitingPlan> findByPlanHRManager(Person user);
 	public List<RecruitingPlan> findByPlanMaker(Person user);
+	public List<RecruitingPlan> findByStatusIsNot(Integer status);
 }

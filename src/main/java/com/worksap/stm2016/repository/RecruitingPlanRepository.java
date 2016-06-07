@@ -21,4 +21,6 @@ public interface RecruitingPlanRepository extends PagingAndSortingRepository<Rec
 
 	List<RecruitingPlan> findByPlanMaker(Person user);
 
+	List<RecruitingPlan> findByStatusIsNot(Integer status);
+
 }

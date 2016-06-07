@@ -61,10 +61,10 @@ public class PersonController {
 	public String showEmployees(Long departmentId, Model model) {
 		List<Person> employeeList = null;
 		if (departmentId == null) {
-			employeeList = userService.findAll();
+			employeeList = userService.findByStatus(CommonUtils.EMPLOYEE_WORKING);
 		} else {
 			Department dept = deptService.findOne(departmentId);
-			employeeList = userService.findByDepartment(dept);
+			employeeList = userService.findByDepartmentAndStatus(dept, CommonUtils.EMPLOYEE_WORKING);
 		}
 		Role hrmRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
 		List<Person> pers = userService.findByRole(hrmRole);

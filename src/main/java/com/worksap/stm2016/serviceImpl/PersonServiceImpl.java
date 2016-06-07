@@ -251,6 +251,16 @@ public class PersonServiceImpl implements PersonService{
 		return personRepository.findByDepartmentAndRoleAndStatus(department, role, CommonUtils.EMPLOYEE_WORKING);
 	}
 
+	@Override
+	public List<Person> findByStatus(Integer status) {
+		return personRepository.findByStatus(status);
+	}
+
+	@Override
+	public List<Person> findByDepartmentAndStatus(Department dept, Integer status) {
+		return personRepository.findByDepartmentAndStatus(dept, status);
+	}
+
 	
 
 }

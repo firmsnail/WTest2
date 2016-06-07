@@ -23,25 +23,21 @@ public class NotificationServiceImpl implements NotificationService{
 
 	@Override
 	public List<Notification> findAll() {
-		// TODO Auto-generated method stub
 		return (List<Notification>) notificationRepository.findAll();
 	}
 
 	@Override
 	public Page<Notification> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
 		return notificationRepository.findAll(pageable);
 	}
 
 	@Override
 	public Notification save(Notification notification) {
-		// TODO Auto-generated method stub
 		return notificationRepository.save(notification);
 	}
 
 	@Override
 	public Notification findOne(Long id) {
-		// TODO Auto-generated method stub
 		return notificationRepository.findOne(id);
 	}
 
@@ -55,5 +51,4 @@ public class NotificationServiceImpl implements NotificationService{
 		return notificationRepository.findByOwnerAndStatus(user, CommonUtils.NOTIFICATION_STATUS_UNREAD);
 	}
 	
-
 }

@@ -60,7 +60,7 @@
                         			<strong>Hire Staffing Requirement</strong>: <a href="/requirement/showOneStaffRequirement?requirementId=${hire.requirementForHire.staffRequirementId }">${hire.requirementForHire.staffRequirementId }</a>
                         		</div>
                         		<div>
-                        			<strong>Salary</strong>: ${hire.salary } RMB/Day
+                        			<strong>Salary</strong>: ${hire.salary } USD/Day
                         		</div>
                         		<div>
                         			<strong>Period</strong>: ${hire.period } Months

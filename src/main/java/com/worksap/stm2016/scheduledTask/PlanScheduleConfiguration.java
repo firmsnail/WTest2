@@ -9,35 +9,37 @@ import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 @Configuration
-public class NotificationSchedleConfiguration {
+public class PlanScheduleConfiguration {
 	
-	@Bean(name = "detailFactoryBeanForNotification")  
-    public MethodInvokingJobDetailFactoryBean detailFactoryBean1(NotificationTasks scheduledTasks){  
+	@Bean(name = "detailFactoryBeanForPlan")  
+    public MethodInvokingJobDetailFactoryBean detailFactoryBeanForPlan(PlanTasks scheduledTasks){  
         MethodInvokingJobDetailFactoryBean bean = new MethodInvokingJobDetailFactoryBean ();  
         //这儿设置对应的Job对象  
         bean.setTargetObject (scheduledTasks);  
-        //这儿设置对应的方法名  与执行具体任务调度类中的方法名对应  
+        //这儿设置对应的方法名  SchedledConfiguration.java与执行具体任务调度类中的方法名对应  
         bean.setTargetMethod ("work");  
         bean.setConcurrent (false);  
         return bean;  
     }
   
-    @Bean(name = "cronTriggerBeanForNotification")  
-    public CronTriggerFactoryBean cronTriggerBeanForNotification(@Qualifier("detailFactoryBeanForNotification") MethodInvokingJobDetailFactoryBean detailFactoryBeanForNotification){  
+    @Bean(name = "cronTriggerBeanForPlan")  
+    public CronTriggerFactoryBean cronTriggerBeanForPlan(@Qualifier("detailFactoryBeanForPlan") MethodInvokingJobDetailFactoryBean detailFactoryBeanForPlan){  
         CronTriggerFactoryBean trigger = new CronTriggerFactoryBean ();  
-        trigger.setJobDetail (detailFactoryBeanForNotification.getObject ());  
+        trigger.setJobDetail (detailFactoryBeanForPlan.getObject ());  
         try {  
-            trigger.setCronExpression ("0/5 * * ? * *");//每5秒执行一次  
+            trigger.setCronExpression ("0 0 0 * * ?");//Executed in the first day of every months.
+        	//trigger.setCronExpression ("0/50 * * ? * *");
         } catch (ParseException e) {  
             e.printStackTrace ();  
         }  
-        return trigger;
-    }
-	
+        return trigger;  
+  
+    }  
+  
     @Bean  
-    public SchedulerFactoryBean schedulerFactory(@Qualifier("cronTriggerBeanForNotification") CronTriggerFactoryBean cronTriggerBeanForNotification){  
+    public SchedulerFactoryBean schedulerFactory(@Qualifier("cronTriggerBeanForPlan") CronTriggerFactoryBean cronTriggerBeanForPlan){  
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean ();  
-        schedulerFactory.setTriggers(cronTriggerBeanForNotification.getObject());  
+        schedulerFactory.setTriggers(cronTriggerBeanForPlan.getObject());  
         return schedulerFactory;  
-    }
+    }  
 }

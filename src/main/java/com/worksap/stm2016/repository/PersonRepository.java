@@ -51,6 +51,10 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 
 	List<Person> findByRoleAndStatusAndGenderIsNull(Role role, Integer status);
 
+	List<Person> findByStatus(Integer status);
+
+	List<Person> findByDepartmentAndStatus(Department dept, Integer status);
+
 	
 
 }

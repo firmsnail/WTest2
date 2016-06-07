@@ -60,7 +60,6 @@ public class Person {
 	@Column(name = "phone")
 	private String phone;
 	
-	//@ManyToOne(optional = true)
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "department_id", referencedColumnName = "department_id")
 	@JsonIgnore
