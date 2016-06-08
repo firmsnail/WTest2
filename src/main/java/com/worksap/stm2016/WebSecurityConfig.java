@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -31,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/resources/**", "/logerror", "/help", "/testChart", "/add", "/addAct", "/register", "/registerAct", "/", "/index").permitAll().anyRequest().authenticated()
+		http.authorizeRequests().antMatchers("/resources/**", "/logerror", "/help", "/testChart", "/add", "/addAct", "/register", "/registerAct", "/", "/index", "/login").permitAll().anyRequest().authenticated()
 			.and()
 			.formLogin()
 			.loginPage("/login")
@@ -102,10 +103,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public AuthenticationSuccessHandler loginSuccessHandler() {
 		return new LoginSuccessHandler();
 	}
-	
+/*	
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+		localeChangeInterceptor.setParamName("lang");
 		return localeChangeInterceptor;
 	}
 
@@ -116,6 +118,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return localeResolver;
 	}
 	
-
+	@Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+*/
 	
 }

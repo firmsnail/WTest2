@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +20,12 @@
 
     <div class="admin-form">
 	  <div class="container">
-	
+		<div class="row">
+			<div class="pull-right">
+		        <a href="?lang=en" class="btn">English</a>
+		        <a href="?lang=cn" class="btn">Chinese</a>
+		    </div>
+		</div>
 	    <div class="row">
 	      <div class="col-md-12">
 	        <!-- Widget starts -->
@@ -54,7 +60,7 @@
 	                        -->
 		                    <!-- Email -->
 		                    <div class="form-group">
-		                      <label class="control-label col-lg-3" for="inputUsername">UserName</label>
+		                      <label class="control-label col-lg-3" for="inputUsername"><spring:message code="username" /></label>
 		                      <div class="col-lg-9">
 		                        <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
 		                      </div>

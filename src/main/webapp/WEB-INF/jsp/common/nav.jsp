@@ -54,7 +54,12 @@
 	    });
 	</script>
     <ul class="nav navbar-top-links navbar-right">
-        
+        <li>
+			<div class="pull-right">
+		        <a href="?lang=en" class="btn">English</a>
+		        <a href="?lang=cn" class="btn">Chinese</a>
+		    </div>
+		</li>
         <li <c:if test="${currentUser == null or currentUser.user.role.roleId != 5 or currentUser.user.status != 2}">class="hidden"</c:if>>
         	<a href="javascript:sign()"><button type="button" class="btn btn-success">Sign</button></a>
         </li>
