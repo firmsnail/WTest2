@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +76,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="interviewModalLabel">Schedule Interview</h4>
+					<h4 class="modal-title" id="interviewModalLabel"><spring:message code="schedule-interview" /></h4>
 				</div>
 				<div class="modal-body">
 					<form role="form" action="/recruiter/scheduleOneInterview" method="POST">
@@ -83,7 +84,7 @@
 							<input type="text" class="hidden" id="interview" name="interviewId" value=""></input>
 						</div>
 						<div class="form-group">
-	                    	<label for="interviewTime" class="control-label">Interview Time:</label>
+	                    	<label for="interviewTime" class="control-label"><spring:message code="interview-time" />:</label>
 	                    	<div class="input-group date interviewTime col-md-5" data-link-field="interviewTime">
 			                    <input class="form-control" type="text" value="" readonly>
 			                    <span class="input-group-addon" hidden="hidden"><span class="glyphicon glyphicon-remove"></span></span>
@@ -91,7 +92,7 @@
 	                        <input type="text" class="form-control hidden" name="interviewTime" id="interviewTime" placeholder="choose a time">
 	                    </div>
 	                    <div class="form-group">
-	                    	<button type="submit" class="btn btn-success">Schedule</button>
+	                    	<button type="submit" class="btn btn-success"><spring:message code="interview.schedule" /></button>
 	                    </div>
 	                    <br />
 					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -112,7 +113,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="hireModalLabel">Hire</h4>
+					<h4 class="modal-title" id="hireModalLabel"><spring:message code="interview.hire" /></h4>
 				</div>
 				<div class="modal-body">
 					<form role="form" id="hireForm" action="/team-manager/passOneInterview" method="POST">
@@ -120,22 +121,22 @@
 							<input type="text" class="hidden" id="interview" name="interviewId" value=""></input>
 						</div>
 	                    <div class="form-group">
-	                    	<label for="salary" class="control-label">Salary:</label>
+	                    	<label for="salary" class="control-label"><spring:message code="salary" />:</label>
 	                        <input type="text" class="form-control" id="salary" name="salary" >
 	                    </div>
 	                    <div class="form-group">
-	                    	<label for="period" class="control-label">Period:</label>
+	                    	<label for="period" class="control-label"><spring:message code="period" />:</label>
 	                    	<select class="form-control" name="period">
-	                    		  <option value=1 selected="selected">1 Month</option>
-			                	  <option value=2>2 Months</option>
-			                	  <option value=3>3 Months</option>
-			                	  <option value=4>4 Months</option>
-			                	  <option value=5>5 Months</option>
-			                	  <option value=6>6 Months</option>
+	                    		  <option value=1 selected="selected">1 <spring:message code="months" /></option>
+			                	  <option value=2>2 <spring:message code="months" /></option>
+			                	  <option value=3>3 <spring:message code="months" /></option>
+			                	  <option value=4>4 <spring:message code="months" /></option>
+			                	  <option value=5>5 <spring:message code="months" /></option>
+			                	  <option value=6>6 <spring:message code="months" /></option>
 			                </select>
 	                    </div>
 	                    <div class="form-group">
-	                    	<button type="submit" class="btn btn-success">Hire</button>
+	                    	<button type="submit" class="btn btn-success"><spring:message code="interview.hire" /></button>
 	                    </div>
 	                    <br />
 					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -157,7 +158,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                	<h1 class="page-header">Interviews</h1>
+                	<h1 class="page-header"><spring:message code="interviews" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -165,7 +166,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-							All Interviews
+							<spring:message code="all-interviews" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -176,20 +177,20 @@
                                         <tr>
                                         	<c:choose>
                                         		<c:when test="${currentUser.user.role.roleId ==2}">
-                                        			<th>Update Time</th>
+                                        			<th><spring:message code="update-time" /></th>
                                         		</c:when>
                                         		<c:otherwise>
-                                        			<th>Interview Time</th>
+                                        			<th><spring:message code="interview-time" /></th>
                                         		</c:otherwise>
                                         	</c:choose>
-                                            <th>Interviewee</th>
-                                            <th>Interviewer</th>
-                                            <th>Recruiting Plan</th>
-                                            <th>Turns</th>
-                                            <th>Details</th>
-                                            <th>Status</th>
+                                            <th><spring:message code="interviewee" /></th>
+                                            <th><spring:message code="interviewer" /></th>
+                                            <th><spring:message code="recruiting-plan" /></th>
+                                            <th><spring:message code="turns" /></th>
+                                            <th><spring:message code="details" /></th>
+                                            <th><spring:message code="status" /></th>
                                             <c:if test="${currentUser.user.role.roleId != 5}">
-                                            	<th>Operation</th>
+                                            	<th><spring:message code="operation" /></th>
                                             </c:if>
                                         </tr>
                                     </thead>
@@ -214,43 +215,43 @@
 	                                        	</c:choose>
 												<td><a href="/user/showOneEmployee?personId=${interview.interviewee.personId}">${interview.interviewee.firstName} ${interview.interviewee.lastName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${interview.interviewer.personId}">${interview.interviewer.firstName} ${interview.interviewer.lastName}</a></td>
-												<td><a href="/plan/showOneRecruitingPlan?planId=${interview.planForInterview.planId }"><i class="fa fa-search fa-fw"></i> Plan Details</a></td>
+												<td><a href="/plan/showOneRecruitingPlan?planId=${interview.planForInterview.planId }"><i class="fa fa-search fa-fw"></i> <spring:message code="plan-details" /></a></td>
 												<td>${interview.turns}</td>
-												<td><a href="/interview/showOneInterview?interviewId=${interview.interviewId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>
+												<td><a href="/interview/showOneInterview?interviewId=${interview.interviewId }"><i class="fa fa-search fa-fw"></i> <spring:message code="see-details" /></a></td>
 											
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 4}">
 															<c:choose>
 																<c:when test="${interview.status == 1}">		<!-- INTERVIEW_PENDING_SCHEDULE -->
-																	<span class="label label-warning">Pending Schedule</span>
+																	<span class="label label-warning"><spring:message code="pending-schedule" /></span>
 																</c:when>
 																<c:when test="${interview.status == 2}">		<!-- INTERVIEW_INTERVIEWING -->
-																	<span class="label label-success">Interviewing</span>
+																	<span class="label label-success"><spring:message code="interviewing" /></span>
 																</c:when>
 																<c:otherwise>
-																	Unknown
+																	<spring:message code="unknown" />
 																</c:otherwise>
 															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 5}">
 															<c:choose>
 																<c:when test="${interview.status == 1}">		<!-- INTERVIEW_PENDING_SCHEDULE -->
-																	<span class="label label-warning">Pending Schedule</span>
+																	<span class="label label-warning"><spring:message code="pending-schedule" /></span>
 																</c:when>
 																<c:when test="${interview.status == 2}">		<!-- INTERVIEW_INTERVIEWING -->
-																	<span class="label label-primary">Interviewing</span>
+																	<span class="label label-primary"><spring:message code="interviewing" /></span>
 																</c:when>
 																<c:when test="${interview.status == 4}">		<!-- INTERVIEW_PASSED -->
-																	<span class="label label-success">Passed</span>
+																	<span class="label label-success"><spring:message code="passed" /></span>
 																</c:when>
 																<c:otherwise>
-																	<span class="label label-danger">Failed</span>
+																	<span class="label label-danger"><spring:message code="failed" /></span>
 																</c:otherwise>
 															</c:choose>
 														</c:when>
 														<c:otherwise>
-															Unknown
+															<spring:message code="unknown" />
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -260,37 +261,34 @@
 															<c:when test="${currentUser.user.role.roleId == 2}">
 																<c:choose>
 																	<c:when test="${interview.status == 1}">		<!-- APPLY_PENDING_FILTER -->
-																		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#interviewModal" data-interviewid="${interview.interviewId }">Schedule</button>
-																		<a href="#" data-toggle="tooltip" title="Automatically schedule interviews. It is not implemented.">
-																			<button type="button" class="btn btn-success disabled">Auto Schedule</button>
-																		</a>
+																		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#interviewModal" data-interviewid="${interview.interviewId }"><spring:message code="interview.schedule" /></button>
 																	</c:when>
 																	<c:otherwise>
-																		<button type="button" class="btn btn-success disabled">Schedule</button>
-																		<a href="#" data-toggle="tooltip" title="Automatically schedule interviews. It is not implemented.">
-																			<button type="button" class="btn btn-success disabled">Auto Schedule</button>
-																		</a>
+																		<button type="button" class="btn btn-success disabled"><spring:message code="interview.schedule" /></button>
 																	</c:otherwise>
 																</c:choose>
+																<a href="#" data-toggle="tooltip" title="Automatically schedule interviews. It is not implemented.">
+																	<button type="button" class="btn btn-success disabled"><spring:message code="auto-schedule" /></button>
+																</a>
 															</c:when>
 															<c:when test="${currentUser.user.role.roleId == 4}">
 																<!-- TODO Hire-->
 																<c:choose>
 																	<c:when test="${interview.status == 2 }">
-																		<a href="/team-manager/addOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-primary">More</button></a>
-																		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hireModal" data-interviewid="${interview.interviewId }">Hire</button>
+																		<a href="/team-manager/addOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-primary"><spring:message code="interview.more" /></button></a>
+																		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#hireModal" data-interviewid="${interview.interviewId }"><spring:message code="interview.hire" /></button>
 																		<!-- <a href="/team-manager/passOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-success">Hire</button></a>-->
-																		<a href="/team-manager/failOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-danger">Fail</button></a>
+																		<a href="/team-manager/failOneInterview?interviewId=${interview.interviewId }"><button type="button" class="btn btn-danger"><spring:message code="fail" /></button></a>
 																	</c:when>
 																	<c:otherwise>
-																		<button type="button" class="btn btn-primary disabled">More</button>
-																		<button type="button" class="btn btn-success disabled">Hire</button>
-																		<button type="button" class="btn btn-danger disabled">Fail</button>
+																		<button type="button" class="btn btn-primary disabled"><spring:message code="interview.more" /></button>
+																		<button type="button" class="btn btn-success disabled"><spring:message code="interview.hire" /></button>
+																		<button type="button" class="btn btn-danger disabled"><spring:message code="fail" /></button>
 																	</c:otherwise>
 																</c:choose>
 															</c:when>
 															<c:otherwise>
-																Unknown
+																<spring:message code="unknown" />
 															</c:otherwise>
 														</c:choose>
 													</td>

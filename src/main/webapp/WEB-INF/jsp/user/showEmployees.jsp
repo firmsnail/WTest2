@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,7 +102,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="empModalLabel">Update</h4>
+					<h4 class="modal-title" id="empModalLabel"><spring:message code="update" /></h4>
 				</div>
 				<div class="modal-body">
 					<form role="form" id="empForm" action="/hr-manager/editOneEmployee" method="POST">
@@ -109,11 +110,11 @@
 							<input type="text" class="hidden" id="employeeId" name="employeeId" value=""></input>
 						</div>
 	                    <div class="form-group">
-	                    	<label for="employeeName" class="control-label">Employee Name: </label>
+	                    	<label for="employeeName" class="control-label"><spring:message code="employee-name" />: </label>
 	                    	<input type="text" class="form-control" readonly="readonly" id="employeeName" value=""></input>
 	                    </div>
 	                    <div class="form-group">
-	                    	<label for="department" class="control-label">Department:</label>
+	                    	<label for="department" class="control-label"><spring:message code="department" />:</label>
 	                    	<select class="form-control" name="departmentId" id="depId">
 	                    		<c:forEach var="dept" items="${departments}">
 	                    			<option value="${dept.departmentId }">${dept.departmentName }</option>
@@ -121,15 +122,15 @@
 			                </select>
 	                    </div>
 	                    <div class="form-group">
-	                    	<label for="salary" class="control-label">Salary:</label>
+	                    	<label for="salary" class="control-label"><spring:message code="salary" />:</label>
 	                        <input type="text" class="form-control" id="salary" name="salary" />
 	                    </div>
 	                    <div class="form-group">
-	                    	<label for="strEndDate" class="control-label">End Date:</label>
+	                    	<label for="strEndDate" class="control-label"><spring:message code="end-date" />:</label>
 	                    	<input type="text" class="form-control" id="strEndDate" name="strEndDate" />
 	                    </div>
 	                    <div class="form-group">
-	                    	<button type="submit" class="btn btn-success">Update</button>
+	                    	<button type="submit" class="btn btn-success"><spring:message code="update" /></button>
 	                    </div>
 	                    <br />
 					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -151,7 +152,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Employees</h1>
+                    <h1 class="page-header"><spring:message code="employees" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -160,13 +161,13 @@
                 	
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            All Employees
+                            <spring:message code="all-employees" />
                         </div>
 						
                         <div class="panel-body">
                         	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 1 }">hidden="hidden"</c:if>>
                         		<a href="/hr-manager/addUser">
-									<button type="button" class="btn btn-success btn-lg">Add Employees</button>
+									<button type="button" class="btn btn-success btn-lg"><spring:message code="add-employee" /></button>
 								</a>
                         	</div>
                         	<br>
@@ -176,14 +177,14 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Employee Name</th>
-                                            <th>Role</th>
-                                            <th>Age</th>
-                                            <th>Gender</th>
-                                            <th>Department</th>
-                                            <th>Resign Tendency</th>
+                                            <th><spring:message code="employee-name" /></th>
+                                            <th><spring:message code="role" /></th>
+                                            <th><spring:message code="age" /></th>
+                                            <th><spring:message code="gender" /></th>
+                                            <th><spring:message code="department" /></th>
+                                            <th><spring:message code="resign-tendency" /></th>
                                             <c:if test="${currentUser.user.role.roleId == 1}">
-                                            	<th>Operation</th>
+                                            	<th><spring:message code="operation" /></th>
                                             </c:if>
                                         </tr>
                                     </thead>
@@ -198,20 +199,20 @@
 															${employee.age}
 														</c:when>
 														<c:otherwise>
-															Unknown
+															<spring:message code="unknown" />
 														</c:otherwise>
 													</c:choose>
 												</td>
 												<td>
 													<c:choose>
 														<c:when test="${employee.gender != null and employee.gender==1}">
-															Female
+															<spring:message code="female" />
 														</c:when>
 														<c:when test="${employee.gender != null and employee.gender==2}">
-															Male
+															<spring:message code="male" />
 														</c:when>
 														<c:otherwise>
-															Unknown
+															<spring:message code="unknown" />
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -221,13 +222,13 @@
 															<a href="/department/showOneDepartment?departmentId=${employee.department.departmentId}">${employee.department.departmentName}</a>
 														</c:when>
 														<c:otherwise>
-															None
+															<spring:message code="none" />
 														</c:otherwise>
 													</c:choose>
 												</td>
 												<td>
 													<a href="#" data-toggle="tooltip" title="Predict whether the employee will resign recently, which can reduce the loss of human resources. It is not implemented.">
-														<span class="label label-success disabled">Resign Tendency</span>
+														<span class="label label-success disabled"><spring:message code="resign-tendency" /></span>
 													</a>
 												</td>
 												<c:if test="${currentUser.user.role.roleId == 1}">

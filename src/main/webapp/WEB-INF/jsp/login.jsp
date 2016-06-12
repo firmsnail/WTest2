@@ -17,13 +17,15 @@
 </head>
 
 <body>
-
     <div class="admin-form">
 	  <div class="container">
 		<div class="row">
+			<div class="col-md-12">
 			<div class="pull-right">
-		        <a href="?lang=en" class="btn">English</a>
-		        <a href="?lang=cn" class="btn">Chinese</a>
+				<a href="#"><strong><spring:message code="language" />:</strong></a>
+		        <a href="?lang=en" class="btn"><img src="${pageContext.request.contextPath}/resources/static/img/en.png" height="30"></img></a>
+		        <a href="?lang=cn" class="btn"><img src="${pageContext.request.contextPath}/resources/static/img/cn.png" height="30"></img></a>
+		    </div>
 		    </div>
 		</div>
 	    <div class="row">
@@ -32,7 +34,7 @@
 	            <div class="widget worange">
 	              <!-- Widget head -->
 	              <div class="widget-head">
-	                <i class="fa fa-user"></i> Login 
+	                <i class="fa fa-user"></i> <spring:message code="login" /> 
 	              </div>
 	
 	              <div class="widget-content">
@@ -67,7 +69,7 @@
 		                    </div>
 		                    <!-- Password -->
 		                    <div class="form-group">
-		                      <label class="control-label col-lg-3" for="inputPassword">Password</label>
+		                      <label class="control-label col-lg-3" for="inputPassword"><spring:message code="password" /></label>
 		                      <div class="col-lg-9">
 		                        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
 		                      </div>
@@ -78,15 +80,15 @@
 								<div class="col-lg-9 col-lg-offset-3">
 			                      <div class="checkbox">
 			                        <label>
-			                          <input type="checkbox" name="remember-me" id="remember-me" value="true"> Remember me
+			                          <input type="checkbox" name="remember-me" id="remember-me" value="true"> <spring:message code="remember-me" />
 			                        </label>
 									</div>
 								</div>
 							</div>
 							
 	                        <div class="col-lg-9 col-lg-offset-2">
-								<button type="submit" class="btn btn-danger">Sign in</button>
-								<button type="reset" class="btn btn-default">Reset</button>
+								<button type="submit" class="btn btn-danger"><spring:message code="log-in" /></button>
+								<button type="reset" class="btn btn-default"><spring:message code="reset" /></button>
 							</div>
 		                    <br />
 		                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -96,8 +98,8 @@
 		            </div>
 	              
 	                <div class="widget-foot">
-	                  Not Registred?<a href="/register">Register here</a>
-	                  <a class="col-lg-offset-4" href="/help">Help</a>
+	                  <spring:message code="no-register" />?<a href="/register"><spring:message code="click-register" /></a>
+	                  <a class="col-lg-offset-4" href="/help"><spring:message code="help" /></a>
 	                </div>
 	            </div>  
 	      </div>

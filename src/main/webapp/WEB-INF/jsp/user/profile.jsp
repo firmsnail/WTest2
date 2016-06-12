@@ -79,19 +79,19 @@
 							<p class="text-muted text-center">
 								<c:choose>
 									<c:when test="${user.role.roleId == 1}">
-										HR Manager
+										<spring:message code="role.hrm" />
 									</c:when>
 									<c:when test="${user.role.roleId == 2}">
-										Recruiter
+										<spring:message code="role.recruiter" />
 									</c:when>
 									<c:when test="${user.role.roleId == 3}">
-										C&B Specialist
+										<spring:message code="role.specialist" />
 									</c:when>
 									<c:when test="${user.role.roleId == 4}">
-										Staff Team Manager
+										<spring:message code="role.team-manager" />
 									</c:when>
 									<c:otherwise>
-										Short-term Employee
+										<spring:message code="role.short-term-employee" />
 									</c:otherwise>
 								</c:choose>
 							</p>
@@ -104,11 +104,11 @@
 					<!-- About Me Box -->
 					<div class="box box-primary">
 						<div class="box-header with-border">
-							<h3 class="box-title">About Me</h3>
+							<h3 class="box-title"><spring:message code="about-me" /></h3>
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body">
-							<strong><i class="fa fa-home margin-r-5"></i> Department</strong>
+							<strong><i class="fa fa-home margin-r-5"></i> <spring:message code="department" /></strong>
               				<p class="text-muted">
               					<c:choose>
 									<c:when test="${user.department != null}">
@@ -124,46 +124,46 @@
 										</c:choose>
 									</c:when>
 									<c:otherwise>
-										Unknown
+										<spring:message code="unknown" />
 									</c:otherwise>
 								</c:choose>
               				</p>
               				<hr>
-							<strong><i class="fa fa-user-md margin-r-5"></i> Gender</strong>
+							<strong><i class="fa fa-user-md margin-r-5"></i> <spring:message code="gender" /></strong>
 							<p class="text-muted">
 								<c:choose>
 									<c:when test="${user.gender == 1}">
-										Female
+										<spring:message code="female" />
 									</c:when>
 									<c:when test="${user.gender == 2}">
-										Male
+										<spring:message code="male" />
 									</c:when>
 									<c:otherwise>
-										Unknown
+										<spring:message code="unknown" />
 									</c:otherwise>
 								</c:choose>
 							</p>
 							<hr>
-							<strong><i class="fa fa-child margin-r-5"></i> Age</strong>
+							<strong><i class="fa fa-child margin-r-5"></i> <spring:message code="age" /></strong>
 							<p class="text-muted">
 								<c:choose>
 									<c:when test="${user.age != null}">
 										${user.age}
 									</c:when>
 									<c:otherwise>
-										Unknown
+										<spring:message code="unknown" />
 									</c:otherwise>
 								</c:choose>
 							</p>
 							<hr>
-							<strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+							<strong><i class="fa fa-map-marker margin-r-5"></i> <spring:message code="location" /></strong>
               				<p class="text-muted">
               					<c:choose>
 									<c:when test="${user.address != null}">
 										${user.address}
 									</c:when>
 									<c:otherwise>
-										Unknown
+										<spring:message code="unknown" />
 									</c:otherwise>
 								</c:choose>
               				</p>
@@ -175,28 +175,28 @@
 										${user.phone}
 									</c:when>
 									<c:otherwise>
-										Unknown
+										<spring:message code="unknown" />
 									</c:otherwise>
 								</c:choose>
               				</p>
               				<hr>
-              				<strong><i class="fa fa-envelope-o margin-r-5"></i> Email</strong>
+              				<strong><i class="fa fa-envelope-o margin-r-5"></i> <spring:message code="email" /></strong>
               				<p class="text-muted">
               					<c:choose>
 									<c:when test="${user.email != null}">
 										${user.email}
 									</c:when>
 									<c:otherwise>
-										Unknown
+										<spring:message code="unknown" />
 									</c:otherwise>
 								</c:choose>
               				</p>
               				<hr>
-              				<strong><i class="fa fa-money margin-r-5"></i> Salary</strong>
+              				<strong><i class="fa fa-money margin-r-5"></i> <spring:message code="salary" /></strong>
               				<p class="text-muted">
               					<c:choose>
               						<c:when test="${user.salary == null or (currentUser.user.role.roleId == 5 and currentUser.user.personId != user.personId) }">
-              							Unknown
+              							<spring:message code="unknown" />
               						</c:when>
 									<c:otherwise>
 										${user.salary}
@@ -204,44 +204,44 @@
 								</c:choose>
               				</p>
               				<hr>
-              				<strong><i class="fa fa-lightbulb-o margin-r-5"></i> Status</strong>
+              				<strong><i class="fa fa-lightbulb-o margin-r-5"></i> <spring:message code="status" /></strong>
               				<p class="text-muted">
               					<c:choose>
 									<c:when test="${user.status != null}">
 										<c:choose>
 											<c:when test="${user.status == 0}">
-												Registered
+												<spring:message code="registered" />
 											</c:when>
 											<c:when test="${user.status == 1}">
-												Candidate
+												<spring:message code="candidate" />
 											</c:when>
 											<c:when test="${user.status == 2}">
-												Working
+												<spring:message code="working" />
 											</c:when>
 											<c:otherwise>
-												Dismiss
+												<spring:message code="dismiss" />
 											</c:otherwise>
 										</c:choose>
 									</c:when>
 									<c:otherwise>
-										Unknown
+										<spring:message code="unknown" />
 									</c:otherwise>
 								</c:choose>
               				</p>
               				<hr>
-              				<strong><i class="fa fa-clock-o margin-r-5"></i> Period</strong>
+              				<strong><i class="fa fa-clock-o margin-r-5"></i> <spring:message code="period" /></strong>
               				<p class="text-muted">
               					<c:choose>
 									<c:when test="${user.startDate != null}">
 										<fmt:formatDate value="${user.startDate}" pattern="yyyy-MM-dd"/> ~ <fmt:formatDate value="${user.endDate}" pattern="yyyy-MM-dd"/>
 									</c:when>
 									<c:otherwise>
-										Unknown
+										<spring:message code="unknown" />
 									</c:otherwise>
 								</c:choose>
               				</p>
               				<hr>
-							<strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+							<strong><i class="fa fa-pencil margin-r-5"></i> <spring:message code="skills" /></strong>
 							<p>
 								<c:choose>
 									<c:when test="${curSkillsOb != null and fn:length(curSkillsOb) > 0}">
@@ -250,7 +250,7 @@
 										</c:forEach>
 									</c:when>
 									<c:otherwise>
-										None
+										<spring:message code="none" />
 									</c:otherwise>
 								</c:choose>
 							</p>
@@ -267,14 +267,14 @@
 		          	</div>
 		          	
 		            <ul class="nav nav-tabs">
-		              <li class="active" id="li-timeline"><a href="#timeline" data-toggle="tab">Notification</a></li>
-		              <li id="li-settings"><a href="#settings" data-toggle="tab">Settings</a></li>
+		              <li class="active" id="li-timeline"><a href="#timeline" data-toggle="tab"><spring:message code="notification" /></a></li>
+		              <li id="li-settings"><a href="#settings" data-toggle="tab"><spring:message code="settings" /></a></li>
 		            </ul>
 		            <div class="tab-content">
 			              <div class="active tab-pane" id="timeline">
 							<c:choose>
 								<c:when test="${notifications == null or fn:length(notifications) == 0 }">
-									<h2>You haven't any notifications!</h2>
+									<h2><spring:message code="no-notification" /></h2>
 								</c:when>
 								<c:otherwise>
 									<ul class="timeline timeline-inverse">
@@ -332,22 +332,22 @@
 				                	  				<h3 class="timeline-header">
 				                	  					<c:choose>
 					                	  					<c:when test="${notification.type == 1}">
-					                	  						Staffing Requirement Notification
+					                	  						<spring:message code="staffing-requirement-notification" />
 					                	  					</c:when>
 					                	  					<c:when test="${notification.type == 2}">
-					                	  						Recruiting Plan Notification
+					                	  						<spring:message code="recruiting-plan-notification" />
 					                	  					</c:when>
 					                	  					<c:when test="${notification.type == 3}">
-					                	  						Hire Notification
+					                	  						<spring:message code="hire-notification" />
 					                	  					</c:when>
 					                	  					<c:when test="${notification.type == 4}">
-					                	  						Dismission Request Notification
+					                	  						<spring:message code="dismission-request-notification" />
 					                	  					</c:when>
 					                	  					<c:when test="${notification.type == 5}">
-					                	  						Leaving Request Notification
+					                	  						<spring:message code="leaving-request-notification" />
 					                	  					</c:when>
 					                	  					<c:otherwise>
-					                	  						Interview Notification
+					                	  						<spring:message code="interview-notification" />
 					                	  					</c:otherwise>
 					                	  				</c:choose>
 				                	  				</h3>
@@ -364,7 +364,7 @@
 					                	  				</c:choose>
 					                	  			</div>
 					                	  			<div class="timeline-footer">
-					                	  				<a class="btn btn-primary btn-xs" href="${notification.url }">View Details</a>
+					                	  				<a class="btn btn-primary btn-xs" href="${notification.url }"><spring:message code="view-details" /></a>
 					                	  			</div>
 				                	  			</div>
 				                	  		</li>
@@ -380,7 +380,7 @@
 								<springForm:errors path="" element="div" />
 								
 								<div class="form-group">
-		                             <label class="control-label col-sm-2" for="firstName">First Name</label>
+		                             <label class="control-label col-sm-2" for="firstName"><spring:message code="first-name" /></label>
 		                             <div class="col-sm-10">
 		                               		<springForm:input path="firstName" type="text" class="form-control" id="firstName" name="firstName" value="${user.firstName }"/>
 		                               		<div class="alert-danger">
@@ -390,7 +390,7 @@
 	                           </div>
 	                           
 	                           <div class="form-group">
-		                             <label class="control-label col-sm-2" for="lastName">Last Name</label>
+		                             <label class="control-label col-sm-2" for="lastName"><spring:message code="last-name" /></label>
 		                             <div class="col-sm-10">
 		                               		<springForm:input path="lastName" type="text" class="form-control" id="lastName" name="lastName" value="${user.lastName }"/>
 		                               		<div class="alert-danger">	
@@ -401,7 +401,7 @@
 								
 								<!-- text input -->
 								<div class="form-group">
-									  <label for="email" class="col-sm-2 control-label">Email</label>
+									  <label for="email" class="col-sm-2 control-label"><spring:message code="email" /></label>
 									  <div class="col-sm-10">
 											<springForm:input path="email" type="text" class="form-control" id="email" name="email" value="${user.email }"/>
 											<div class="alert-danger">
@@ -411,7 +411,7 @@
 								</div>
 								
 								<div class="form-group">
-									  <label for="gender" class="col-sm-2 control-label">Gender</label>
+									  <label for="gender" class="col-sm-2 control-label"><spring:message code="gender" /></label>
 									  <div class="col-sm-10">
 											<springForm:select path="gender" class="form-control select2" name="gender" value="${user.gender }" style="width: 100%;">
 							                	  <option <c:if test="${user.gender != 1  and user.gender != 2}">selected="selected"</c:if>></option>
@@ -426,7 +426,7 @@
 								</div>
 								
 								<div class="form-group">
-									  <label for="age" class="col-sm-2 control-label">Age</label>
+									  <label for="age" class="col-sm-2 control-label"><spring:message code="age" /></label>
 									  <div class="col-sm-10">
 											<springForm:input path="age" type="text" class="form-control" id="age" name="age" value="${user.age }"/>
 											<div class="alert-danger">
@@ -436,7 +436,7 @@
 								</div>
 								
 								<div class="form-group">
-									  <label for="address" class="col-sm-2 control-label">Address</label>
+									  <label for="address" class="col-sm-2 control-label"><spring:message code="address" /></label>
 									  <div class="col-sm-10">
 											<springForm:input path="address" type="text" class="form-control" id="address" name="address" value="${user.address }"/>
 											<div class="alert-danger">
@@ -446,7 +446,7 @@
 								</div>
 								
 								<div class="form-group">
-									  <label for="phone" class="col-sm-2 control-label">Mobile Phone</label>
+									  <label for="phone" class="col-sm-2 control-label"><spring:message code="mobile-phone" /></label>
 									  <div class="col-sm-10">
 											<springForm:input path="phone" type="text" class="form-control" id="phone" name="phone" value="${user.phone }"/>
 											<div class="alert-danger">
@@ -456,7 +456,7 @@
 								</div>
 								
 								<div class="form-group">
-									  <label for="skills" class="col-sm-2 control-label">Skills</label>
+									  <label for="skills" class="col-sm-2 control-label"><spring:message code="skills" /></label>
 									  <div class="col-sm-10">
 											<springForm:select path="skills" class="form-control select2" multiple="multiple" data-placeholder="Select skills" name="skills" style="width: 100%;">
 												  <c:forEach var="skill" items="${allSkills}" varStatus="status">
@@ -480,7 +480,7 @@
 								</div>
 								
 								<div class="form-group">
-									  <label for="password" class="col-sm-2 control-label">Password</label>
+									  <label for="password" class="col-sm-2 control-label"><spring:message code="password" /></label>
 									  <div class="col-sm-10">
 											<springForm:input path="password" type="text" class="form-control" id="password" name="password"/>
 											<div class="alert-danger">
@@ -489,7 +489,7 @@
 									  </div>
 								</div>
 								<div class="form-group">
-									  <label for="confirmPassword" class="col-sm-2 control-label">Confirm Password</label>
+									  <label for="confirmPassword" class="col-sm-2 control-label"><spring:message code="conf-password" /></label>
 									  <div class="col-sm-10">
 											<springForm:input path="confirmPassword" type="text" class="form-control" id="confirmPassword" name="confirmPassword"/>
 											<div class="alert-danger">
@@ -500,7 +500,7 @@
 								
 								<div class="form-group">
 								   <div class="col-sm-offset-2 col-sm-10">
-										<button type="submit" class="btn btn-danger">Submit</button>
+										<button type="submit" class="btn btn-danger"><spring:message code="submit" /></button>
 								   </div>
 								</div>
 								<br />

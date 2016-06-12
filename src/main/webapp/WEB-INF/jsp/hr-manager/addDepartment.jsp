@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +24,7 @@
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Create Departments</h1>
+                    <h1 class="page-header"><spring:message code="create-department" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -46,7 +47,7 @@
 								              	<springForm:errors path="" element="div" />
 								                <!-- text input -->
 								                <div class="form-group">
-									                  <label>Department Name</label>
+									                  <label><spring:message code="department-name" /></label>
 									                  <div>
 									                  		<springForm:input path="departmentName" type="text" class="form-control" id="departmentName" name="departmentName" />
 															<div class="alert-danger">	
@@ -57,7 +58,7 @@
 				
 								                <!-- textarea -->
 								                <div class="form-group">
-								                	  <label>Description</label>
+								                	  <label><spring:message code="description" /></label>
 									                  <div>
 									                  		<springForm:textarea path="description" type="text" class="form-control" id="description" name="description" />
 															<div class="alert-danger">
@@ -67,7 +68,7 @@
 								                </div>
 								                
 								                <div class="form-group">
-										                <label>Manager</label>
+										                <label><spring:message code="manager" /></label>
 										                <springForm:select path="managerId" class="form-control select2" name="managerId" style="width: 100%;">
 										                	  <option selected="selected"></option>
 										                	  <c:forEach var="manager" items="${managers}" varStatus="status">
@@ -82,8 +83,8 @@
 									            </div>
 					                            <div class="form-group">
 				                                   <div class="col-lg-9 ">
-						                           		<button type="submit" class="btn btn-danger">Create</button>
-						                           		<button type="reset" class="btn btn-success">Reset</button>
+						                           		<button type="submit" class="btn btn-danger"><spring:message code="create" /></button>
+						                           		<button type="reset" class="btn btn-success"><spring:message code="reset" /></button>
 						                           </div>
 				                                </div>
 											    <br />

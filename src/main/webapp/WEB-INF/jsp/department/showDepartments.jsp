@@ -1,7 +1,8 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +59,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="deptModalLabel">Update</h4>
+					<h4 class="modal-title" id="deptModalLabel"><spring:message code="update" /></h4>
 				</div>
 				<div class="modal-body">
 					<form role="form" id="deptForm" action="/hr-manager/editOneDepartment" method="POST">
@@ -66,11 +67,11 @@
 							<input type="text" class="hidden" id="deptId" name="departmentId" value=""></input>
 						</div>
 	                    <div class="form-group">
-	                    	<label for="deptName" class="control-label">Department Name: </label>
+	                    	<label for="deptName" class="control-label"><spring:message code="department-name" />: </label>
 	                    	<input type="text" class="form-control" readonly="readonly" id="deptName" value=""></input>
 	                    </div>
 	                    <div class="form-group">
-	                    	<label for="manager" class="control-label">Manager:</label>
+	                    	<label for="manager" class="control-label"><spring:message code="manager" />:</label>
 	                    	<select class="form-control" name="managerId" id="managerId">
 	                    		<c:forEach var="manager" items="${managers}">
 	                    			<option value="${manager.personId }">${manager.firstName } ${manager.lastName }</option>
@@ -78,7 +79,7 @@
 			                </select>
 	                    </div>
 	                    <div class="form-group">
-	                    	<button type="submit" class="btn btn-success">Update</button>
+	                    	<button type="submit" class="btn btn-success"><spring:message code="update" /></button>
 	                    </div>
 	                    <br />
 					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -99,7 +100,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Departments</h1>
+                    <h1 class="page-header"><spring:message code="departments" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -107,13 +108,13 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            All Departments
+                            <spring:message code="all-departments" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                         	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 1 }">hidden="hidden"</c:if>>
                         		<a href="/hr-manager/addDept">
-									<button type="button" class="btn btn-success btn-lg">Create Department</button>
+									<button type="button" class="btn btn-success btn-lg"><spring:message code="create-department" /></button>
 								</a>
                         	</div>
                         	<br>
@@ -121,12 +122,12 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Department Name</th>
-                                            <th>Description</th>
-                                            <th>Manager</th>
-                                            <th>Total Employees</th>
+                                            <th><spring:message code="department-name" /></th>
+                                            <th><spring:message code="description" /></th>
+                                            <th><spring:message code="manager" /></th>
+                                            <th><spring:message code="total-employees" /></th>
                                             <c:if test="${currentUser.user.role.roleId == 1}">
-                                            	<th>Operation</th>
+                                            	<th><spring:message code="operation" /></th>
                                             </c:if>
                                         </tr>
                                     </thead>

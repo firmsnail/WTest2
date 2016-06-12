@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +48,7 @@
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Create Plan</h1>
+                    <h1 class="page-header"><spring:message code="make-recruiting-plan" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -83,7 +84,7 @@
 								                -->
 								                
 								                <div class="form-group">
-									                  <label>Expect Date</label>
+									                  <label><spring:message code="expect-date" /></label>
 									                  <div>
 									                  		<springForm:input path="expectDate" type="text" class="form-control" id="expectDate" name="expectDate" />
 															<div class="alert-danger">	
@@ -93,7 +94,7 @@
 								                </div>
 								                
 								                <div class="form-group">
-									                  <label>Invalid Date</label>
+									                  <label><spring:message code="invalid-date" /></label>
 									                  <div>
 									                  		<springForm:input path="invalidDate" type="text" class="form-control" id="invalidDate" name="invalidDate" />
 															<div class="alert-danger">	
@@ -119,7 +120,7 @@
 								                </div>
 								                -->
 								                <div class="form-group">
-								                	  <label>Staffing Requirements</label>
+								                	  <label><spring:message code="staffing-requirements" /></label>
 									                  <div>
 									                  		<springForm:select path="requirements" class="form-control select2" multiple="multiple" data-placeholder="Select requirements" name="requirements" style="width: 100%;">
 											                	  <c:forEach var="requirement" items="${chooseRequirements}" varStatus="status">
@@ -136,7 +137,7 @@
 								                </div>
 								                
 								                <div class="form-group">
-								                	  <label>Reason</label>
+								                	  <label><spring:message code="reason" /></label>
 									                  <div>
 									                  		<springForm:textarea path="reason" type="text" class="form-control" id="reason" name="reason" />
 															<div class="alert-danger">
@@ -147,8 +148,8 @@
 								                
 					                            <div class="form-group">
 				                                   <div class="col-lg-9 ">
-						                           		<button type="submit" class="btn btn-danger">Create</button>
-						                           		<button type="reset" class="btn btn-success">Reset</button>
+						                           		<button type="submit" class="btn btn-danger"><spring:message code="create" /></button>
+						                           		<button type="reset" class="btn btn-success"><spring:message code="reset" /></button>
 						                           </div>
 				                                </div>
 											    <br />

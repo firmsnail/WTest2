@@ -99,6 +99,9 @@ public class CommonUtils {
 	final static public Integer NOTIFICATION_STATUS_UNREAD = 1;
 	final static public Integer NOTIFICATION_STATUS_READ = 2;
 	
+	final static public Integer LANGUAGE_ENDLISH = 1;
+	final static public Integer LANGUAGE_CHINESE = 2;
+	
 	final static public Integer MAX_PERIOD = 6;
 	
 	final static public Integer PERIOD_UNKNOWN = 0;

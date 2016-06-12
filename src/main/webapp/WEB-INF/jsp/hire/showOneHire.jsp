@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +28,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">One Hire</h1>
+                    <h1 class="page-header"><spring:message code="one-hire" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -35,7 +36,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Hire
+                            <spring:message code="hire" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -48,48 +49,48 @@
                         	-->
                         	<div class="col-lg-3 row">
                         		<div>
-                        			<strong>Hire Department</strong>: <a href="/department/showOneDepartment?departmentId=${hire.hireDepartment.departmentId }">${hire.hireDepartment.departmentName }</a>
+                        			<strong><spring:message code="hire-department" /></strong>: <a href="/department/showOneDepartment?departmentId=${hire.hireDepartment.departmentId }">${hire.hireDepartment.departmentName }</a>
                         		</div>
                         		<div>
-                        			<strong>Hire Person</strong>: <a href="/user/profile?userId=${hire.hirePerson.personId }">${hire.hirePerson.firstName } ${hire.hirePerson.lastName }</a>
+                        			<strong><spring:message code="hire-person" /></strong>: <a href="/user/profile?userId=${hire.hirePerson.personId }">${hire.hirePerson.firstName } ${hire.hirePerson.lastName }</a>
                         		</div>
                         		<div>
-                        			<strong>Hire Recruiting Plan</strong>: <a href="/plan/showOneRecruitingPlan?planId=${hire.hirePlan.planId }">${hire.hirePlan.planId }</a>
+                        			<strong><spring:message code="hire-recruiting-plan" /></strong>: <a href="/plan/showOneRecruitingPlan?planId=${hire.hirePlan.planId }">${hire.hirePlan.planId }</a>
                         		</div>
                         		<div>
-                        			<strong>Hire Staffing Requirement</strong>: <a href="/requirement/showOneStaffRequirement?requirementId=${hire.requirementForHire.staffRequirementId }">${hire.requirementForHire.staffRequirementId }</a>
+                        			<strong><spring:message code="hire-staffing-requirement" /></strong>: <a href="/requirement/showOneStaffRequirement?requirementId=${hire.requirementForHire.staffRequirementId }">${hire.requirementForHire.staffRequirementId }</a>
                         		</div>
                         		<div>
-                        			<strong>Salary</strong>: ${hire.salary } USD/Day
+                        			<strong><spring:message code="salary" /></strong>: ${hire.salary } <spring:message code="USD-Day" />
                         		</div>
                         		<div>
-                        			<strong>Period</strong>: ${hire.period } Months
+                        			<strong><spring:message code="period" /></strong>: ${hire.period } <spring:message code="months" />
                         		</div>
                         		<div>
-                        			<strong>Status</strong>: 
+                        			<strong><spring:message code="status" /></strong>: 
                         			<c:choose>
 										<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
-											<span class="label label-warning">Recruiter Processing</span>
+											<span class="label label-warning"><spring:message code="recruiter-processing" /></span>
 										</c:when>
 										<c:when test="${hire.status == 2}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
-											<span class="label label-warning">HR Manager Processing</span>
+											<span class="label label-warning"><spring:message code="HR-manager-processing" /></span>
 										</c:when>
 										<c:when test="${hire.status == 4}">		<!-- HIRE_REJECT -->
-											<span class="label label-danger">Denied By Recruiter</span>
+											<span class="label label-danger"><spring:message code="denied-by-recruiter" /></span>
 										</c:when>
 										<c:when test="${hire.status == 5}">		<!-- HIRE_REJECT -->
-											<span class="label label-danger">Denied By HR Manager</span>
+											<span class="label label-danger"><spring:message code="denied-by-HR-manager" /></span>
 										</c:when>
 										<c:otherwise>				<!-- Finished -->
-											<span class="label label-success">Finished</span>
+											<span class="label label-success"><spring:message code="finished" /></span>
 										</c:otherwise>
 									</c:choose>
                         		</div>
                         		<div>
-                        			<strong>Submit Date</strong>: <fmt:formatDate value="${hire.submitDate}" pattern="yyyy-MM-dd"/>
+                        			<strong><spring:message code="submit-date" /></strong>: <fmt:formatDate value="${hire.submitDate}" pattern="yyyy-MM-dd"/>
                         		</div>
                         		<div>
-                        			<strong>Hire Date</strong>: 
+                        			<strong><spring:message code="hire-date" /></strong>: 
                         			<c:choose>
                         				<c:when test="${hire.status == 3}">
                         					<fmt:formatDate value="${hire.hireDate}" pattern="yyyy-MM-dd hh:mm"/>

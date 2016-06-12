@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +20,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Help</h1>
+                    <h1 class="page-header"><spring:message code="help" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

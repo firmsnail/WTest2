@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +24,7 @@
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Employees</h1>
+                    <h1 class="page-header"><spring:message code="add-employee" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -46,13 +47,13 @@
 						                       <springForm:errors path="" element="div" />
 					                           <!-- role -->
 					                           <div class="form-group">
-						                             <label>Role</label>
+						                             <label><spring:message code="role" /></label>
 						                             <div>
 						                               		<springForm:select path="role" class="form-control select2" name="role" style="width: 100%;">
-											                	  <option value=2 <c:if test="${user.role == 2}">selected="selected"</c:if>>RECRUITER</option>
-											                	  <option value=3 <c:if test="${user.role == 3}">selected="selected"</c:if>>C&amp;B-SPECIALIST</option>
-											                	  <option value=4 <c:if test="${user.role == 4}">selected="selected"</c:if>>TEAM-MANAGER</option>
-											                	  <option value=5 <c:if test="${user.role == 5}">selected="selected"</c:if>>SHORT-TERM-EMPLOYEE</option>
+											                	  <option value=2 <c:if test="${user.role == 2}">selected="selected"</c:if>><spring:message code="role.recruiter" /></option>
+											                	  <option value=3 <c:if test="${user.role == 3}">selected="selected"</c:if>><spring:message code="role.specialist" /></option>
+											                	  <option value=4 <c:if test="${user.role == 4}">selected="selected"</c:if>><spring:message code="role.team-manager" /></option>
+											                	  <option value=5 <c:if test="${user.role == 5}">selected="selected"</c:if>><spring:message code="role.short-term-employee" /></option>
 											                </springForm:select>
 						                               		<div class="alert-danger">
 						                               			<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
@@ -61,7 +62,7 @@
 						                             </div>
 					                           </div>
 					                           <div class="form-group">
-						                             <label>Username</label>
+						                             <label><spring:message code="username" /></label>
 						                             <div>
 						                               		<springForm:input path="userName" type="text" class="form-control" id="userName" name="userName" />
 						                               		<div class="alert-danger">
@@ -71,7 +72,7 @@
 					                           </div>
 					                           <!-- Password -->
 					                           <div class="form-group">
-						                             <label>Password</label>
+						                             <label><spring:message code="password" /></label>
 						                             <div>
 						                               		<springForm:input path="password" type="password" class="form-control" id="password" name="password" />
 						                               		<div class="alert-danger">	
@@ -80,7 +81,7 @@
 						                             </div>
 					                           </div>
 					                           <div class="form-group">
-						                             <label>Confirm Password</label>
+						                             <label><spring:message code="conf-password" /></label>
 						                             <div>
 						                               		<springForm:input path="confirmPassword" type="password" class="form-control" id="confirmPassword" name="confirmPassword" />
 						                               		<div class="alert-danger">
@@ -90,7 +91,7 @@
 					                           </div>
 					                           <!-- Email -->
 					                           <div class="form-group">
-						                             <label>Email</label>
+						                             <label><spring:message code="email" /></label>
 						                             <div>
 						                               		<springForm:input path="email" type="text" class="form-control" id="email" name="email" />
 						                               		<div class="alert-danger">	
@@ -100,7 +101,7 @@
 					                           </div>
 					                           <!-- Name -->
 					                           <div class="form-group">
-						                             <label>First Name</label>
+						                             <label><spring:message code="first-name" /></label>
 						                             <div>
 						                               		<springForm:input path="firstName" type="text" class="form-control" id="firstName" name="firstName" />
 						                               		<div class="alert-danger">
@@ -109,7 +110,7 @@
 						                             </div>
 					                           </div>
 					                           <div class="form-group">
-						                             <label>Last Name</label>
+						                             <label><spring:message code="last-name" /></label>
 						                             <div>
 						                               		<springForm:input path="lastName" type="text" class="form-control" id="lastName" name="lastName" />
 						                               		<div class="alert-danger">	
@@ -118,7 +119,7 @@
 						                             </div>
 					                           </div>
 					                           <div class="form-group">
-										                <label>Department</label>
+										                <label><spring:message code="department" /></label>
 										                <springForm:select path="departmentId" class="form-control select2" name="departmentId" style="width: 100%;">
 										                	  <option selected="selected"></option>
 										                	  <c:forEach var="department" items="${departments}" varStatus="status">
@@ -134,8 +135,8 @@
 					                           <br />
 					                           <div class="form-group">
 				                                   <div class="col-lg-9">
-						                           		<button type="submit" class="btn btn-danger">Add</button>
-						                           		<button type="reset" class="btn btn-success">Reset</button>
+						                           		<button type="submit" class="btn btn-danger"><spring:message code="add" /></button>
+						                           		<button type="reset" class="btn btn-success"><spring:message code="reset" /></button>
 						                           </div>
 				                               </div>
 											   <br />

@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +37,7 @@
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Ask Leave</h1>
+                    <h1 class="page-header"><spring:message code="ask-leaving" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -54,7 +55,7 @@
 								              	<springForm:errors path="" element="div" />
 								              	
 								              	<div class="form-group">
-									                <label>Date range</label>
+									                <label><spring:message code="date-range" /></label>
 									                <i class="fa fa-calendar"></i>
 									                <div>
 										                  <springForm:input path="dateRange" name="dateRange" type="text" class="form-control pull-right" id="reservation" />
@@ -65,7 +66,7 @@
 									            </div>
 
 								                <div class="form-group">
-								                	  <label>Reason</label>
+								                	  <label><spring:message code="reason" /></label>
 									                  <div>
 									                  		<springForm:textarea path="reason" type="text" class="form-control" id="reason" name="reason" />
 															<div class="alert-danger">
@@ -76,8 +77,8 @@
 								                
 					                            <div class="form-group">
 				                                   <div class="col-lg-9 ">
-						                           		<button type="submit" class="btn btn-success">Apply</button>
-						                           		<button type="reset" class="btn btn-danger">Reset</button>
+						                           		<button type="submit" class="btn btn-success"><spring:message code="apply" /></button>
+						                           		<button type="reset" class="btn btn-danger"><spring:message code="reset" /></button>
 						                           </div>
 				                                </div>
 											    <br />

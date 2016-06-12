@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +28,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">One Staffing Requirement</h1>
+                    <h1 class="page-header"><spring:message code="one-staffing-requirement" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -35,7 +36,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Staffing Requirement
+                            <spring:message code="staffing-requirement" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -48,45 +49,45 @@
                         	-->
                         	<div class="col-lg-3 row">
                         		<div>
-                        			<strong>Request Department Name</strong>: <a href="/department/showOneDepartment?departmentId=${requirement.stfrqDepartment.departmentId }">${requirement.stfrqDepartment.departmentName }</a>
+                        			<strong><spring:message code="request-department-name" /></strong>: <a href="/department/showOneDepartment?departmentId=${requirement.stfrqDepartment.departmentId }">${requirement.stfrqDepartment.departmentName }</a>
                         		</div>
                         		<div>
-                        			<strong>Reason</strong>: ${requirement.reason }
+                        			<strong><spring:message code="reason" /></strong>: ${requirement.reason }
                         		</div>
                         		<div>
-                        			<strong>Require Number</strong>: ${requirement.requireNum }
+                        			<strong><spring:message code="require-number" /></strong>: ${requirement.requireNum }
                         		</div>
                         		<div>
-                        			<strong>Submit Date</strong>: <fmt:formatDate value="${requirement.submitDate}" pattern="yyyy-MM-dd"/>
+                        			<strong><spring:message code="submit-date" /></strong>: <fmt:formatDate value="${requirement.submitDate}" pattern="yyyy-MM-dd"/>
                         		</div>
                         		<div>
-                        			<strong>Expect Date</strong>: <fmt:formatDate value="${requirement.expectDate}" pattern="yyyy-MM-dd"/>
+                        			<strong><spring:message code="expect-date" /></strong>: <fmt:formatDate value="${requirement.expectDate}" pattern="yyyy-MM-dd"/>
                         		</div>
                         		<div>
-                        			<strong>Status</strong>: 
+                        			<strong><spring:message code="status" /></strong>: 
                         			<c:choose>
 										<c:when test="${requirement.status == 1}">		
-											<span class="label label-warning">Processing By HR Manager</span>
+											<span class="label label-warning"><spring:message code="HR-manager-processing" /></span>
 										</c:when>
 										<c:when test="${requirement.status == 2}">		
-											<span class="label label-warning">Processing By Recruiter</span>
+											<span class="label label-warning"><spring:message code="recruiter-processing" /></span>
 										</c:when>
 										<c:when test="${requirement.status == 3}">		
-											<span class="label label-warning">Pending Recruit</span>
+											<span class="label label-warning"><spring:message code="pending-recruit" /></span>
 										</c:when>
 										<c:when test="${requirement.status == 4}">
-											<span class="label label-primary">Recruiting</span>
+											<span class="label label-primary"><spring:message code="recruiting" /></span>
 										</c:when>
 										<c:when test="${requirement.status == 6}">		<!-- REQUIREMENTS_REJECT -->
-											<span class="label label-danger">Denied</span>
+											<span class="label label-danger"><spring:message code="denied" /></span>
 										</c:when>
 										<c:otherwise>				<!-- Finished -->
-											<span class="label label-success">Finished</span>
+											<span class="label label-success"><spring:message code="finished" /></span>
 										</c:otherwise>
 									</c:choose>
                         		</div>
                         		<div>
-                        			<strong>Skills</strong>: 
+                        			<strong><spring:message code="skills" /></strong>: 
                         			<c:forEach var="skill" items="${skills}" varStatus="status">
                         				${skill.skillName }
                         			</c:forEach>

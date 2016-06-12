@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,7 +71,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Payrolls</h1>
+                    <h1 class="page-header"><spring:message code="payrolls" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -78,13 +79,13 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Payrolls
+                            <spring:message code="payrolls" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                         	<c:if test="${currentUser.user.role.roleId == 1 or currentUser.user.role.roleId == 3 }">
 	                        	<a href="/payroll/downloadPayrolls">
-									<button type="button" class="btn btn-success">Generate/Download Payrolls Report</button>
+									<button type="button" class="btn btn-success"><spring:message code="gen-payroll-report" /></button>
 								</a>
 								<br>
 							</c:if>
@@ -92,16 +93,16 @@
 								<div class="form-group-sm">
 									<div class="row">
 										<div class="col-xs-2">
-											<label class="control-label"> From:</label>
+											<label class="control-label"> <spring:message code="from-date" />:</label>
 											<input type="text" class="form-control" id="from" name="strStartDate" value="${curStartDate}" />
 										</div>
 										<div class="col-xs-2">
-											<label class="control-label"> To:</label>
+											<label class="control-label"> <spring:message code="to-date" />:</label>
 											<input type="text" class="form-control" id="to" name="strEndDate" value="${curEndDate}" />
 										</div>
 										<c:if test="${currentUser.user.role.roleId != 5 }">
 											<div class="col-xs-2">
-												<label class="control-label">Department:</label>
+												<label class="control-label"><spring:message code="department" />:</label>
 												<select class="form-control select2" name="departmentId">
 													<option selected="selected"></option>
 													<c:forEach var="department" items="${allDepts}" varStatus="status">
@@ -112,7 +113,7 @@
 												</select>
 											</div>
 											<div class="col-xs-3">
-												<label>Employee:</label>
+												<label><spring:message code="employee" />:</label>
 												<select class="form-control select2" name="employeeId">
 													<option selected="selected"></option>
 													<c:forEach var="employee" items="${allEmployees}" varStatus="status">
@@ -125,7 +126,7 @@
 										</c:if>
 										<br>
 										<div class="col-xs-2">
-											<button type="submit" class="btn btn-success">Query</button>
+											<button type="submit" class="btn btn-success"><spring:message code="query" /></button>
 										</div>
 									</div>
 								</div>
@@ -135,13 +136,13 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Issue Date</th>
-                                            <th>Department</th>
-                                            <th>Employee</th>
-                                            <th>Base Salary(Per day, USD)</th>
-                                            <th>Normal Attendances</th>
-                                            <th>Un-normal Attendances</th>
-                                            <th>Amount</th>
+                                            <th><spring:message code="issue-date" /></th>
+                                            <th><spring:message code="department" /></th>
+                                            <th><spring:message code="employee" /></th>
+                                            <th><spring:message code="payroll.salary" /></th>
+                                            <th><spring:message code="normal-attendances" /></th>
+                                            <th><spring:message code="un-normal-attendances" /></th>
+                                            <th><spring:message code="payroll.amount" /></th>
                                         </tr>
                                     </thead>
                                     <tbody>

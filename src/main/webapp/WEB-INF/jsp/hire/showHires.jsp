@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +28,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Hires</h1>
+                    <h1 class="page-header"><spring:message code="hires" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -35,7 +36,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            All Hires
+                            <spring:message code="all-hires" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -44,13 +45,13 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Submit Date</th>
-                                            <th>Department</th>
-                                            <th>Hire Person</th>
-                                            <th>Recruiter</th>
-                                            <th>Details</th>
-                                            <th>Status</th>
-                                            <th <c:if test="${currentUser.user.role.roleId == 4}">hidden="hidden"</c:if> >Operation</th>
+                                            <th><spring:message code="submit-date" /></th>
+                                            <th><spring:message code="department" /></th>
+                                            <th><spring:message code="hire-person" /></th>
+                                            <th><spring:message code="recruiter" /></th>
+                                            <th><spring:message code="details" /></th>
+                                            <th><spring:message code="status" /></th>
+                                            <th <c:if test="${currentUser.user.role.roleId == 4}">hidden="hidden"</c:if> ><spring:message code="operation" /></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -60,19 +61,19 @@
 												<td><a href="/department/showOneDepartment?departmentId=${hire.hireDepartment.departmentId}">${hire.hireDepartment.departmentName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${hire.hirePerson.personId}">${hire.hirePerson.firstName} ${hire.hirePerson.lastName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${hire.hireRecruiter.personId}">${hire.hireRecruiter.firstName} ${hire.hireRecruiter.lastName}</a></td>
-												<td><a href="/hire/showOneHire?hireId=${hire.hireId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>
+												<td><a href="/hire/showOneHire?hireId=${hire.hireId }"><i class="fa fa-search fa-fw"></i> <spring:message code="see-details" /></a></td>
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
 															<c:choose>
 																<c:when test="${hire.status == 2}">		<!-- HIRE_HR_MANAGER_PROCESSING -->
-																	<span class="label label-warning">Pending</span>
+																	<span class="label label-warning"><spring:message code="pending" /></span>
 																</c:when>
 																<c:when test="${hire.status == 5}">		<!-- HIRE_REJECT -->
-																	<span class="label label-danger">Denied</span>
+																	<span class="label label-danger"><spring:message code="denied" /></span>
 																</c:when>
 																<c:otherwise>				<!-- Approved -->
-																	<span class="label label-success">Approved</span>
+																	<span class="label label-success"><spring:message code="approved" /></span>
 																</c:otherwise>
 															</c:choose>
 														</c:when>
@@ -80,13 +81,13 @@
 														<c:when test="${currentUser.user.role.roleId == 2}">
 															<c:choose>
 																<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																	<span class="label label-warning">Pending</span>
+																	<span class="label label-warning"><spring:message code="pending" /></span>
 																</c:when>
 																<c:when test="${hire.status == 5}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
-																	<span class="label label-danger">Denied</span>
+																	<span class="label label-danger"><spring:message code="denied" /></span>
 																</c:when>
 																<c:otherwise>				<!-- Finished -->
-																	<span class="label label-success">Approved</span>
+																	<span class="label label-success"><spring:message code="approved" /></span>
 																</c:otherwise>
 															</c:choose>
 														</c:when>
@@ -94,24 +95,24 @@
 														<c:when test="${currentUser.user.role.roleId == 4}">
 															<c:choose>
 																<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																	<span class="label label-warning">Recruiter Processing</span>
+																	<span class="label label-warning"><spring:message code="recruiter-processing" /></span>
 																</c:when>
 																<c:when test="${hire.status == 2}">		<!-- REQUIREMENTS_PENDING_RECRUITE -->
-																	<span class="label label-warning">HR Manager Processing</span>
+																	<span class="label label-warning"><spring:message code="HR-manager-processing" /></span>
 																</c:when>
 																<c:when test="${hire.status == 4}">		<!-- HIRE_REJECT -->
-																	<span class="label label-danger">Denied By Recruiter</span>
+																	<span class="label label-danger"><spring:message code="denied-by-recruiter" /></span>
 																</c:when>
 																<c:when test="${hire.status == 5}">		<!-- HIRE_REJECT -->
-																	<span class="label label-danger">Denied By HR Manager</span>
+																	<span class="label label-danger"><spring:message code="denied-by-HR-manager" /></span>
 																</c:when>
 																<c:otherwise>				<!-- Finished -->
-																	<span class="label label-success">Finished</span>
+																	<span class="label label-success"><spring:message code="finished" /></span>
 																</c:otherwise>
 															</c:choose>
 														</c:when>
 														<c:otherwise>
-															Unknown
+															<spring:message code="unknown" />
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -120,29 +121,29 @@
 														<c:when test="${currentUser.user.role.roleId == 1}">		<!-- for hr manager -->
 															<c:choose>
 																<c:when test="${hire.status == 2}">		<!-- HIRE_HR_MANAGER_PROCESSING -->
-																	<a href="/hr-manager/aprroveOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-success">Approve</button></a>
-																	<a href="/hr-manager/rejectOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-danger">Reject</button></a>
+																	<a href="/hr-manager/aprroveOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-success"><spring:message code="approve" /></button></a>
+																	<a href="/hr-manager/rejectOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-danger"><spring:message code="reject" /></button></a>
 																</c:when>
 																<c:otherwise>
-																	<button type="button" class="btn btn-success disabled">Approve</button>
-																	<button type="button" class="btn btn-danger disabled">Reject</button>
+																	<button type="button" class="btn btn-success disabled"><spring:message code="approve" /></button>
+																	<button type="button" class="btn btn-danger disabled"><spring:message code="reject" /></button>
 																</c:otherwise>
 															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 2}">
 															<c:choose>
 																<c:when test="${hire.status == 1}">		<!-- HIRE_RECRUITER_PROCESSING -->
-																	<a href="/recruiter/aprroveOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-success">Approve</button></a>
-																	<a href="/recruiter/rejectOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-danger">Reject</button></a>
+																	<a href="/recruiter/aprroveOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-success"><spring:message code="approve" /></button></a>
+																	<a href="/recruiter/rejectOneHire?hireId=${hire.hireId }"><button type="button" class="btn btn-danger"><spring:message code="reject" /></button></a>
 																</c:when>
 																<c:otherwise>
-																	<button type="button" class="btn btn-success disabled">Approve</button>
-																	<button type="button" class="btn btn-danger disabled">Reject</button>
+																	<button type="button" class="btn btn-success disabled"><spring:message code="approve" /></button>
+																	<button type="button" class="btn btn-danger disabled"><spring:message code="reject" /></button>
 																</c:otherwise>
 															</c:choose>
 														</c:when>
 														<c:otherwise>
-															Unknown
+															<spring:message code="unknown" />
 														</c:otherwise>
 													</c:choose>
 												</td>

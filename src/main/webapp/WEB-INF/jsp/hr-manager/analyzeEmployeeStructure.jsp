@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,21 +33,21 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Analyzing the Structure of Short-term Employees</h1>
+                    <h1 class="page-header"><spring:message code="analyzing-employee-structure" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
             	<div class="col-lg-12">
             		<a href="#" data-toggle="tooltip" title="Recommend strategies about the structure of payrolls, which could improve the profits for the company. It is not implemented.">
-						<button type="button" class="btn btn-success disabled">Recommend Strategies</button>
+						<button type="button" class="btn btn-success disabled"><spring:message code="recommend-strategies" /></button>
 					</a>
             	</div>
             </div>
             <br>
             <div class="row">
             	<div class="col-lg-12">
-            		<strong>Total: </strong>${total }
+            		<strong><spring:message code="total" />: </strong>${total }
             	</div>
             </div>
             <br>
@@ -54,8 +55,8 @@
             	<div class="col-lg-12">
             		<div class="nav-tabs-custom">
             			<ul class="nav nav-tabs">
-							<li class="active"><a href="#charts" data-toggle="tab">By Charts</a></li>
-							<li><a href="#tables" data-toggle="tab">By Tables</a></li>
+							<li class="active"><a href="#charts" data-toggle="tab"><spring:message code="by-charts" /></a></li>
+							<li><a href="#tables" data-toggle="tab"><spring:message code="by-tables" /></a></li>
 			            </ul>
 			            <div class="tab-content">
 			            	<div class="active tab-pane" id="charts">
@@ -97,15 +98,15 @@
 			            			<div class="col-lg-6">
 			            				<div class="box">
 							            <div class="box-header">
-							              <h3 class="box-title">Distribution By Period</h3>
+							              <h3 class="box-title"><spring:message code="distribution-by-period" /></h3>
 							            </div>
 							            <!-- /.box-header -->
 							            <div class="box-body table-responsive no-padding">
 							              <table class="table table-hover">
 												<tr>
-												  <th>Category</th>
-												  <th>Number</th>
-												  <th>Ratio</th>
+												  <th><spring:message code="category" /></th>
+												  <th><spring:message code="number" /></th>
+												  <th><spring:message code="ratio" /></th>
 												</tr>
 												<c:forEach var="kind" items="${periodKinds }" varStatus="status">
 													<tr>
@@ -123,15 +124,15 @@
 			            			<div class="col-lg-6">
 			            				<div class="box">
 							            <div class="box-header">
-							              <h3 class="box-title">Distribution By Skill</h3>
+							              <h3 class="box-title"><spring:message code="distribution-by-skill" /></h3>
 							            </div>
 							            <!-- /.box-header -->
 							            <div class="box-body table-responsive no-padding">
 							              <table class="table table-hover">
 							                	<tr>
-												  <th>Category</th>
-												  <th>Number</th>
-												  <th>Ratio</th>
+												  <th><spring:message code="category" /></th>
+												  <th><spring:message code="number" /></th>
+												  <th><spring:message code="ratio" /></th>
 												</tr>
 												<c:forEach var="kind" items="${skillKinds }" varStatus="status">
 													<tr>
@@ -151,15 +152,15 @@
 			            			<div class="col-lg-6">
 			            				<div class="box">
 							            <div class="box-header">
-							              <h3 class="box-title">Distribution By Gender</h3>
+							              <h3 class="box-title"><spring:message code="distribution-by-gender" /></h3>
 							            </div>
 							            <!-- /.box-header -->
 							            <div class="box-body table-responsive no-padding">
 							              <table class="table table-hover">
 							                	<tr>
-												  <th>Category</th>
-												  <th>Number</th>
-												  <th>Ratio</th>
+												  <th><spring:message code="category" /></th>
+												  <th><spring:message code="number" /></th>
+												  <th><spring:message code="ratio" /></th>
 												</tr>
 												<c:forEach var="kind" items="${genderKinds }" varStatus="status">
 													<tr>
@@ -177,15 +178,15 @@
 			            			<div class="col-lg-6">
 			            				<div class="box">
 							            <div class="box-header">
-							              <h3 class="box-title">Distribution By Age</h3>
+							              <h3 class="box-title"><spring:message code="distribution-by-age" /></h3>
 							            </div>
 							            <!-- /.box-header -->
 							            <div class="box-body table-responsive no-padding">
 							              <table class="table table-hover">
 							                	<tr>
-												  <th>Category</th>
-												  <th>Number</th>
-												  <th>Ratio</th>
+												  <th><spring:message code="category" /></th>
+												  <th><spring:message code="number" /></th>
+												  <th><spring:message code="ratio" /></th>
 												</tr>
 												<c:forEach var="kind" items="${ageKinds }" varStatus="status">
 													<tr>
@@ -205,15 +206,15 @@
 			            			<div class="col-lg-6">
 			            				<div class="box">
 							            <div class="box-header">
-							              <h3 class="box-title">Distribution By Department</h3>
+							              <h3 class="box-title"><spring:message code="distribution-by-department" /></h3>
 							            </div>
 							            <!-- /.box-header -->
 							            <div class="box-body table-responsive no-padding">
 							              <table class="table table-hover">
 							                	<tr>
-												  <th>Category</th>
-												  <th>Number</th>
-												  <th>Ratio</th>
+												  <th><spring:message code="category" /></th>
+												  <th><spring:message code="number" /></th>
+												  <th><spring:message code="ratio" /></th>
 												</tr>
 												<c:forEach var="kind" items="${departmentKinds }" varStatus="status">
 													<tr>

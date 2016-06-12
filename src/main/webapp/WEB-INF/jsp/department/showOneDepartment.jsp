@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +27,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">One Departments</h1>
+                    <h1 class="page-header"><spring:message code="one-department" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -34,7 +35,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            ${department.departmentName } Department
+                            ${department.departmentName } <spring:message code="department" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -47,13 +48,13 @@
                         	-->
                         	<div class="col-lg-3 row">
                         		<div>
-                        			<strong>Department Name</strong>: ${department.departmentName }
+                        			<strong><spring:message code="department-name" /></strong>: ${department.departmentName }
                         		</div>
                         		<div>
-                        			<strong>Department Description</strong>: ${department.description }
+                        			<strong><spring:message code="description" /></strong>: ${department.description }
                         		</div>
                         		<div>
-                        			<strong>Manager</strong>: <a href="/user/profile?userId=${department.manager.personId}">${department.manager.firstName } ${department.manager.lastName }</a>
+                        			<strong><spring:message code="manager" /></strong>: <a href="/user/profile?userId=${department.manager.personId}">${department.manager.firstName } ${department.manager.lastName }</a>
                         		</div>
                         	</div>
                         	<br>
@@ -62,11 +63,11 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Employee Name</th>
-                                            <th>Role</th>
-                                            <th>Age</th>
-                                            <th>Gender</th>
-                                            <th>Department</th>
+                                            <th><spring:message code="employee-name" /></th>
+                                            <th><spring:message code="role" /></th>
+                                            <th><spring:message code="age" /></th>
+                                            <th><spring:message code="gender" /></th>
+                                            <th><spring:message code="department" /></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -80,20 +81,20 @@
 															${employee.age}
 														</c:when>
 														<c:otherwise>
-															Unknown
+															<spring:message code="unknown" />
 														</c:otherwise>
 													</c:choose>
 												</td>
 												<td>
 													<c:choose>
 														<c:when test="${employee.gender != null and employee.gender==1}">
-															Female
+															<spring:message code="female" />
 														</c:when>
 														<c:when test="${employee.gender != null and employee.gender==2}">
-															Male
+															<spring:message code="male" />
 														</c:when>
 														<c:otherwise>
-															Unknown
+															<spring:message code="unknown" />
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -103,7 +104,7 @@
 															<a href="/department/showOneDepartment?departmentId=${employee.department.departmentId}">${employee.department.departmentName}</a>
 														</c:when>
 														<c:otherwise>
-															None
+															<spring:message code="none" />
 														</c:otherwise>
 													</c:choose>
 												</td>

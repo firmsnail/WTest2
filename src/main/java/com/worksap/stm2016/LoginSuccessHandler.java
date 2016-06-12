@@ -25,7 +25,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         System.out.println("IP :"+getIpAddress(request));
         
         super.onAuthenticationSuccess(request, response, authentication);  
-    }  
+    }
     
     public String getIpAddress(HttpServletRequest request){    
         String ip = request.getHeader("x-forwarded-for");    

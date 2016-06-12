@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,14 +23,14 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Welcome</h1>
+                    <h1 class="page-header"><spring:message code="welcome" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             
             <div class="row">
                 <div class="col-lg-12 h1" style="font-style:italic;color:#0AF" >
-	                		Welcome to the Short-term Employee Management System!
+	                		<spring:message code="welcome-content" />
                 </div>
             </div>
             

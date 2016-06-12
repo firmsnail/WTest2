@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,7 +54,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Staffing Requirements Analysis</h1>
+                    <h1 class="page-header"><spring:message code="staffing-requirements-analysis" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -61,7 +62,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Staffing Requirements Analysis
+                            <spring:message code="staffing-requirements-analysis" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -69,15 +70,15 @@
 								<div class="form-group-sm">
 									<div class="row">
 										<div class="col-xs-2">
-											<label class="control-label"> From:</label>
+											<label class="control-label"> <spring:message code="from-date" />:</label>
 											<input class="form-control" type="text" id="from" name="strStartDate" value="${curStartDate}" />
 										</div>
 										<div class="col-xs-2">
-											<label class="control-label"> To:</label>
+											<label class="control-label"> <spring:message code="to-date" />:</label>
 											<input class="form-control" type="text" id="to" name="strEndDate" value="${curEndDate}" />
 										</div>
 										<div class="col-xs-2">
-											<label class="control-label">Department:</label>
+											<label class="control-label"><spring:message code="department" />:</label>
 											<select class="form-control select2" name="departmentId">
 												<option selected="selected"></option>
 												<c:forEach var="department" items="${allDepts}" varStatus="status">
@@ -88,7 +89,7 @@
 											</select>
 										</div>
 										<div class="col-xs-3">
-											<label>Skills:</label>
+											<label><spring:message code="skills" />:</label>
 											<select class="form-control select2" multiple="multiple" data-placeholder="Select skills" name="skills">
 							                	  <c:forEach var="skill" items="${allSkills}" varStatus="status">
 							                	  		<c:set var="contains" value="false" />
@@ -105,7 +106,7 @@
 										</div>
 										<br>
 										<div class="col-xs-2">
-											<button type="submit" class="btn btn-success">Analyze</button>
+											<button type="submit" class="btn btn-success"><spring:message code="analyze" /></button>
 										</div>
 									</div>
 								</div>
@@ -115,11 +116,11 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Expect Date</th>
-                                            <th>Submit Date</th>
-                                            <th>Department</th>
-                                            <th>Total requirement</th>
-                                            <th>Detail</th>
+                                            <th><spring:message code="expect-date" /></th>
+                                            <th><spring:message code="submit-date" /></th>
+                                            <th><spring:message code="department" /></th>
+                                            <th><spring:message code="total-requirement" /></th>
+                                            <th><spring:message code="details" /></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -129,7 +130,7 @@
 												<td><fmt:formatDate value="${requirement.submitDate}" pattern="yyyy-MM-dd"/></td>
 												<td><a href="/department/showOneDepartment?departmentId=${requirement.stfrqDepartment.departmentId}">${requirement.stfrqDepartment.departmentName}</a></td>
 												<td>${requirement.requireNum}</td>
-												<td><a href="/requirement/showOneStaffRequirement?requirementId=${requirement.staffRequirementId }"><i class="fa fa-search fa-fw"></i> See Details</a></td>
+												<td><a href="/requirement/showOneStaffRequirement?requirementId=${requirement.staffRequirementId }"><i class="fa fa-search fa-fw"></i> <spring:message code="see-details" /></a></td>
 											</tr>
                                     	</c:forEach>
                                     </tbody>

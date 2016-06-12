@@ -36,6 +36,7 @@ import com.worksap.stm2016.model.Notification;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.PersonService;
+import com.worksap.stm2016.utils.CommonUtils;
 import com.worksap.stm2016.validator.UserCreateFormValidator;
 
 @Controller
@@ -219,7 +220,7 @@ public class GeneralController {
 	}
 	
 	@RequestMapping(value={"/login"})
-	public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+	public String login(@RequestParam(value = "error", required = false) String error, Model model, HttpServletRequest request) {
 		if (error != null) {
 			System.out.println("Invalid username and password!");
 			model.addAttribute("loginerr", true);

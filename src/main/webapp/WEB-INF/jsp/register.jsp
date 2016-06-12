@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +29,7 @@
                 
 	            <div class="widget wred">
 	              <div class="widget-head">
-	                <i class="fa fa-lock"></i> Register 
+	              	<i class="fa fa-lock"></i> <spring:message code="register" /> 
 	              </div>
 	              <div class="widget-content">
 		                <div class="padd">
@@ -47,7 +48,7 @@
 			                             </div>
 		                           </div>
 		                           <div class="form-group">
-			                             <label class="control-label col-lg-3" for="userName">Username</label>
+			                             <label class="control-label col-lg-3" for="userName"><spring:message code="username" /></label>
 			                             <div class="col-lg-9">
 			                               		<springForm:input path="userName" type="text" class="form-control" id="userName" name="userName" />
 			                               		<div class="alert-danger">	
@@ -57,7 +58,7 @@
 		                           </div>
 		                           <!-- Password -->
 		                           <div class="form-group">
-			                             <label class="control-label col-lg-3" for="password">Password</label>
+			                             <label class="control-label col-lg-3" for="password"><spring:message code="password" /></label>
 			                             <div class="col-lg-9">
 			                               		<springForm:input path="password" type="password" class="form-control" id="password" name="password" />
 			                               		<div class="alert-danger">	
@@ -66,7 +67,7 @@
 			                             </div>
 		                           </div>
 		                           <div class="form-group">
-			                             <label class="control-label col-lg-3" for="confirmPassword">Confirm Password</label>
+			                             <label class="control-label col-lg-3" for="confirmPassword"><spring:message code="conf-password" /></label>
 			                             <div class="col-lg-9">
 			                               		<springForm:input path="confirmPassword" type="password" class="form-control" id="confirmPassword" name="confirmPassword" />
 			                               		<div class="alert-danger">
@@ -88,7 +89,7 @@
 		                           -->
 		                           <!-- Name -->
 		                           <div class="form-group">
-			                             <label class="control-label col-lg-3" for="firstName">First Name</label>
+			                             <label class="control-label col-lg-3" for="firstName"><spring:message code="first-name" /></label>
 			                             <div class="col-lg-9">
 			                               		<springForm:input path="firstName" type="text" class="form-control" id="firstName" name="firstName" />
 			                               		<div class="alert-danger">
@@ -97,7 +98,7 @@
 			                             </div>
 		                           </div>
 		                           <div class="form-group">
-			                             <label class="control-label col-lg-3" for="lastName">Last Name</label>
+			                             <label class="control-label col-lg-3" for="lastName"><spring:message code="last-name" /></label>
 			                             <div class="col-lg-9">
 			                               		<springForm:input path="lastName" type="text" class="form-control" id="lastName" name="lastName" />
 			                               		<div class="alert-danger">	
@@ -108,8 +109,8 @@
 		                           <br />
 		                           <div class="form-group">
 	                                   <div class="col-lg-9 col-lg-offset-3">
-			                           		<button type="submit" class="btn btn-danger">Register</button>
-			                           		<button type="reset" class="btn btn-success">Reset</button>
+			                           		<button type="submit" class="btn btn-danger"><spring:message code="register" /></button>
+			                           		<button type="reset" class="btn btn-success"><spring:message code="reset" /></button>
 			                           </div>
 	                               </div>
 								   <br />
@@ -119,7 +120,7 @@
 		                </div>
 	              </div>
 	              <div class="widget-foot">
-	                  Already Registred? <a href="/login">Login</a>
+	                  <spring:message code="registered" />? <a href="/login"><spring:message code="login" /></a>
 	              </div>
             </div>  
 	      </div>

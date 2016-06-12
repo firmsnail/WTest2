@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,10 +30,10 @@
                 <div class="col-lg-12">
                 	<c:choose>
 						<c:when test="${currentUser.user.role.roleId == 5}">
-							<h1 class="page-header">Applications</h1>
+							<h1 class="page-header"><spring:message code="applications" /></h1>
 						</c:when>
 						<c:otherwise>
-							<h1 class="page-header">Applicants</h1>
+							<h1 class="page-header"><spring:message code="applicants" /></h1>
 						</c:otherwise>
 					</c:choose>
                 </div>
@@ -44,10 +45,10 @@
                         <div class="panel-heading">
                         	<c:choose>
 								<c:when test="${currentUser.user.role.roleId == 5}">
-									All Applications
+									<spring:message code="all-applications" />
 								</c:when>
 								<c:otherwise>
-									All Applicants
+									<spring:message code="all-applicants" />
 								</c:otherwise>
 							</c:choose>
                         </div>
@@ -58,14 +59,14 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Apply Date</th>
+                                            <th><spring:message code="apply-date" /></th>
                                             <c:if test="${currentUser.user.role.roleId != 5 }">
-                                            	<th>Applicant</th>
+                                            	<th><spring:message code="applicant" /></th>
                                             </c:if>
-                                            <th>Recruiting Plan</th>
-                                            <th>Status</th>
+                                            <th><spring:message code="recruiting-plan" /></th>
+                                            <th><spring:message code="status" /></th>
                                             <c:if test="${currentUser.user.role.roleId != 5 }">
-                                            	<th>Operation</th>
+                                            	<th><spring:message code="operation" /></th>
                                             </c:if>
                                         </tr>
                                     </thead>
@@ -76,40 +77,40 @@
 												<c:if test="${currentUser.user.role.roleId != 5 }">
 													<td><a href="/user/showOneEmployee?personId=${applicant.applicant.personId}">${applicant.applicant.firstName} ${applicant.applicant.lastName}</a></td>
 												</c:if>
-												<td><a href="/plan/showOneRecruitingPlan?planId=${applicant.planForApplicant.planId }"><i class="fa fa-search fa-fw"></i> Plan Details</a></td>
+												<td><a href="/plan/showOneRecruitingPlan?planId=${applicant.planForApplicant.planId }"><i class="fa fa-search fa-fw"></i> <spring:message code="plan-details" /></a></td>
 												<td>
 													<c:choose>
 														<c:when test="${currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 4}">
 															<c:choose>
 																<c:when test="${applicant.status == 1}">		<!-- APPLY_PENDING_FILTER -->
-																	<span class="label label-warning">Pending Filter</span>
+																	<span class="label label-warning"><spring:message code="pending-filter" /></span>
 																</c:when>
 																<c:when test="${applicant.status == 2}">		<!-- APPLY_PASS_FILTER -->
-																	<span class="label label-success">Filter Passed</span>
+																	<span class="label label-success"><spring:message code="filter-passed" /></span>
 																</c:when>
 																<c:otherwise>
-																	Unknown
+																	<spring:message code="unknown" />
 																</c:otherwise>
 															</c:choose>
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 5}">
 															<c:choose>
 																<c:when test="${applicant.status == 1}">		<!-- APPLY_PENDING_FILTER -->
-																	<span class="label label-warning">Pending Filter</span>
+																	<span class="label label-warning"><spring:message code="pending-filter" /></span>
 																</c:when>
 																<c:when test="${applicant.status == 2}">		<!-- APPLY_PASS_FILTER -->
-																	<span class="label label-primary">Filter Passed</span>
+																	<span class="label label-primary"><spring:message code="filter-passed" /></span>
 																</c:when>
 																<c:when test="${applicant.status == 4}">		<!-- APPLY_CHOOSED -->
-																	<span class="label label-success">Choosed</span>
+																	<span class="label label-success"><spring:message code="choosed" /></span>
 																</c:when>
 																<c:otherwise>
-																	<span class="label label-danger">Failed</span>
+																	<span class="label label-danger"><spring:message code="failed" /></span>
 																</c:otherwise>
 															</c:choose>
 														</c:when>
 														<c:otherwise>
-															Unknown
+															<spring:message code="unknown" />
 														</c:otherwise>
 													</c:choose>
 												</td>
@@ -119,20 +120,20 @@
 															<c:when test="${currentUser.user.role.roleId == 2}">
 																<c:choose>
 																	<c:when test="${applicant.status == 1}">		<!-- APPLY_PENDING_FILTER -->
-																		<a href="/recruiter/passOneApplicant?applicantId=${applicant.applicantId }"><button type="button" class="btn btn-success">Pass</button></a>
-																		<a href="/recruiter/failOneApplicant?applicantId=${applicant.applicantId }"><button type="button" class="btn btn-danger">Fail</button></a>
+																		<a href="/recruiter/passOneApplicant?applicantId=${applicant.applicantId }"><button type="button" class="btn btn-success"><spring:message code="pass" /></button></a>
+																		<a href="/recruiter/failOneApplicant?applicantId=${applicant.applicantId }"><button type="button" class="btn btn-danger"><spring:message code="fail" /></button></a>
 																	</c:when>
 																	<c:otherwise>
-																		<button type="button" class="btn btn-success disabled">Pass</button>
-																		<button type="button" class="btn btn-danger disabled">Fail</button>
+																		<button type="button" class="btn btn-success disabled"><spring:message code="pass" /></button>
+																		<button type="button" class="btn btn-danger disabled"><spring:message code="fail" /></button>
 																	</c:otherwise>
 																</c:choose>
 															</c:when>
 															<c:when test="${currentUser.user.role.roleId == 4}">
-																<a href="/team-manager/chooseOneApplicant?applicantId=${applicant.applicantId }"><button type="button" class="btn btn-success">Choose</button></a>
+																<a href="/team-manager/chooseOneApplicant?applicantId=${applicant.applicantId }"><button type="button" class="btn btn-success"><spring:message code="choose" /></button></a>
 															</c:when>
 															<c:otherwise>
-																Unknown
+																<spring:message code="unknown" />
 															</c:otherwise>
 														</c:choose>
 													</td>

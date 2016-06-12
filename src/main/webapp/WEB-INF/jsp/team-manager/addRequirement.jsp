@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,21 +40,21 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="skillModalLabel">New Skill</h4>
+					<h4 class="modal-title" id="skillModalLabel"><spring:message code="new-skill" /></h4>
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="skill-name" class="control-label">Skill Name:</label>
+						<label for="skill-name" class="control-label"><spring:message code="skill-name" />:</label>
 						<input type="text" class="form-control" id="skill-name">
 					</div>
 					<div class="form-group">
-						<label for="skill-description" class="control-label">Description:</label>
+						<label for="skill-description" class="control-label"><spring:message code="description" /></label>
 						<textarea class="form-control" id="skill-description"></textarea>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<a type="button" class="btn btn-primary" onclick="addSkill('${_csrf.parameterName}', '${_csrf.token}')">Add</a>
+					<button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="cancel" /></button>
+					<a type="button" class="btn btn-primary" onclick="addSkill('${_csrf.parameterName}', '${_csrf.token}')"><spring:message code="skill.add" /></a>
 				</div>
 			</div>
 		</div>
@@ -63,7 +64,7 @@
 		<div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Create Requirement</h1>
+                    <h1 class="page-header"><spring:message code="create-staffing-requirements" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -87,7 +88,7 @@
 								              	
 								              	<!-- department -->
 												<div class="form-group" hidden="hidden">
-													<label class="control-label col-lg-3" for="departmentId">Department</label>
+													<label class="control-label col-lg-3" for="departmentId"><spring:message code="department" /></label>
 													<div class="col-lg-9">
 														<springForm:input path="departmentId" type="text" class="form-control" id="departmentId" name="departmentId" value="${currentUser.user.department.departmentId}" />
 														<div class="alert-danger">
@@ -99,7 +100,7 @@
 								              	
 								                <!-- text input -->
 								                <div class="form-group">
-									                  <label>Total Requirement</label>
+									                  <label><spring:message code="total-requirement" /></label>
 									                  <div>
 									                  		<springForm:input path="requireNum" type="text" class="form-control" id="requireNum" name="requireNum" />
 															<div class="alert-danger">	
@@ -109,7 +110,7 @@
 								                </div>
 								                
 								                <div class="form-group">
-									                  <label>Expect Date</label>
+									                  <label><spring:message code="expect-date" /></label>
 									                  <div>
 									                  		<springForm:input path="expectDate" type="text" class="form-control" id="expectDate" name="expectDate" />
 															<div class="alert-danger">	
@@ -119,8 +120,8 @@
 								                </div>
 								                
 								                <div class="form-group">
-								                	  <label>Skills</label>
-								                	  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#skillModal">New Skill</button>
+								                	  <label><spring:message code="skills" /></label>
+								                	  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#skillModal"><spring:message code="new-skill" /></button>
 									                  <div>
 									                  		<springForm:select path="skills" class="form-control select2" multiple="multiple" data-placeholder="Select skills" name="skills" style="width: 100%;">
 											                	  <c:forEach var="skill" items="${chooseSkills}" varStatus="status">
@@ -137,7 +138,7 @@
 								                </div>
 								                
 								                <div class="form-group">
-								                	  <label>Reason</label>
+								                	  <label><spring:message code="reason" /></label>
 									                  <div>
 									                  		<springForm:textarea path="reason" type="text" class="form-control" id="reason" name="reason" />
 															<div class="alert-danger">
@@ -148,8 +149,8 @@
 								                
 					                            <div class="form-group">
 				                                   <div class="col-lg-9 ">
-						                           		<button type="submit" class="btn btn-danger">Create</button>
-						                           		<button type="reset" class="btn btn-success">Reset</button>
+						                           		<button type="submit" class="btn btn-danger"><spring:message code="create" /></button>
+						                           		<button type="reset" class="btn btn-success"><spring:message code="reset" /></button>
 						                           </div>
 				                                </div>
 											    <br />

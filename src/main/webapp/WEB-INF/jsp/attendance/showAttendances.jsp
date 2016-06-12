@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +61,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Attendances</h1>
+                    <h1 class="page-header"><spring:message code="attendances" /></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -68,14 +69,14 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            All Attendances
+                            <spring:message code="all-attendances" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                         	<c:if test="${currentUser.user.role.roleId == 3 }">
 	                        	<div>
 	                        		<a href="#" data-toggle="tooltip" title="Import attendance records from paper. It is not implemented.">
-										<button type="button" class="btn btn-success disabled">Import Attendance Records</button>
+										<button type="button" class="btn btn-success disabled"><spring:message code="import-attendance-records" /></button>
 									</a>
 	                        	</div>
 	                        	<br>
@@ -84,16 +85,16 @@
 								<div class="form-group-sm">
 									<div class="row">
 										<div class="col-xs-2">
-											<label class="control-label"> From:</label>
+											<label class="control-label"> <spring:message code="from-date" />:</label>
 											<input type="text" class="form-control" id="from" name="strStartDate" value="${curStartDate}" />
 										</div>
 										<div class="col-xs-2">
-											<label class="control-label"> To:</label>
+											<label class="control-label"> <spring:message code="to-date" />:</label>
 											<input type="text" class="form-control" id="to" name="strEndDate" value="${curEndDate}" />
 										</div>
 										<c:if test="${currentUser.user.role.roleId != 5 }">
 											<div class="col-xs-2">
-												<label class="control-label">Department:</label>
+												<label class="control-label"><spring:message code="department" />:</label>
 												<select class="form-control select2" name="departmentId">
 													<option selected="selected"></option>
 													<c:forEach var="department" items="${allDepts}" varStatus="status">
@@ -104,7 +105,7 @@
 												</select>
 											</div>
 											<div class="col-xs-3">
-												<label>Employee:</label>
+												<label><spring:message code="employee" />:</label>
 												<select class="form-control select2" name="personId">
 													<option selected="selected"></option>
 													<c:forEach var="employee" items="${allEmployees}" varStatus="status">
@@ -117,7 +118,7 @@
 										</c:if>
 										<br>
 										<div class="col-xs-2">
-											<button type="submit" class="btn btn-success">Query</button>
+											<button type="submit" class="btn btn-success"><spring:message code="query" /></button>
 										</div>
 									</div>
 								</div>
@@ -127,12 +128,12 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                        	<th>Attendance Date</th>
-                                        	<th>Attendance Time</th>
-                                            <th>Leave Time</th>
-                                            <th>Attendance Department</th>
-                                            <th>Attendance Person</th>
-                                            <th>Type</th>
+                                        	<th><spring:message code="attendance-date" /></th>
+                                        	<th><spring:message code="attendance-time" /></th>
+                                            <th><spring:message code="leave-time" /></th>
+                                            <th><spring:message code="attendance-department" /></th>
+                                            <th><spring:message code="attendance-person" /></th>
+                                            <th><spring:message code="attendance.type" /></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -146,19 +147,19 @@
 												<td>
 													<c:choose>
 														<c:when test="${attendance.type == 1}">
-															<span class="label label-success">Normal</span>
+															<span class="label label-success"><spring:message code="attendance.normal" /></span>
 														</c:when>
 														<c:when test="${attendance.type == 2 }">
-															<span class="label label-warning">Attend Late</span>
+															<span class="label label-warning"><spring:message code="attendance.attend-late" /></span>
 														</c:when>
 														<c:when test="${attendance.type == 3 }">
-															<span class="label label-warning">Leave Early</span>
+															<span class="label label-warning"><spring:message code="attendance.leave-early" /></span>
 														</c:when>
 														<c:when test="${attendance.type == 4 }">
-															<span class="label label-warning">Attendance Not Record</span>
+															<span class="label label-warning"><spring:message code="attendance.attendance-not-record" /></span>
 														</c:when>
 														<c:otherwise>
-															<span class="label label-warning">Leave Not Record</span>
+															<span class="label label-warning"><spring:message code="attendance.leave-not-record" /></span>
 														</c:otherwise>
 													</c:choose>
 												</td>
