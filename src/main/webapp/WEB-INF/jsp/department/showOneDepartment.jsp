@@ -7,19 +7,106 @@
 <html lang="en">
 <head>
 	<jsp:include page="../common/header.jsp" />
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/select2.min.css" rel="stylesheet">
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/static/css/common/select2.min.css" rel="stylesheet">
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+	
+	<script src="${pageContext.request.contextPath}/resources/static/js/common/select2.full.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/jquery.dataTables.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/static/js/common/dataTables.bootstrap.min.js"></script>
-	<link href="${pageContext.request.contextPath}/resources/static/css/common/dataTables.bootstrap.css" rel="stylesheet">
+	<script src="${pageContext.request.contextPath}/resources/static/js/common/bootstrap-datepicker.js"></script>
+	<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+	<style>
+		.datepicker.dropdown-menu {
+			z-index: 10002 !important;
+		}
+	</style>
 	<script>
 	    $(document).ready(function() {
+	    	
+	    	$(".select2").select2();
+	    	
 	        $('#dataTables-example').DataTable({
 	                responsive: false
 	        });
+	        
+	        $('[data-toggle="tooltip"]').tooltip();
+	        
+	        $('#fireModal').on('shown.bs.modal', function (event) {
+	        	  var button = $(event.relatedTarget) // Button that triggered the modal
+	        	  var empId = button.data('empid') // Extract info from data-* attributesdata-interviewId
+	        	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	        	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	        	  var modal = $(this)
+	        	  //alert(curId);
+	        	  //modal.find('.modal-title').text('New message to ' + recipient)
+	        	  modal.find('.modal-body input#employeeId').val(empId);
+	        });
+	        
+	        $('#fireForm').validate({
+	        	rules: {
+	        		reason: {
+	        			required: true
+	        		},
+	        		expectDate: {
+		    			required: true
+		    		}
+	        	}
+	        });
+	        
+	        var aWeekAfterDate = new Date();
+		    aWeekAfterDate.setDate(aWeekAfterDate.getDate()+7);
+		    
+		    $( "#expectDate" ).datepicker({
+		    	startDate: aWeekAfterDate,
+
+		        autoclose: true,
+		        format: "yyyy-mm-dd"
+		    });
 	    });
     </script>
 </head>
 
 <body>
+
+	<div class="modal fade" id="fireModal" tabindex="-1" role="dialog" aria-labelledby="fireModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="fireModalLabel"><spring:message code="submit" /></h4>
+				</div>
+				<div class="modal-body">
+					<form role="form" id="fireForm" action="/team-manager/fireOneEmployee" method="POST">
+						<div class="form-group hidden">
+							<input type="text" class="hidden" id="employeeId" name="employeeId" value=""></input>
+						</div>
+	                    <div class="form-group">
+	                    	<label for="expectDate" class="control-label"><spring:message code="expect-date" />: </label>
+	                    	<input type="text" class="form-control" id="expectDate" name="expectDate" />
+	                    </div>
+	                    <div class="form-group">
+	                    	<label for="reason" class="control-label"><spring:message code="reason" />:</label>
+	                        <textarea class="form-control" id="reason" name="reason" ></textarea>
+	                    </div>
+	                    <div class="form-group">
+	                    	<button type="submit" class="btn btn-success"><spring:message code="submit" /></button>
+	                    </div>
+	                    <br />
+					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                </form>
+				</div>
+				<div class="modal-footer">
+					<!--
+					<button type="button" class="btn btn-success" data-toggle="modal" data-target="interviewModal" data-whatever="@mdo">Schedule</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					-->
+				</div>
+			</div>
+		</div>
+	</div>
 
     <div id="wrapper">
 
@@ -68,6 +155,9 @@
                                             <th><spring:message code="age" /></th>
                                             <th><spring:message code="gender" /></th>
                                             <th><spring:message code="department" /></th>
+                                            <c:if test="${currentUser != null and currentUser.user.status == 2 and currentUser.user.department.departmentId == department.departmentId }">
+                                            	<th><spring:message code="operation" /></th>
+                                            </c:if>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -108,6 +198,18 @@
 														</c:otherwise>
 													</c:choose>
 												</td>
+												<c:if test="${currentUser != null and currentUser.user.status == 2 and currentUser.user.department.departmentId == department.departmentId }">
+		                                            <td>	
+		                                            	<c:choose>
+		                                            		<c:when test="${employee.role.roleId == 4 or disMap[employee.personId] == true}">
+		                                            			<button type="button" class="btn btn-danger disabled"><spring:message code="fire" /></button>
+		                                            		</c:when>
+		                                            		<c:otherwise>
+		                                            			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#fireModal" data-empid="${employee.personId }"><spring:message code="fire" /></button>
+		                                            		</c:otherwise>
+		                                            	</c:choose>
+		                                            </td>
+	                                            </c:if>
 											</tr>
                                     	</c:forEach>
                                     </tbody>

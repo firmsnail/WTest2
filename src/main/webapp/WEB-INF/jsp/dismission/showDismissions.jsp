@@ -45,11 +45,6 @@
 									<button type="button" class="btn btn-success btn-lg"><spring:message code="apply-dismission" /></button>
 								</a>
                         	</div>
-                        	<div class="addButton" <c:if test="${currentUser == null or currentUser.role.roleId != 4 }">hidden="hidden"</c:if>>
-                        		<a href="/team-manager/addDismission">
-									<button type="button" class="btn btn-success btn-lg"><spring:message code="add-dismission" /></button>
-								</a>
-                        	</div>
                         	<br>
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">

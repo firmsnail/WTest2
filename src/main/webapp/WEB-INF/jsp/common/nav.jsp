@@ -106,6 +106,10 @@
                     <a href="/department/showDepartments"><i class="fa fa-home fa-fw"></i> <spring:message code="departments" /></a>
                 </li>
                 
+                <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId != 4}">class="hidden"</c:if> >
+                    <a href="/department/showOneDepartment?departmentId=${currentUser.user.department.departmentId }"><i class="fa fa-home fa-fw"></i> <spring:message code="department" /></a>
+                </li>
+                
                 <li <c:if test="${currentUser == null or currentUser.user.role.roleId < 1 or currentUser.user.role.roleId > 3 or currentUser.user.status != 2}">class="hidden"</c:if> >
                     <a href="/user/showEmployees"><i class="fa fa-users fa-fw"></i> <spring:message code="employees" /></a>
                 </li>
@@ -142,7 +146,6 @@
                 		</c:choose>
                 	</a>
                 </li>
-               
                 <li <c:if test="${currentUser == null or currentUser.user.status != 2 or currentUser.user.role.roleId == 2}">class="hidden"</c:if> >
                     <a href="/dismission/showDismissions"><i class="fa fa-fire fa-fw"></i> <spring:message code="dismissions" /></a>
                 </li>

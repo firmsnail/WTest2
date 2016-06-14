@@ -54,10 +54,11 @@ public class InterviewController {
 		} else if (curUser.getRole().getRoleId() == CommonUtils.ROLE_SHORT_TERM_EMPLOYEE) {
 			interviews = interviewService.findByInterviewee(curUser.getUser());
 		} else if (curUser.getUser().getDepartment() != null){
-			List<Integer> statuses = new ArrayList<Integer>();
-			statuses.add(CommonUtils.INTERVIEW_INTERVIEWING);
-			statuses.add(CommonUtils.INTERVIEW_PENDING_SCHEDULE);
-			interviews = interviewService.findByInterviewerAndStatusIn(curUser.getUser(), statuses);
+			//List<Integer> statuses = new ArrayList<Integer>();
+			//statuses.add(CommonUtils.INTERVIEW_INTERVIEWING);
+			//statuses.add(CommonUtils.INTERVIEW_PENDING_SCHEDULE);
+			//interviews = interviewService.findByInterviewerAndStatusIn(curUser.getUser(), statuses);
+			interviews = interviewService.findByInterviewer(curUser.getUser());
 		}
 		model.addAttribute("interviews", interviews);
 		return "interview/showInterviews";

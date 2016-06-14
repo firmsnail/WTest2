@@ -44,16 +44,16 @@ public class UserCreateFormValidator implements Validator {
     private void validateLastName(Errors errors, UserCreateForm form) {
 		if (CommonUtils.ContentRegex.matcher(form.getLastName()).matches()) {
 			errors.rejectValue("lastName", "lastName", "Your behavior is dangerous, please don't attempt to attack the system.");
-		} else if (!CommonUtils.FieldRegex.matcher(form.getLastName()).matches()) {
-			errors.rejectValue("lastName", "lastName", "You can only enter numbers and letters.");
+		} else if (form.getLastName().trim().length() <= 0) {
+			errors.rejectValue("lastName", "lastName", "The last name can not be empty.");
 		}
 	}
 
 	private void validateFirstName(Errors errors, UserCreateForm form) {
 		if (CommonUtils.ContentRegex.matcher(form.getFirstName()).matches()) {
 			errors.rejectValue("firstName", "firstName", "Your behavior is dangerous, please don't attempt to attack the system.");
-		} else if (!CommonUtils.FieldRegex.matcher(form.getFirstName()).matches()) {
-			errors.rejectValue("firstName", "firstName", "You can only enter numbers and letters.");
+		} else if (form.getFirstName().trim().length() <= 0) {
+			errors.rejectValue("firstName", "firstName", "The first name can not be empty.");
 		}
 	}
     
@@ -61,7 +61,7 @@ public class UserCreateFormValidator implements Validator {
 		if (CommonUtils.ContentRegex.matcher(form.getUserName()).matches()) {
 			errors.rejectValue("userName", "userName", "Your behavior is dangerous, please don't attempt to attack the system.");
 		} else if (!CommonUtils.FieldRegex.matcher(form.getUserName()).matches()) {
-			errors.rejectValue("userName", "userName", "You can only enter numbers and letters.");
+			errors.rejectValue("userName", "userName", "You can only enter underscore, numbers and letters.");
 		} else {
 			Person per = userService.findByUserName(form.getUserName());
 			if (per != null) {
@@ -83,13 +83,13 @@ public class UserCreateFormValidator implements Validator {
         	if (CommonUtils.ContentRegex.matcher(form.getPassword()).matches()) {
     			errors.rejectValue("password", "password", "Your behavior is dangerous, please don't attempt to attack the system.");
     		} else if (!CommonUtils.FieldRegex.matcher(form.getPassword()).matches()) {
-    			errors.rejectValue("password", "password", "You can only enter numbers and letters.");
+    			errors.rejectValue("password", "password", "You can only enter underscore, numbers and letters.");
     		}
         	
         	if (CommonUtils.ContentRegex.matcher(form.getConfirmPassword()).matches()) {
     			errors.rejectValue("confirmPassword", "confirmPassword", "Your behavior is dangerous, please don't attempt to attack the system.");
     		} else if (!CommonUtils.FieldRegex.matcher(form.getConfirmPassword()).matches()) {
-    			errors.rejectValue("confirmPassword", "confirmPassword", "You can only enter numbers and letters.");
+    			errors.rejectValue("confirmPassword", "confirmPassword", "You can only enter underscore, numbers and letters.");
     		}
         }
     }

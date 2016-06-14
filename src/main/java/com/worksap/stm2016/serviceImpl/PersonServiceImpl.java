@@ -233,6 +233,8 @@ public class PersonServiceImpl implements PersonService{
 		user.setAddress(userForm.getAddress());
 		user.setAge(userForm.getAge());
 		user.setPhone(userForm.getPhone());
+		user.setFirstName(userForm.getFirstName());
+		user.setLastName(userForm.getLastName());
 		if (userForm.getPassword() != null && userForm.getPassword().length() > 0) {
 			user.setPassword(CommonUtils.passwordEncoder().encode(userForm.getPassword()));
 		}

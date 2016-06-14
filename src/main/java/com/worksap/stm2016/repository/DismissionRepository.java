@@ -24,4 +24,6 @@ public interface DismissionRepository extends PagingAndSortingRepository<Dismiss
 
 	List<Dismission> findByDismissionPerson(Person user);
 
+	List<Dismission> findByDismissionPersonAndStatusIn(Person emp, List<Integer> statuses);
+
 }

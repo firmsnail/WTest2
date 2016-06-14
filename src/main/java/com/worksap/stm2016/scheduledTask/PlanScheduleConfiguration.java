@@ -27,7 +27,7 @@ public class PlanScheduleConfiguration {
         CronTriggerFactoryBean trigger = new CronTriggerFactoryBean ();  
         trigger.setJobDetail (detailFactoryBeanForPlan.getObject ());  
         try {  
-            trigger.setCronExpression ("0 0 0 * * ?");//Executed in the first day of every months.
+            trigger.setCronExpression ("0 0 0 * * ?");
         	//trigger.setCronExpression ("0/50 * * ? * *");
         } catch (ParseException e) {  
             e.printStackTrace ();  

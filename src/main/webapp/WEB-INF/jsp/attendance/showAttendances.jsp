@@ -140,8 +140,8 @@
                                     	<c:forEach var="attendance" items="${attendances}" varStatus="status">
 											<tr <c:choose><c:when test="${status.index % 2 == 0}">class="odd"</c:when><c:otherwise>class="even"</c:otherwise></c:choose>>
 												<td><fmt:formatDate value="${attendance.attendanceDate}" pattern="yyyy-MM-dd"/></td>
-												<td><fmt:formatDate value="${attendance.attendanceTime}" pattern="yyyy-MM-dd hh:mm"/></td>
-												<td><fmt:formatDate value="${attendance.leaveTime}" pattern="yyyy-MM-dd hh:mm"/></td>
+												<td><fmt:formatDate value="${attendance.attendanceTime}" pattern="yyyy-MM-dd HH:mm"/></td>
+												<td><fmt:formatDate value="${attendance.leaveTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 												<td><a href="/department/showOneDepartment?departmentId=${attendance.attendanceDepartment.departmentId}">${attendance.attendanceDepartment.departmentName}</a></td>
 												<td><a href="/user/showOneEmployee?personId=${attendance.attendancePerson.personId}">${attendance.attendancePerson.firstName} ${attendance.attendancePerson.lastName}</a></td>
 												<td>

@@ -80,7 +80,7 @@ public class DismissionServiceImpl implements DismissionService{
 	@Override
 	public void delete(Long dismissionId) {
 		Dismission dis = dismissionRepository.findOne(dismissionId);
-		dis.getDismissionPerson().setDismission(null);
+		//dis.getDismissionPerson().setDismission(null);
 		dismissionRepository.delete(dis);
 		dis = dismissionRepository.findOne(dismissionId);
 	}
@@ -103,6 +103,11 @@ public class DismissionServiceImpl implements DismissionService{
 	@Override
 	public List<Dismission> findByDismissionPerson(Person user) {
 		return dismissionRepository.findByDismissionPerson(user);
+	}
+
+	@Override
+	public List<Dismission> findByDismissionPersonAndStatusIn(Person emp, List<Integer> statuses) {
+		return dismissionRepository.findByDismissionPersonAndStatusIn(emp, statuses);
 	}
 	
 

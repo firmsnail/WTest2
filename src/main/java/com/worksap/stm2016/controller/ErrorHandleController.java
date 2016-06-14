@@ -28,9 +28,6 @@ public class ErrorHandleController implements ErrorController {
 			System.out.println("ctx: null");
 		}
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("@handleError start!");
-		if (auth != null) System.out.println("@handleError : " + auth.getName());
-		else System.out.println("@handleError : null");
 		if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
 			Log.info("@handleError loged-in!");
 			CurrentUser curUser = (CurrentUser) auth.getPrincipal();

@@ -34,7 +34,7 @@ public class Dismission {
 	@JoinColumn(nullable = false, name = "department_id", referencedColumnName = "department_id")
 	private Department dismissionDepartment;
 	
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, name = "person_id", referencedColumnName = "person_id")
 	private Person dismissionPerson;
 	

@@ -93,7 +93,7 @@
                         			<strong><spring:message code="hire-date" /></strong>: 
                         			<c:choose>
                         				<c:when test="${hire.status == 3}">
-                        					<fmt:formatDate value="${hire.hireDate}" pattern="yyyy-MM-dd hh:mm"/>
+                        					<fmt:formatDate value="${hire.hireDate}" pattern="yyyy-MM-dd"/>
                         				</c:when>
                         				<c:otherwise>
                         					N/A

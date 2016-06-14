@@ -1,5 +1,7 @@
 package com.worksap.stm2016.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +31,7 @@ import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.model.Role;
 import com.worksap.stm2016.model.Skill;
 import com.worksap.stm2016.model.StaffRequirement;
+import com.worksap.stm2016.modelForm.DismissionForm;
 import com.worksap.stm2016.modelForm.RequirementForm;
 import com.worksap.stm2016.service.ApplicantService;
 import com.worksap.stm2016.service.DismissionService;
@@ -335,6 +338,39 @@ public class TeamManagerController {
 			
 		}
 		return "redirect:/interview/showInterviews";
+	}
+	
+	@RequestMapping(value = "/fireOneEmployee")
+	public String fireOneEmployee(Long employeeId, String expectDate, String reason) throws ParseException {
+		System.out.println("@fireOneEmployee start!");
+		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+		Date expDate = df.parse(expectDate);
+		
+		DismissionForm dismission = new DismissionForm();
+		dismission.setComment(reason);
+		dismission.setEmployeeId(employeeId);
+		dismission.setExpectDate(expDate);
+		Dismission oneDis = dismissionService.add(dismission);
+
+		System.out.println("@fireOneEmployee added!");
+		
+		oneDis.setStatus(CommonUtils.DISMISSION_HR_MANAGER_PROCESSING);
+		Role hrRole = roleService.findOne(CommonUtils.ROLE_HR_MANAGER);
+		Person hrManager = personService.findByRole(hrRole).get(0);
+		oneDis.setDismissionHRManager(hrManager);
+		oneDis = dismissionService.findOne(oneDis.getDismissionId());
+		Notification notification = new Notification();
+		notification.setOwner(hrManager);
+		notification.setContent("You have a dismission need to process!");
+		notification.setIssueTime(new Date());
+		notification.setStatus(CommonUtils.NOTIFICATION_STATUS_UNREAD);
+		notification.setType(CommonUtils.NOTIFICATION_TYPE_DISMISSION);
+		notification.setUrgency(CommonUtils.NOTIFICATION_URGENCY_HIGH);
+		notification.setUrl("/dismission/showDismissions");
+		notification = notificationService.save(notification);
+		System.out.println("@fireOneEmployee end!");
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return "redirect:/department/showOneDepartment?departmentId="+curUser.getUser().getDepartment().getDepartmentId();
 	}
 	
 }

@@ -55,10 +55,10 @@
                         			<strong><spring:message code="interviewee" /></strong>: <a href="/user/profile?userId=${interview.interviewee.personId }">${interview.interviewee.firstName } ${interview.interviewee.lastName }</a>
                         		</div>
                         		<div>
-                        			<strong><spring:message code="recruiting-plan" /></strong>: <a href="/plan/showOneRecruitingPlan?planId=${interview.planForInterview.planId }">${interview.planForInterview.planId }</a>
+                        			<strong><spring:message code="recruiting-plan" /></strong>: <a href="/plan/showOneRecruitingPlan?planId=${interview.planForInterview.planId }">ID: ${interview.planForInterview.planId }</a>
                         		</div>
                         		<div>
-                        			<strong><spring:message code="interview-staffing-requirement" /></strong>: <a href="/requirement/showOneStaffRequirement?requirementId=${interview.requirementForInterview.staffRequirementId }">${interview.requirementForInterview.staffRequirementId }</a>
+                        			<strong><spring:message code="interview-staffing-requirement" /></strong>: <a href="/requirement/showOneStaffRequirement?requirementId=${interview.requirementForInterview.staffRequirementId }">ID: ${interview.requirementForInterview.staffRequirementId }</a>
                         		</div>
                         		<div>
                         			<strong><spring:message code="turns" /></strong>: ${interview.turns }
@@ -81,13 +81,13 @@
 									</c:choose>
                         		</div>
                         		<div>
-                        			<strong><spring:message code="update-time" /></strong>: <fmt:formatDate value="${interview.updateTime}" pattern="yyyy-MM-dd hh:mm"/>
+                        			<strong><spring:message code="update-time" /></strong>: <fmt:formatDate value="${interview.updateTime}" pattern="yyyy-MM-dd HH:mm"/>
                         		</div>
                         		<div>
                         			<strong><spring:message code="interview-time" /></strong>: 
                         			<c:choose>
                         				<c:when test="${interview.status == 2}">
-                        					<fmt:formatDate value="${interview.interviewTime}" pattern="yyyy-MM-dd hh:mm"/>
+                        					<fmt:formatDate value="${interview.interviewTime}" pattern="yyyy-MM-dd HH:mm"/>
                         				</c:when>
                         				<c:otherwise>
                         					N/A

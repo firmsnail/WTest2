@@ -18,4 +18,5 @@ public interface InterviewService {
 	public List<Interview> findByInterviewee(Person interviewee);
 	public List<Interview> findByInterviewerAndStatusIn(Person interviewer, List<Integer> statuses);
 	public List<Interview> findByStatus(Integer status);
+	public List<Interview> findByInterviewer(Person interviewer);
 }

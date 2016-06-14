@@ -63,8 +63,10 @@ public class DepartmentFormValidator implements Validator {
 		Department dept = deptService.findByDepartmentName(form.getDepartmentName());
 		if (dept != null) {
 			errors.rejectValue("departmentName", "departmentName", "The department already existed!");
-		} else if (!CommonUtils.FieldRegex.matcher(form.getDepartmentName()).matches()){
-			errors.rejectValue("departmentName", "departmentName", "You can only enter numbers and letters!");
+		} else if (CommonUtils.ContentRegex.matcher(form.getDepartmentName()).matches()){
+			errors.rejectValue("departmentName", "departmentName", "Your behavior is dangerous, please don't attempt to attack the system.");
+		} else if (form.getDepartmentName().trim().length() <= 0) {
+			errors.rejectValue("departmentName", "departmentName", "The department name can not be empty.");
 		}
 	}
     

@@ -97,7 +97,7 @@
                         		<div>
                         			<strong><spring:message code="skills" /></strong>: 
                         			<c:forEach var="skill" items="${skills}" varStatus="status">
-                        				${skill.skillName }   
+                        				${skill.skillName }       
                         			</c:forEach>
                         		</div>
                         	</div>

@@ -45,6 +45,14 @@
 	        	  modal.find('.modal-body input#interview').val(curId);
 	        });
 	        
+	        $('#interviewForm').validate({
+	        	rules: {
+	        		interviewTime: {
+	        			required: true,
+	        		}
+	        	}
+	        });
+	        
 	        $('#hireModal').on('shown.bs.modal', function (event) {
 	        	  var button = $(event.relatedTarget) // Button that triggered the modal
 	        	  var curId = button.data('interviewid') // Extract info from data-* attributesdata-interviewId
@@ -79,7 +87,7 @@
 					<h4 class="modal-title" id="interviewModalLabel"><spring:message code="schedule-interview" /></h4>
 				</div>
 				<div class="modal-body">
-					<form role="form" action="/recruiter/scheduleOneInterview" method="POST">
+					<form role="form" id="interviewForm" action="/recruiter/scheduleOneInterview" method="POST">
 						<div class="form-group">
 							<input type="text" class="hidden" id="interview" name="interviewId" value=""></input>
 						</div>
@@ -200,12 +208,12 @@
 											
 												<c:choose>
 	                                        		<c:when test="${currentUser.user.role.roleId ==2}">
-	                                        			<td><fmt:formatDate value="${interview.updateTime}" pattern="yyyy-MM-dd hh:mm"/></td>
+	                                        			<td><fmt:formatDate value="${interview.updateTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 	                                        		</c:when>
 	                                        		<c:otherwise>
 	                                        			<c:choose>
 	                                        				<c:when test="${interview.status == 2 }">
-	                                        					<td><fmt:formatDate value="${interview.interviewTime}" pattern="yyyy-MM-dd hh:mm"/></td>
+	                                        					<td><fmt:formatDate value="${interview.interviewTime}" pattern="yyyy-MM-dd HH:mm"/></td>
 	                                        				</c:when>
 	                                        				<c:otherwise>
 	                                        					<td>N/A</td>
@@ -221,7 +229,7 @@
 											
 												<td>
 													<c:choose>
-														<c:when test="${currentUser.user.role.roleId == 2 or currentUser.user.role.roleId == 4}">
+														<c:when test="${currentUser.user.role.roleId == 2}">
 															<c:choose>
 																<c:when test="${interview.status == 1}">		<!-- INTERVIEW_PENDING_SCHEDULE -->
 																	<span class="label label-warning"><spring:message code="pending-schedule" /></span>
@@ -234,7 +242,7 @@
 																</c:otherwise>
 															</c:choose>
 														</c:when>
-														<c:when test="${currentUser.user.role.roleId == 5}">
+														<c:when test="${currentUser.user.role.roleId == 4 or currentUser.user.role.roleId == 5}">
 															<c:choose>
 																<c:when test="${interview.status == 1}">		<!-- INTERVIEW_PENDING_SCHEDULE -->
 																	<span class="label label-warning"><spring:message code="pending-schedule" /></span>

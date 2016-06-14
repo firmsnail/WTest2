@@ -1,15 +1,20 @@
 package com.worksap.stm2016.validator;
 
 import org.springframework.validation.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
 import com.worksap.stm2016.modelForm.UserUpdateForm;
+import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.utils.CommonUtils;
 
 @Component
 public class UserUpdateFormValidator implements Validator {
 
+	@Autowired
+    private PersonService userService;
+	
     @Override
     public boolean supports(Class<?> clazz) {
         return clazz.equals(UserUpdateForm.class);
@@ -41,16 +46,16 @@ public class UserUpdateFormValidator implements Validator {
     private void validateLastName(Errors errors, UserUpdateForm form) {
 		if (CommonUtils.ContentRegex.matcher(form.getLastName()).matches()) {
 			errors.rejectValue("lastName", "lastName", "Your behavior is dangerous, please don't attempt to attack the system.");
-		} else if (!CommonUtils.FieldRegex.matcher(form.getLastName()).matches()) {
-			errors.rejectValue("lastName", "lastName", "You can only enter numbers and letters.");
+		} else if (form.getLastName().trim().length() <= 0) {
+			errors.rejectValue("lastName", "lastName", "The last name can not be empty.");
 		}
 	}
 
 	private void validateFirstName(Errors errors, UserUpdateForm form) {
 		if (CommonUtils.ContentRegex.matcher(form.getFirstName()).matches()) {
 			errors.rejectValue("firstName", "firstName", "Your behavior is dangerous, please don't attempt to attack the system.");
-		} else if (!CommonUtils.FieldRegex.matcher(form.getFirstName()).matches()) {
-			errors.rejectValue("firstName", "firstName", "You can only enter numbers and letters.");
+		} else if (form.getFirstName().trim().length() <= 0) {
+			errors.rejectValue("firstName", "firstName", "The first name can not be empty.");
 		}
 	}
     
@@ -74,13 +79,13 @@ public class UserUpdateFormValidator implements Validator {
 			if (!CommonUtils.ContentRegex.matcher(form.getPassword()).matches()) {
     			errors.rejectValue("password", "password", "Your behavior is dangerous, please don't attempt to attack the system.");
     		} else if (!CommonUtils.FieldRegex.matcher(form.getPassword()).matches()) {
-    			errors.rejectValue("password", "password", "You can only enter numbers and letters.");
+    			errors.rejectValue("password", "password", "You can only enter underscore, numbers and letters.");
     		}
         	
         	if (!CommonUtils.ContentRegex.matcher(form.getConfirmPassword()).matches()) {
     			errors.rejectValue("confirmPassword", "confirmPassword", "Your behavior is dangerous, please don't attempt to attack the system.");
     		} else if (!CommonUtils.FieldRegex.matcher(form.getConfirmPassword()).matches()) {
-    			errors.rejectValue("confirmPassword", "confirmPassword", "You can only enter numbers and letters.");
+    			errors.rejectValue("confirmPassword", "confirmPassword", "You can only enter underscore, numbers and letters.");
     		}
 		}
 	}
@@ -88,6 +93,8 @@ public class UserUpdateFormValidator implements Validator {
 	private void validateEmail(Errors errors, UserUpdateForm form) {
         if (form.getEmail() == null || form.getEmail().length() <= 0 ) {
         	errors.rejectValue("email", "email", "Please enter a email.");
+        } else if (userService.findByEmail(form.getEmail()) != null) {
+        	errors.rejectValue("email", "email", "User with this email already exists.");
         }
     }
     

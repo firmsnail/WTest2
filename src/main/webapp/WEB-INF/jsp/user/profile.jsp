@@ -246,7 +246,7 @@
 								<c:choose>
 									<c:when test="${curSkillsOb != null and fn:length(curSkillsOb) > 0}">
 										<c:forEach var="skill" items="${curSkillsOb}">
-											<span class="label label-success">${skill.skillName}</span>
+											<span class="label label-success">${skill.skillName}</span>      
 										</c:forEach>
 									</c:when>
 									<c:otherwise>
@@ -328,7 +328,7 @@
 			                	  				</c:choose>
 				                	  			
 				                	  			<div class="timeline-item">
-				                	  				<span class="time"><i class="fa fa-clock-o"></i> <fmt:formatDate value="${notification.issueTime}" pattern="yyyy-MM-dd hh:mm"/></span>
+				                	  				<span class="time"><i class="fa fa-clock-o"></i> <fmt:formatDate value="${notification.issueTime}" pattern="yyyy-MM-dd HH:mm"/></span>
 				                	  				<h3 class="timeline-header">
 				                	  					<c:choose>
 					                	  					<c:when test="${notification.type == 1}">
@@ -364,7 +364,14 @@
 					                	  				</c:choose>
 					                	  			</div>
 					                	  			<div class="timeline-footer">
-					                	  				<a class="btn btn-primary btn-xs" href="${notification.url }"><spring:message code="view-details" /></a>
+					                	  				<c:choose>
+					                	  					<c:when test="${currentUser.user.role.roleId == 5 and currentUser.user.status != 2 and notification.type != 2 and notification.type != 6}">
+					                	  						<a class="btn btn-primary btn-xs" href="#"><spring:message code="view-details" /></a>
+					                	  					</c:when>
+					                	  					<c:otherwise>
+					                	  						<a class="btn btn-primary btn-xs" href="${notification.url }"><spring:message code="view-details" /></a>
+					                	  					</c:otherwise>
+					                	  				</c:choose>
 					                	  			</div>
 				                	  			</div>
 				                	  		</li>

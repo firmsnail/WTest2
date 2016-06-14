@@ -158,7 +158,7 @@
 														</c:when>
 														<c:when test="${currentUser.user.role.roleId == 5}">
 															<c:choose>
-																<c:when test="${isApply[plan.planId] == false or applied == false}">		<!-- PLAN_VERIFIED -->
+																<c:when test="${isApply[plan.planId] == false and currentUser.user.status != 2}">		<!-- PLAN_VERIFIED -->
 																	<a href="/short-term-employee/applyOnePlan?planId=${plan.planId }"><button type="button" class="btn btn-success"><spring:message code="apply" /></button></a>
 																</c:when>
 																<c:otherwise>

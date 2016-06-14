@@ -21,4 +21,5 @@ public interface DismissionService {
 	public List<Dismission> findByDismissionHRManager(Person user);
 	public List<Dismission> findByDismissionCBSpecialist(Person user);
 	public List<Dismission> findByDismissionPerson(Person user);
+	public List<Dismission> findByDismissionPersonAndStatusIn(Person emp, List<Integer> statuses);
 }

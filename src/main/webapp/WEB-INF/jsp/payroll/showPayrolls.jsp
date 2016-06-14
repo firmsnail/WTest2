@@ -56,7 +56,7 @@
 	    		url: "/payroll/downloadPayrolls",
 	    		dataType: 'json',
 	    		success: function(data) {
-	    			alert("download success.");
+	    			
 	    		}
 	    	});
 	    }
