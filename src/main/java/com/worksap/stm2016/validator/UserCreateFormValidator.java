@@ -4,9 +4,11 @@ import org.springframework.validation.Validator;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
+import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.model.Person;
 import com.worksap.stm2016.modelForm.UserCreateForm;
 import com.worksap.stm2016.service.DepartmentService;
@@ -95,7 +97,8 @@ public class UserCreateFormValidator implements Validator {
     }
 
     private void validateEmail(Errors errors, UserCreateForm form) {
-        if (form.getEmail() != null && form.getEmail().length() > 0 && userService.findByEmail(form.getEmail()) != null) {
+    	CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (form.getEmail() != null && form.getEmail().length() > 0 && userService.findByEmail(form.getEmail()) != null && userService.findByEmail(form.getEmail()).getPersonId() != curUser.getId()) {
         	errors.rejectValue("email", "email", "User with this email already exists.");
         }
     }

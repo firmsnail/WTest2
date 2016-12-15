@@ -2,9 +2,11 @@ package com.worksap.stm2016.validator;
 
 import org.springframework.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
+import com.worksap.stm2016.model.CurrentUser;
 import com.worksap.stm2016.modelForm.UserUpdateForm;
 import com.worksap.stm2016.service.PersonService;
 import com.worksap.stm2016.utils.CommonUtils;
@@ -91,9 +93,10 @@ public class UserUpdateFormValidator implements Validator {
 	}
 
 	private void validateEmail(Errors errors, UserUpdateForm form) {
+		CurrentUser curUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (form.getEmail() == null || form.getEmail().length() <= 0 ) {
         	errors.rejectValue("email", "email", "Please enter a email.");
-        } else if (userService.findByEmail(form.getEmail()) != null) {
+        } else if (userService.findByEmail(form.getEmail()) != null && userService.findByEmail(form.getEmail()).getPersonId() != curUser.getId()) {
         	errors.rejectValue("email", "email", "User with this email already exists.");
         }
     }
